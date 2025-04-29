@@ -18,11 +18,14 @@ import mdformat
 # 配置日志记录器
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(module)s:%(lineno)d - %(levelname)s - %(message)s")
 
+
+# 配置语言解析
 def lang_callback(el):
     lang = el.get("class", [""])[0] if el.has_attr("class") else None
     return lang.split("-")[-1] if lang else None
 
 
+# 解析 task
 def parse_content_header(md_content: str) -> str:
     # Task<空格><从1递增数字><任意长度字符串>
     md_content_splited = md_content.splitlines()
@@ -37,6 +40,7 @@ def parse_content_header(md_content: str) -> str:
     return md_content
 
 
+# 解析 Markdown 代码块
 def parse_content_code_blocks(md_content: str) -> str:
     md_content_splited = md_content.splitlines()
     # 找到所有特定值的索引
@@ -54,7 +58,7 @@ def parse_content_code_blocks(md_content: str) -> str:
     for i in range(1, len(indices), 2):
         current_index = indices[i]
         while True:
-            current_index -=1
+            current_index -= 1
             if md_content_splited[current_index].strip() == "":
                 blank_indices.append(current_index)
             else:
@@ -67,6 +71,7 @@ def parse_content_code_blocks(md_content: str) -> str:
     return md_content
 
 
+# 调整 Markdown 标题级别
 def adjust_markdown_headers(md_content: str) -> str:
     # 调整 Markdown 的标题级别，确保只有一个一级标题
     md_content_splited = md_content.splitlines()
@@ -78,6 +83,7 @@ def adjust_markdown_headers(md_content: str) -> str:
             md_content_splited[i] = f"{'#' * (header_level + 1)} {line.split(' ', 1)[1]}"
     md_content = "\n".join(md_content_splited)
     return md_content
+
 
 def parse_article_images(md_content: str):
     md_content_splited = md_content.split("\n")
@@ -110,6 +116,7 @@ def parse_article_images(md_content: str):
                 md_content_splited[line_index][:space_index] + f"![{image_filename}]({f"./images/{image_filename}"})"
             )
     return "\n".join(md_content_splited)
+
 
 if __name__ == "__main__":
     with sync_playwright() as p:
