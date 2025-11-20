@@ -1,5 +1,5 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -29,6 +29,14 @@ const config: Config = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'zh-Hans'],
+    localeConfigs: {
+      en: {
+        label: 'English', // 语言切换器中显示的名称
+      },
+      'zh-cn': {
+        label: '简体中文',
+      },
+    },
   },
 
   presets: [
@@ -84,7 +92,7 @@ const config: Config = {
           position: 'left',
           label: 'Tutorial',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        { to: '/blog', label: 'Blog', position: 'left' },
         {
           href: 'https://github.com/facebook/docusaurus',
           label: 'GitHub',
@@ -141,6 +149,7 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    themes: ['@docusaurus/theme-live-codeblock'],
   } satisfies Preset.ThemeConfig,
 };
 
