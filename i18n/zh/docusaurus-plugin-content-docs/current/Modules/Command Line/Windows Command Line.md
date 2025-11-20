@@ -2,48 +2,48 @@
 sidebar_position: 0
 ---
 
-# Windows Command Line
+# Windows 命令行
 
-## Task 1 Introduction
+## 任务 1 介绍
 
-Everyone prefers a graphical user interface (GUI) until they master a command-line interface (CLI). There are many reasons for that. One reason is that GUIs are usually intuitive. If someone offers you a GUI interface you are unfamiliar with, you can quickly poke around and discover a non-trivial part. Compare this with dealing with a CLI, i.e., a prompt.
+在掌握命令行界面（CLI）之前，每个人都更喜欢图形用户界面（GUI）。 这有很多原因。 一个原因是 GUI 通常很直观。 如果有人给你一个你不熟悉的 GUI 界面，你可以快速摸索并发现其中的重要部分。 将此与处理 CLI（即提示符）进行比较。
 
-CLI interfaces usually have a learning curve; however, as you master the command line, you will find it faster and more efficient. Consider this trivial example: How many clicks do you need to find your IP address using the graphical desktop? Using the command-line interface, you don’t even need to raise your hands off the keyboard. Let’s say you want to recheck your IP address. You need to issue the same command instead of moving the mouse pointer to every corner of your screen.
+CLI 界面通常有一个学习曲线；然而，当你掌握了命令行后，你会发现它更快、更高效。 考虑这个简单的例子：使用图形桌面查找你的 IP 地址需要多少次点击？ 使用命令行界面，你甚至不需要将手从键盘上抬起。 假设你想重新检查你的 IP 地址。 你需要发出相同的命令，而不是将鼠标指针移动到屏幕的每个角落。
 
-There are many other advantages to using a CLI besides speed and efficiency. We will mention a few:
+除了速度和效率之外，使用 CLI 还有许多其他优势。 我们将提到几点：
 
-- **Lower resource usage**: CLIs require fewer system resources than graphics-intensive GUIs. In other words, you can run your CLI system on older hardware or systems with limited memory. If you are using cloud computing, your system will require lower resources, which in turn will lower your bill.
-- **Automation**: While you can automate GUI tasks, creating a batch file or script with the commands you need to repeat is much easier.
-- **Remote management**: CLI makes it very convenient to use SSH to manage a remote system such as a server, router, or an IoT device. This approach works well on slow network speeds and systems with limited resources.
+- **资源使用更低**：CLI 比图形密集的 GUI 需要更少的系统资源。 换句话说，你可以在较旧的硬件或内存有限的系统上运行你的 CLI 系统。 如果你正在使用云计算，你的系统将需要更少的资源，从而降低你的费用。
+- **自动化**：虽然你可以自动化 GUI 任务，但创建一个包含你需要重复的命令的批处理文件或脚本要容易得多。
+- **远程管理**：CLI 使得使用 SSH 管理远程系统（如服务器、路由器或物联网设备）非常方便。 这种方法在网络速度较慢和资源有限的系统上效果很好。
 
-### Learning Objectives
+### 学习目标
 
-The purpose of this room is to teach you how to use MS Windows Command Prompt `cmd.exe`, the default command-line interpreter in the Windows environment. We will learn how to use the command line to:
+本房间的目的是教你如何使用 MS Windows 命令提示符 `cmd.exe`，这是 Windows 环境中的默认命令行解释器。 我们将学习如何使用命令行来：
 
-- Display basic system information
-- Check and troubleshoot network configuration
-- Manage files and folders
-- Check running processes
+- 显示基本系统信息
+- 检查和排除网络配置故障
+- 管理文件和文件夹
+- 检查运行中的进程
 
-### Room Prerequisites
+### 房间先决条件
 
-Before starting this room, you should have finished the Windows and AD Fundamentals module.
+在开始本房间之前，你应该已完成 Windows 和 AD 基础知识模块。
 
-Press the Start Machine button below.
-Start the AttackBox by pressing the Start AttackBox button at the top of this page. The AttackBox machine will start in Split-Screen view. If it is not visible, use the blue Show Split View button at the top of the page.
+点击下面的“启动机器”按钮。
+通过点击此页面顶部的“启动 AttackBox”按钮来启动 AttackBox。 AttackBox 机器将在分屏视图中启动。 如果不可见，请使用页面顶部的蓝色“显示分屏视图”按钮。
 
-You can use the SSH client on the AttackBox to connect to `MACHINE_IP` with the following credentials:
+你可以使用 AttackBox 上的 SSH 客户端连接到 `MACHINE_IP`，使用以下凭据：
 
-- Username: `user`
-- Password: `Tryhackme123!`
+- 用户名：`user`
+- 密码：`Tryhackme123!`
 
-### Establishing an SSH Connection from the AttackBox
+### 从 AttackBox 建立 SSH 连接
 
-If this is the first time you initiate an SSH connection from the AttackBox to a target system, the steps are shown in the screenshot below, and they are the following:
+如果这是你第一次从 AttackBox 发起 SSH 连接到目标系统，步骤如下面的截图所示，它们是：
 
-- Start the AttackBox’s terminal by clicking the terminal icon marked with 1.
-- To connect to the target VM, issue the command `ssh user@MACHINE_IP` as `user` is the username in this case.
-- Because this is your first time connecting to this target VM, you will be asked to trust this connection. Answer with yes as marked with 3.
-- Enter your password `Tryhackme123!`. Please note that the password will not appear as you type it.
+- 点击标记为 1 的终端图标启动 AttackBox 的终端。
+- 要连接到目标虚拟机，发出命令 `ssh user@MACHINE_IP`，因为 `user` 是此处的用户名。
+- 因为这是你第一次连接到此目标虚拟机，系统会询问你是否信任此连接。 回答 yes，如标记 3 所示。
+- 输入你的密码 `Tryhackme123!`。 请注意，密码在你输入时不会显示。
 
-![Starting the terminal on the AttackBox and connecting the target VM using SSH.](img/image_20251111-221126.png)
+![在 AttackBox 上启动终端并使用 SSH 连接到目标虚拟机。](img/image_20251111-221126.png)
