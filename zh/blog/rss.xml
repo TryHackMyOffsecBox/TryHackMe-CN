@@ -4,7 +4,7 @@
         <title>My Site Blog</title>
         <link>https://your-docusaurus-site.example.com/TryHackMe-CN/zh/blog</link>
         <description>My Site Blog</description>
-        <lastBuildDate>Thu, 20 Nov 2025 14:01:59 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 20 Nov 2025 14:13:21 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[index]]></title>
             <link>https://your-docusaurus-site.example.com/TryHackMe-CN/zh/blog/index</link>
             <guid>https://your-docusaurus-site.example.com/TryHackMe-CN/zh/blog/index</guid>
-            <pubDate>Thu, 20 Nov 2025 14:01:59 GMT</pubDate>
+            <pubDate>Thu, 20 Nov 2025 14:13:21 GMT</pubDate>
         </item>
     </channel>
 </rss>
