@@ -21,7 +21,11 @@ const config: Config = {
   projectName: 'docusaurus', // Usually your repo name.
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -33,7 +37,7 @@ const config: Config = {
       en: {
         label: 'English', // 语言切换器中显示的名称
       },
-      'zh-cn': {
+      'zh-Hans': {
         label: '简体中文',
       },
     },
