@@ -25,7 +25,7 @@ sidebar_position: 1
 
 <details>
 
-<summary> 起锚，升帆——是时候起航了！ </summary> </summary>
+<summary> 起锚，升帆——是时候起航了！ </summary>
 
 ```plaintext
 No answer needed
@@ -65,7 +65,7 @@ PowerShell 的开发是为了克服 Windows 中现有命令行工具和脚本环
 
 <details>
 
-<summary> 我们称用于开发 PowerShell 的高级方法为什么？ </summary> </summary>
+<summary> 我们称用于开发 PowerShell 的高级方法为什么？ </summary>
 
 ```plaintext
 object-oriented
@@ -248,7 +248,7 @@ You are installing the modules from an untrusted repository. If you trust this r
 
 <details>
 
-<summary> 如何检索以动词`Remove`**开头**的命令列表？ [为了这个问题，请避免在答案中使用引号（"或'）] </summary> [为了这个问题，避免在答案中使用引号（"或'）] </summary>
+<summary> 如何检索以动词`Remove`**开头**的命令列表？ [为了这个问题，请避免在答案中使用引号（"或'）] </summary>
 
 ```plaintext
 Get-Command -Name Remove*
@@ -258,7 +258,7 @@ Get-Command -Name Remove*
 
 <details>
 
-<summary> 哪个cmdlet的传统对应别名是`echo`？ </summary> </summary>
+<summary> 哪个cmdlet的传统对应别名是`echo`？ </summary>
 
 ```plaintext
 Write-Output
@@ -268,7 +268,7 @@ Write-Output
 
 <details>
 
-<summary> 获取cmdlet `New-LocalUser`的一些示例用法的命令是什么？ </summary> </summary>
+<summary> 获取cmdlet `New-LocalUser`的一些示例用法的命令是什么？ </summary>
 
 ```plaintext
 Get-Help New-LocalUser -examples
@@ -361,7 +361,7 @@ d-----          9/4/2024  12:50 PM                captain-wardrobe
 
 <details>
 
-<summary> 你可以使用哪个 cmdlet 来替代传统的 Windows 命令 `type`？ </summary> </summary>
+<summary> 你可以使用哪个 cmdlet 来替代传统的 Windows 命令 `type`？ </summary>
 
 ```plaintext
 Get-Content
@@ -371,7 +371,7 @@ Get-Content
 
 <details>
 
-<summary> 你会使用哪个 PowerShell 命令来显示 "C:\Users" 目录的内容？ [为了本题目的，请在答案中避免使用引号（" 或 '）] </summary> [为了这个问题，避免在答案中使用引号（"或'）] </summary>
+<summary> 你会使用哪个 PowerShell 命令来显示 "C:\Users" 目录的内容？ [为了本题目的，请在答案中避免使用引号（" 或 '）] </summary>
 
 ```plaintext
 Get-ChildItem -Path C:\Users
@@ -381,7 +381,7 @@ Get-ChildItem -Path C:\Users
 
 <details>
 
-<summary> 上一个问题中描述的命令显示了几个项目？ </summary> </summary>
+<summary> 上一个问题中描述的命令显示了几个项目？ </summary>
 
 ```plaintext
 4
@@ -472,7 +472,7 @@ cmdlet管道可以通过添加更多命令来扩展，因为该功能不仅限�
 
 <details>
 
-<summary> 点击此处查看可能的解决方案。 不要作弊！ </summary> 不要作弊！ </summary>
+<summary> 点击此处查看可能的解决方案。 不要作弊！ </summary>
 
 ```powershell title="Terminal"
 Get-ChildItem | Sort-Object Length -Descending | Select-Object -First 1
@@ -500,7 +500,7 @@ captain-hat.txt:8:Don't touch my hat!
 
 <details>
 
-<summary> 你将如何检索当前目录中大小大于 100 的项目？ [为了本题目的，请在答案中避免使用引号（" 或 '）] </summary> [为了这个问题，避免在答案中使用引号（"或'）] </summary>
+<summary> 你将如何检索当前目录中大小大于 100 的项目？ [为了本题目的，请在答案中避免使用引号（" 或 '）] </summary>
 
 ```plaintext
 Get-ChildItem | Where-Object -Property Length -gt 100
@@ -604,7 +604,7 @@ AddressFamily     : IPv4
 
 <details>
 
-<summary>除了您当前用户和默认的"Administrator"帐户外，目标机器上还有哪个其他用户已启用？ </summary> </summary>
+<summary>除了您当前用户和默认的"Administrator"帐户外，目标机器上还有哪个其他用户已启用？ </summary>
 
 ```plaintext
 p1r4t3
@@ -614,7 +614,7 @@ p1r4t3
 
 <details>
 
-<summary>这个家伙毫不顾及我们敬爱的船长，将他的帐户隐藏在其他帐户中！ 他如此直白地将其帐户描述设置为什么座右铭？ </summary> 他如此直白地将其作为账户描述的口号是什么？ </summary>
+<summary>这个家伙毫不顾及我们敬爱的船长，将他的帐户隐藏在其他帐户中！ 他如此直白地将其帐户描述设置为什么座右铭？ </summary>
 
 ```plaintext
 A merry life and a short one.
@@ -624,8 +624,7 @@ A merry life and a short one.
 
 <details>
 
-<summary> 现在是一个将所有内容整合起来的小挑战。 我们刚刚在本地用户中发现的这个可疑家伙在 "C:\Users" 目录中有他自己的主文件夹。
-你能导航文件系统并找到这个海盗家中隐藏的宝藏吗？ </summary>
+<summary> 现在是一个将所有内容整合起来的小挑战。 我们刚刚在本地用户中发现的这个可疑家伙在 "C:\Users" 目录中有他自己的主文件夹。你能导航文件系统并找到这个海盗家中隐藏的宝藏吗？ </summary>
 
 ```plaintext
 THM{p34rlInAsh3ll}
@@ -718,7 +717,7 @@ SHA256          54D2EC3C12BF3D[...]       C:\Users\captain\Documents\captain-cab
 
 <details>
 
-<summary>默认情况下，`Get-NetTCPConnection`检索的哪个属性包含有关启动连接的进程的信息？ </summary> </summary>
+<summary>默认情况下，`Get-NetTCPConnection`检索的哪个属性包含有关启动连接的进程的信息？ </summary>
 
 ```plaintext
 OwningProcess
@@ -793,7 +792,7 @@ SYNOPSIS
 
 <details>
 
-<summary> 在名为"RoyalFortune"的远程计算机上执行`Get-Service`命令的语法是什么？ 假设您不需要提供凭据来建立连接。 [为了这个问题，请在答案中避免使用引号（"或'）] </summary> 假设你无需提供凭据即可建立连接。 [为了这个问题，请避免在答案中使用引号（" 或 '）] </summary>
+<summary> 在名为"RoyalFortune"的远程计算机上执行`Get-Service`命令的语法是什么？ 假设您不需要提供凭据来建立连接。 [为了这个问题，请在答案中避免使用引号（"或'）] </summary>
 
 ```plaintext
 Invoke-Command -ComputerName RoyalFortune -ScriptBlock {Get-Service}
@@ -817,7 +816,7 @@ Invoke-Command -ComputerName RoyalFortune -ScriptBlock {Get-Service}
 
 <details>
 
-<summary> 我已准备好进入下一次冒险！ </summary> </summary>
+<summary> 我已准备好进入下一次冒险！ </summary>
 
 ```plaintext
 No answer needed
