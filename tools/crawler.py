@@ -7,8 +7,9 @@ import urllib.parse
 
 # Data fetch libraries
 from bs4 import BeautifulSoup, Tag
-from playwright.sync_api import sync_playwright, Page
+from playwright.sync_api import sync_playwright, Page, BrowserContext
 import requests
+from pjstealth import stealth_sync
 
 # page parsing libraries
 from markdownify import MarkdownConverter
@@ -112,20 +113,22 @@ def parse_article_images(md_content: str):
             except:
                 logging.error(f"图像获取失败 {md_content_splited[line_index].strip()}")
                 continue
-            md_content_splited[line_index] = (
-                md_content_splited[line_index][:space_index] + f"![{image_filename}]({f"./images/{image_filename}"})"
-            )
+            md_content_splited[line_index] = md_content_splited[line_index][:space_index] + f"![{image_filename}]({f"./images/{image_filename}"})"
     return "\n".join(md_content_splited)
 
 
 if __name__ == "__main__":
     with sync_playwright() as p:
-        # 启动浏览器
-        browser = p.chromium.launch(headless=False, proxy={"server": "http://127.0.0.1:7890"})
-        # 创建新页面
-        page = browser.new_page()
+        # 启动本地 Firefox 浏览器
+        browser = p.firefox.launch_persistent_context(
+            user_data_dir="./firefox_profile",
+            headless=False,
+            proxy={"server": "http://127.0.0.1:7890"}
+        )
+        # 获取页面
+        page = browser.pages[0] if browser.pages else browser.new_page()
 
-        page.goto("https://tryhackme.com/room/offensivesecurityintro")
+        page.goto("https://tryhackme.com/room/windowspowershell")
         page.wait_for_load_state("load")
 
         while input("按下回车键以解析当前页面") != "q":
@@ -161,6 +164,7 @@ if __name__ == "__main__":
                 continue
 
             # 获取房间内容
+            # TODO 由于网站改版导致内容解析规则需要修改
             div_room_content = soup.find("div", {"data-sentry-component": "Tasks"})
             if div_room_content:
                 # 移除特定的<section>元素
