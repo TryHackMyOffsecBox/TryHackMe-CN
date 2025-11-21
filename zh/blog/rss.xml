@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
 <rss version="2.0">
     <channel>
-        <title>My Site Blog</title>
-        <link>https://your-docusaurus-site.example.com/TryHackMe-CN/zh/blog</link>
-        <description>My Site Blog</description>
-        <lastBuildDate>Thu, 20 Nov 2025 14:21:30 GMT</lastBuildDate>
+        <title>TryHackMe-CN Blog</title>
+        <link>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/zh/blog</link>
+        <description>TryHackMe-CN Blog</description>
+        <lastBuildDate>Fri, 21 Nov 2025 12:58:03 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh</language>
         <item>
             <title><![CDATA[index]]></title>
-            <link>https://your-docusaurus-site.example.com/TryHackMe-CN/zh/blog/index</link>
-            <guid>https://your-docusaurus-site.example.com/TryHackMe-CN/zh/blog/index</guid>
-            <pubDate>Thu, 20 Nov 2025 14:21:30 GMT</pubDate>
+            <link>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/zh/blog/index</link>
+            <guid>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/zh/blog/index</guid>
+            <pubDate>Fri, 21 Nov 2025 12:58:03 GMT</pubDate>
         </item>
     </channel>
 </rss>
