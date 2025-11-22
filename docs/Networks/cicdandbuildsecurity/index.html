@@ -5,7 +5,7 @@
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">CI/CD 与构建安全 | TryHackMe-CN</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Networks/cicdandbuildsecurity/"><meta data-rh="true" property="og:locale" content="zh"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" name="docusaurus_locale" content="zh"><meta data-rh="true" name="docsearch:language" content="zh"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="CI/CD 与构建安全 | TryHackMe-CN"><meta data-rh="true" name="description" content="任务 1 简介"><meta data-rh="true" property="og:description" content="任务 1 简介"><link data-rh="true" rel="icon" href="/TryHackMe-CN/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Networks/cicdandbuildsecurity/"><link data-rh="true" rel="alternate" href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/docs/Networks/cicdandbuildsecurity/" hreflang="en"><link data-rh="true" rel="alternate" href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Networks/cicdandbuildsecurity/" hreflang="zh"><link data-rh="true" rel="alternate" href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Networks/cicdandbuildsecurity/" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"网络","item":"https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Networks/"},{"@type":"ListItem","position":2,"name":"CI/CD 与构建安全","item":"https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Networks/cicdandbuildsecurity/"}]}</script><link rel="alternate" type="application/rss+xml" href="/TryHackMe-CN/blog/rss.xml" title="TryHackMe-CN RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/TryHackMe-CN/blog/atom.xml" title="TryHackMe-CN Atom Feed"><link rel="stylesheet" href="/TryHackMe-CN/assets/css/styles.6c4c8a38.css">
-<script src="/TryHackMe-CN/assets/js/runtime~main.a3c1b59d.js" defer="defer"></script>
+<script src="/TryHackMe-CN/assets/js/runtime~main.0b47bf2c.js" defer="defer"></script>
 <script src="/TryHackMe-CN/assets/js/main.3d723bea.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -17,8 +17,8 @@
 <p>欢迎来到 CI/CD 与构建安全网络！ 在本房间中，我们将探讨如何保护 DevOps 流水线及其生成的构建。 了解不安全构建流程的潜在风险和后果对于认识到实施强大安全措施的紧迫性至关重要。 在本网络中，我们将探讨常见的不安全因素以及威胁行为者如何利用这些因素来破坏流程和生产系统！</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="先决条件">先决条件<a href="#先决条件" class="hash-link" aria-label="先决条件的直接链接" title="先决条件的直接链接" translate="no">​</a></h3>
 <ul>
-<li class="">软件开发生命周期</li>
-<li class="">安全软件开发生命周期</li>
+<li class="">软件开发生命周期（SDLC）</li>
+<li class="">安全软件开发生命周期（SSDLC）</li>
 <li class="">流水线自动化简介</li>
 <li class="">依赖管理</li>
 </ul>
@@ -49,7 +49,7 @@
 <p><img decoding="async" loading="lazy" alt="登录页面" src="/TryHackMe-CN/assets/images/image_20251159-095907-e4e95887f43dc7615cc704335cbe4acf.png" width="504" height="467" class="img_ev3q"></p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="联系-mu-th-ur-6000">联系 MU-TH-UR 6000<a href="#联系-mu-th-ur-6000" class="hash-link" aria-label="联系 MU-TH-UR 6000的直接链接" title="联系 MU-TH-UR 6000的直接链接" translate="no">​</a></h3>
 <p>在您通过此网络的过程中，您必须向 MU-TH-UR 6000 大型机（更广为人知的名称为 Mother）报告您的工作。 在开始这段危险的旅程之前，您必须向 Mother 注册。 如下所述，SSH 用于通信：</p>
-<table><thead><tr><th style="text-align:center">-  键-</th><th style="text-align:center">-  值-</th></tr></thead><tbody><tr><td style="text-align:center">SSH 用户名</td><td style="text-align:center">-  mother-</td></tr><tr><td style="text-align:center">SSH 密码</td><td style="text-align:center">motherknowsbest</td></tr><tr><td style="text-align:center">- SSH IP-</td><td style="text-align:center">- X.X.X.250-</td></tr></tbody></table>
+<table><thead><tr><th style="text-align:center">Key</th><th style="text-align:center">Value</th></tr></thead><tbody><tr><td style="text-align:center">SSH 用户名</td><td style="text-align:center">mother</td></tr><tr><td style="text-align:center">SSH 密码</td><td style="text-align:center">motherknowsbest</td></tr><tr><td style="text-align:center">SSH IP</td><td style="text-align:center">X.X.X.250</td></tr></tbody></table>
 <p>使用您的网络图替换 SSH IP 中的 X 值。 一旦您通过身份验证，您将能够与 Mother 通信。 按照提示注册挑战，并保存您获得的信息以供将来参考。 注册后，按照说明验证您是否可以访问所有相关系统。</p>
 <p>VPN 服务器和 Mother 大型机不在此网络范围内，对这些系统进行的任何安全测试都可能导致您被禁止访问网络。</p>
 <p>在您通过网络的过程中，您需要证明您的入侵。 为此，您将被要求在您已入侵的主机上执行特定步骤。 请注意上方网络图中的主机名，因为您将需要此信息。 只能从匹配的主机访问标志。</p>
@@ -337,7 +337,7 @@
 <p>某些构建服务器可能不允许您对访问门控实施控制以确保是不同的人员。 在这些情况下，一个好的解决方法是简单地将所需的审批数量从1增加到2。 这样，开发人员提供一个审批，但第二个人必须提供另一个审批。</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="利用配置错误的访问门控">利用配置错误的访问门控<a href="#利用配置错误的访问门控" class="hash-link" aria-label="利用配置错误的访问门控的直接链接" title="利用配置错误的访问门控的直接链接" translate="no">​</a></h3>
 <p>让我们看一个访问门控配置错误的示例。 在此示例中，我们将为您提供作为Ana用户的访问权限。 您将在所有后续练习中使用此用户。 您可以使用以下详细信息以Ana身份验证到Gitlab：</p>
-<table><thead><tr><th style="text-align:center">键</th><th style="text-align:center">值</th></tr></thead><tbody><tr><td style="text-align:center">用户名</td><td style="text-align:center">anatacker</td></tr><tr><td style="text-align:center">密码</td><td style="text-align:center">Password1@</td></tr></tbody></table>
+<table><thead><tr><th style="text-align:center">Key</th><th style="text-align:center">Value</th></tr></thead><tbody><tr><td style="text-align:center">用户名</td><td style="text-align:center">anatacker</td></tr><tr><td style="text-align:center">密码</td><td style="text-align:center">Password1@</td></tr></tbody></table>
 <p>Ash已授予Ana对其Approval-Test仓库的开发人员访问权限，该仓库可在此处找到：<a href="http://gitlab.tryhackme.loc/ash/approval-test" target="_blank" rel="noopener noreferrer" class="">http://gitlab.tryhackme.loc/ash/approval-test</a>。 为了保护仓库的主分支，Ash已将主分支配置为受保护分支，开发人员仅允许创建合并请求，不允许直接更改代码。 让我们通过更新README文件并尝试将更改提交到主分支来测试这一点。 导航到README文件并单击编辑：</p>
 <p><img decoding="async" loading="lazy" alt="README文件编辑屏幕" src="/TryHackMe-CN/assets/images/image_20251130-143011-9dee18e1d14ce1fc2f3744d652a03cbd.png" width="1288" height="793" class="img_ev3q"></p>
 <p>如您所见，Gitlab自动要求我们为我们想要进行的更改启动合并请求。 您还会看到我们无法取消选择直接提交的选项。 对文件进行小更改并单击提交更改：</p>
