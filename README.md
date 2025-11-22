@@ -2,6 +2,8 @@
 
 ## 如何使用 i8n
 
+运行英语版本
+
 ```shell
-npx docusaurus write-translations --locale zh-Hans
+npm run start -- --locale en
 ```
