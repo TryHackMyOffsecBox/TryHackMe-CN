@@ -6,11 +6,11 @@ sidebar_position: 1
 
 ## 任务 1 简介
 
-你好！ 喂！ 如果你在这里，要么是听说了 PowerShell 的神奇之处想了解更多，要么是从命令行模块的第一个房间——[Windows 命令行](Windows%20Command%20Line.md)航行过来的。 无论哪种方式，你都将踏上一段旅程，探索这个强大 shell 的神奇之处，学习如何使用它来揭示任何 Windows 系统的秘密。 那么，停船！上船！ 无论如何，您即将踏上一段探索这个强大shell奇迹的旅程，学习如何使用它来揭示任何Windows系统的秘密。 那么，停船！上船！
+你好！ 你好！ 喂！ 如果你在这里，要么是听说了 PowerShell 的神奇之处想了解更多，要么是从命令行模块的第一个房间——[Windows 命令行](Windows%20Command%20Line.md)航行过来的。 无论哪种方式，你都将踏上一段旅程，探索这个强大 shell 的神奇之处，学习如何使用它来揭示任何 Windows 系统的秘密。 那么，停船！上船！ 无论如何，您即将踏上一段探索这个强大shell奇迹的旅程，学习如何使用它来揭示任何Windows系统的秘密。 那么，停船！上船！ 无论如何，您即将踏上一段探索这个强大shell奇迹的旅程，学习如何使用它来揭示任何Windows系统的秘密。 那么，停船！上船！
 
 ### 学习目标
 
-这是命令行模块中的第二个房间。 这是一个介绍 PowerShell 的房间，PowerShell 是第二个——仅从历史角度——为 Windows 操作系统构建的命令行实用程序。 这是一个关于PowerShell的介绍性房间，PowerShell是历史上第二个为Windows操作系统构建的命令行实用程序。
+这是命令行模块中的第二个房间。 这是一个介绍 PowerShell 的房间，PowerShell 是第二个——仅从历史角度——为 Windows 操作系统构建的命令行实用程序。 这是一个关于PowerShell的介绍性房间，PowerShell是历史上第二个为Windows操作系统构建的命令行实用程序。 这是一个关于PowerShell的介绍性房间，PowerShell是历史上第二个为Windows操作系统构建的命令行实用程序。
 
 - 了解什么是 PowerShell 及其功能。
 - 理解 PowerShell 语言的基本结构。
@@ -25,7 +25,7 @@ sidebar_position: 1
 
 <details>
 
-<summary> 起锚，升帆——是时候起航了！ </summary>
+<summary> 起锚，升帆——是时候起航了！ </summary> </summary>
 
 ```plaintext
 No answer needed
@@ -39,11 +39,11 @@ No answer needed
 
 来自官方 Microsoft [页面](https://learn.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.4)：“PowerShell 是一个跨平台的任务自动化解决方案，由命令行 shell、脚本语言和配置管理框架组成。”
 
-PowerShell 是微软设计的一个强大工具，用于任务自动化和配置管理。 它结合了命令行界面和基于 .NET 框架构建的脚本语言。 与旧的基于文本的命令行工具不同，PowerShell 是面向对象的，这意味着它可以处理复杂的数据类型并更有效地与系统组件交互。 最初仅限 Windows，PowerShell 最近已扩展支持 macOS 和 Linux，使其成为跨不同操作系统的 IT 专业人士的通用选择。 它结合了命令行界面和基于.NET框架构建的脚本语言。 与较旧的基于文本的命令行工具不同，PowerShell是面向对象的，这意味着它可以处理复杂的数据类型并更有效地与系统组件交互。 最初仅限Windows使用，PowerShell最近已扩展到支持macOS和Linux，使其成为跨不同操作系统的IT专业人员的多功能选择。
+PowerShell 是微软设计的一个强大工具，用于任务自动化和配置管理。 它结合了命令行界面和基于 .NET 框架构建的脚本语言。 与旧的基于文本的命令行工具不同，PowerShell 是面向对象的，这意味着它可以处理复杂的数据类型并更有效地与系统组件交互。 最初仅限 Windows，PowerShell 最近已扩展支持 macOS 和 Linux，使其成为跨不同操作系统的 IT 专业人士的通用选择。 它结合了命令行界面和基于.NET框架构建的脚本语言。 与较旧的基于文本的命令行工具不同，PowerShell是面向对象的，这意味着它可以处理复杂的数据类型并更有效地与系统组件交互。 最初仅限Windows使用，PowerShell最近已扩展到支持macOS和Linux，使其成为跨不同操作系统的IT专业人员的多功能选择。 它结合了命令行界面和基于.NET框架构建的脚本语言。 与较旧的基于文本的命令行工具不同，PowerShell是面向对象的，这意味着它可以处理复杂的数据类型并更有效地与系统组件交互。 最初仅限Windows使用，PowerShell最近已扩展到支持macOS和Linux，使其成为跨不同操作系统的IT专业人员的多功能选择。
 
 ### PowerShell 简史
 
-PowerShell 的开发是为了克服 Windows 中现有命令行工具和脚本环境的局限性。 在 2000 年代初期，随着 Windows 在复杂的企业环境中日益使用，像 `cmd.exe` 和批处理文件这样的传统工具在自动化和管理这些系统方面表现不足。 微软需要一个能够处理更复杂管理任务并与 Windows 现代 API 交互的工具。 在21世纪初，随着Windows在复杂企业环境中的使用日益增多，像`cmd.exe`和批处理文件这样的传统工具在自动化和管理这些系统方面显得不足。 微软需要一个能够处理更复杂管理任务并与Windows现代API交互的工具。
+PowerShell 的开发是为了克服 Windows 中现有命令行工具和脚本环境的局限性。 在 2000 年代初期，随着 Windows 在复杂的企业环境中日益使用，像 `cmd.exe` 和批处理文件这样的传统工具在自动化和管理这些系统方面表现不足。 微软需要一个能够处理更复杂管理任务并与 Windows 现代 API 交互的工具。 在21世纪初，随着Windows在复杂企业环境中的使用日益增多，像`cmd.exe`和批处理文件这样的传统工具在自动化和管理这些系统方面显得不足。 微软需要一个能够处理更复杂管理任务并与Windows现代API交互的工具。 在21世纪初，随着Windows在复杂企业环境中的使用日益增多，像`cmd.exe`和批处理文件这样的传统工具在自动化和管理这些系统方面显得不足。 微软需要一个能够处理更复杂管理任务并与Windows现代API交互的工具。
 
 微软工程师Jeffrey Snover意识到Windows和Unix处理系统操作的方式不同——Windows使用结构化数据和API，而Unix将所有内容视为文本文件。 这种差异使得将Unix工具移植到Windows不切实际。 Snover的解决方案是开发一种面向对象的方法，将脚本编写的简单性与.NET框架的强大功能相结合。 PowerShell于2006年发布，通过操作对象，使管理员能够更有效地自动化任务，提供与Windows系统的更深层次集成。
 
@@ -53,9 +53,9 @@ PowerShell 的开发是为了克服 Windows 中现有命令行工具和脚本环
 
 要完全掌握 PowerShell 的力量，我们首先需要理解在此上下文中什么是**对象**。
 
-在编程中，**对象**代表具有**属性**（特征）和**方法**（动作）的项。 在编程中，**对象**代表具有**属性**（特征）和**方法**（动作）的项。 例如，一个 `car` 对象可能具有像 `Color`、`Model` 和 `FuelLevel` 这样的属性，以及像 `Drive()`、`HonkHorn()` 和 `Refuel()` 这样的方法。
+在编程中，**对象**代表具有**属性**（特征）和**方法**（动作）的项。 在编程中，**对象**代表具有**属性**（特征）和**方法**（动作）的项。 例如，一个 `car` 对象可能具有像 `Color`、`Model` 和 `FuelLevel` 这样的属性，以及像 `Drive()`、`HonkHorn()` 和 `Refuel()` 这样的方法。 在编程中，**对象**代表具有**属性**（特征）和**方法**（动作）的项。 例如，一个 `car` 对象可能具有像 `Color`、`Model` 和 `FuelLevel` 这样的属性，以及像 `Drive()`、`HonkHorn()` 和 `Refuel()` 这样的方法。
 
-类似地，在 PowerShell 中，对象是封装数据和功能的基本单元，使得管理和操作信息更容易。 PowerShell 中的对象可以包含文件名、用户名或大小作为数据（**属性**），并携带函数（**方法**），例如复制文件或停止进程。 PowerShell中的对象可以包含文件名、用户名或大小作为数据（**属性**），并携带函数（**方法**），例如复制文件或停止进程。
+类似地，在 PowerShell 中，对象是封装数据和功能的基本单元，使得管理和操作信息更容易。 PowerShell 中的对象可以包含文件名、用户名或大小作为数据（**属性**），并携带函数（**方法**），例如复制文件或停止进程。 类似地，在 PowerShell 中，对象是封装数据和功能的基本单元，使得管理和操作信息更容易。 PowerShell 中的对象可以包含文件名、用户名或大小作为数据（**属性**），并携带函数（**方法**），例如复制文件或停止进程。 PowerShell中的对象可以包含文件名、用户名或大小作为数据（**属性**），并携带函数（**方法**），例如复制文件或停止进程。
 
 传统命令 shell 的基本命令是基于文本的，这意味着它们以纯文本形式处理和输出数据。 相反，当在 PowerShell 中运行 **cmdlet**（发音为 command-let）时，它返回保留其属性和方法的对象。 这允许更强大和灵活的数据操作，因为这些对象不需要额外的文本解析。 相反，当在PowerShell中运行**cmdlet**（发音为command-let）时，它会返回保留其属性和方法的对象。 这允许更强大和灵活的数据操作，因为这些对象不需要额外的文本解析。
 
@@ -65,7 +65,7 @@ PowerShell 的开发是为了克服 Windows 中现有命令行工具和脚本环
 
 <details>
 
-<summary> 我们称用于开发 PowerShell 的高级方法为什么？ </summary>
+<summary> 我们称用于开发 PowerShell 的高级方法为什么？ </summary> </summary>
 
 ```plaintext
 object-oriented
@@ -79,11 +79,11 @@ object-oriented
 
 ### 启动 PowerShell
 
-PowerShell 可以通过几种方式启动，具体取决于你的需求和环境。 如果你从图形界面（GUI）在 Windows 系统上工作，这些是启动它的一些可能方式： 如果您从图形界面（GUI）在Windows系统上工作，以下是启动它的一些可能方式：
+PowerShell 可以通过几种方式启动，具体取决于你的需求和环境。 如果你从图形界面（GUI）在 Windows 系统上工作，这些是启动它的一些可能方式： PowerShell 可以通过几种方式启动，具体取决于你的需求和环境。 如果你从图形界面（GUI）在 Windows 系统上工作，这些是启动它的一些可能方式： 如果您从图形界面（GUI）在Windows系统上工作，以下是启动它的一些可能方式：
 
 - **开始菜单**：在 Windows 开始菜单搜索栏中输入 `powershell`，然后从结果中点击 `Windows PowerShell` 或 `PowerShell`。
 - **运行对话框**：按 `Win + R` 打开 `运行` 对话框，输入 `powershell`，然后按 `Enter`。
-- **文件资源管理器**：导航到任何文件夹，然后在地址栏中输入 `powershell`，并按 `Enter`。 这将在该特定目录中打开 PowerShell。 这将在该特定目录中打开PowerShell。
+- **文件资源管理器**：导航到任何文件夹，然后在地址栏中输入 `powershell`，并按 `Enter`。 这将在该特定目录中打开 PowerShell。 这将在该特定目录中打开PowerShell。 这将在该特定目录中打开PowerShell。
 - **任务管理器**：打开任务管理器，转到 `文件 > 运行新任务`，输入 `powershell`，然后按 `Enter`。
 
 或者，可以通过在命令提示符（`cmd.exe`）中输入 `powershell` 并按 `Enter` 来启动 PowerShell。
@@ -104,16 +104,16 @@ PowerShell 启动后，我们在当前工作目录中看到一个 `PS`（代表 
 
 ### 基本语法：动词-名词
 
-如前所述，PowerShell 命令被称为 `cmdlets`（发音为 `command-lets`）。 它们比传统的 Windows 命令强大得多，并允许更高级的数据操作。 它们比传统的Windows命令强大得多，并允许更高级的数据操作。
+如前所述，PowerShell 命令被称为 `cmdlets`（发音为 `command-lets`）。 它们比传统的 Windows 命令强大得多，并允许更高级的数据操作。 如前所述，PowerShell 命令被称为 `cmdlets`（发音为 `command-lets`）。 它们比传统的 Windows 命令强大得多，并允许更高级的数据操作。 它们比传统的Windows命令强大得多，并允许更高级的数据操作。
 
-Cmdlets 遵循一致的 `动词-名词` 命名约定。 这种结构使得理解每个 cmdlet 的作用变得容易。 `动词` 描述动作，`名词` 指定执行动作的对象。 例如： 这种结构使得理解每个cmdlet的功能变得容易。 `Verb`描述动作，而`Noun`指定执行动作的对象。 例如：
+Cmdlets 遵循一致的 `动词-名词` 命名约定。 这种结构使得理解每个 cmdlet 的作用变得容易。 `动词` 描述动作，`名词` 指定执行动作的对象。 例如： 这种结构使得理解每个cmdlet的功能变得容易。 `Verb`描述动作，而`Noun`指定执行动作的对象。 例如： 这种结构使得理解每个cmdlet的功能变得容易。 `Verb`描述动作，而`Noun`指定执行动作的对象。 例如：
 
 - `Get-Content`：检索（获取）文件的内容并在控制台中显示。
 - `Set-Location`：更改（设置）当前工作目录。
 
 ### 基本 Cmdlets
 
-要列出当前 PowerShell 会话中所有可执行的 cmdlet、函数、别名和脚本，我们可以使用 `Get-Command`。 它是发现可以使用哪些命令的基本工具。 它是发现可以使用哪些命令的基本工具。
+要列出当前 PowerShell 会话中所有可执行的 cmdlet、函数、别名和脚本，我们可以使用 `Get-Command`。 它是发现可以使用哪些命令的基本工具。 它是发现可以使用哪些命令的基本工具。 它是发现可以使用哪些命令的基本工具。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Get-Command
@@ -151,7 +151,7 @@ Function        Add-DnsClientNrptRule                              1.0.0.0    Dn
 
 我们将在后续任务中学习更高效地筛选cmdlet输出的方法。
 
-我们工具箱中另一个必不可少的cmdlet是`Get-Help`：它提供有关cmdlet的详细信息，包括用法、参数和示例。 这是学习如何使用PowerShell命令的首选cmdlet。 它是学习如何使用PowerShell命令的首选cmdlet。
+我们工具箱中另一个必不可少的cmdlet是`Get-Help`：它提供有关cmdlet的详细信息，包括用法、参数和示例。 这是学习如何使用PowerShell命令的首选cmdlet。 我们工具箱中另一个必不可少的cmdlet是`Get-Help`：它提供有关cmdlet的详细信息，包括用法、参数和示例。 这是学习如何使用PowerShell命令的首选cmdlet。 它是学习如何使用PowerShell命令的首选cmdlet。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Get-Help Get-Date
@@ -189,7 +189,7 @@ REMARKS
     For online help, type: "get-help Get-Date -online".
 ```
 
-如上所示，`Get-Help`告知我们可以通过在基本语法后附加一些选项来获取有关cmdlet的其他有用信息。 例如，通过在上方显示的命令后附加`-examples`，我们将看到所选cmdlet的常用用法列表。 例如，通过将`-examples`附加到上面显示的命令，我们将看到所选cmdlet可以使用的常见方式列表。
+如上所示，`Get-Help`告知我们可以通过在基本语法后附加一些选项来获取有关cmdlet的其他有用信息。 例如，通过在上方显示的命令后附加`-examples`，我们将看到所选cmdlet的常用用法列表。 例如，通过将`-examples`附加到上面显示的命令，我们将看到所选cmdlet可以使用的常见方式列表。 例如，通过将`-examples`附加到上面显示的命令，我们将看到所选cmdlet可以使用的常见方式列表。
 
 为了让IT专业人员更容易过渡，PowerShell包含了许多传统Windows命令的别名——即cmdlet的快捷方式或替代名称。 对于已经熟悉其他命令行工具的用户来说，`Get-Alias`列出了所有可用的别名，这是必不可少的。 例如，`dir`是`Get-ChildItem`的别名，`cd`是`Set-Location`的别名。 对于已经熟悉其他命令行工具的用户来说，`Get-Alias`列出了所有可用的别名。 例如，`dir`是`Get-ChildItem`的别名，`cd`是`Set-Location`的别名。
 
@@ -215,9 +215,9 @@ Alias           clear -> Clear-Host
 
 PowerShell的另一个强大功能是通过从在线存储库下载额外的cmdlet来扩展其功能。
 
-**注意**：请注意，本节列出的cmdlet需要有效的互联网连接来查询在线存储库。 附加的机器无法访问互联网，因此这些命令在此环境中无法工作。 附加的机器无法访问互联网，因此这些命令在此环境中无法工作。
+**注意**：请注意，本节列出的cmdlet需要有效的互联网连接来查询在线存储库。 附加的机器无法访问互联网，因此这些命令在此环境中无法工作。 附加的机器无法访问互联网，因此这些命令在此环境中无法工作。 附加的机器无法访问互联网，因此这些命令在此环境中无法工作。
 
-要在PowerShell Gallery等在线存储库中搜索模块（cmdlet集合），我们可以使用`Find-Module`。 有时，如果我们不知道模块的确切名称，搜索具有相似名称的模块会很有用。 我们可以通过过滤`Name`属性并在模块的部分名称后附加通配符（`*`）来实现这一点，使用以下标准PowerShell语法：`Cmdlet -Property "pattern*"`。 有时，如果我们不知道模块的确切名称，搜索具有相似名称的模块可能很有用。 我们可以通过过滤`Name`属性并在模块的部分名称后附加通配符（`*`）来实现这一点，使用以下标准PowerShell语法：`Cmdlet -Property "pattern*"`。
+要在PowerShell Gallery等在线存储库中搜索模块（cmdlet集合），我们可以使用`Find-Module`。 有时，如果我们不知道模块的确切名称，搜索具有相似名称的模块会很有用。 我们可以通过过滤`Name`属性并在模块的部分名称后附加通配符（`*`）来实现这一点，使用以下标准PowerShell语法：`Cmdlet -Property "pattern*"`。 有时，如果我们不知道模块的确切名称，搜索具有相似名称的模块可能很有用。 我们可以通过过滤`Name`属性并在模块的部分名称后附加通配符（`*`）来实现这一点，使用以下标准PowerShell语法：`Cmdlet -Property "pattern*"`。 有时，如果我们不知道模块的确切名称，搜索具有相似名称的模块可能很有用。 我们可以通过过滤`Name`属性并在模块的部分名称后附加通配符（`*`）来实现这一点，使用以下标准PowerShell语法：`Cmdlet -Property "pattern*"`。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Find-Module -Name "PowerShell*"   
@@ -248,7 +248,7 @@ You are installing the modules from an untrusted repository. If you trust this r
 
 <details>
 
-<summary> 如何检索以动词`Remove`**开头**的命令列表？ [为了这个问题，请避免在答案中使用引号（"或'）] </summary>
+<summary> 如何检索以动词`Remove`**开头**的命令列表？ [为了这个问题，请避免在答案中使用引号（"或'）] </summary> [为了这个问题，避免在答案中使用引号（"或'）] </summary>
 
 ```plaintext
 Get-Command -Name Remove*
@@ -258,7 +258,7 @@ Get-Command -Name Remove*
 
 <details>
 
-<summary> 哪个cmdlet的传统对应别名是`echo`？ </summary>
+<summary> 哪个cmdlet的传统对应别名是`echo`？ </summary> </summary>
 
 ```plaintext
 Write-Output
@@ -268,7 +268,7 @@ Write-Output
 
 <details>
 
-<summary> 获取cmdlet `New-LocalUser`的一些示例用法的命令是什么？ </summary>
+<summary> 获取cmdlet `New-LocalUser`的一些示例用法的命令是什么？ </summary> </summary>
 
 ```plaintext
 Get-Help New-LocalUser -examples
@@ -282,7 +282,7 @@ Get-Help New-LocalUser -examples
 
 PowerShell提供了一系列用于导航文件系统和管理文件的cmdlet，其中许多在传统Windows CLI中有对应命令。
 
-类似于命令提示符中的`dir`命令（或类Unix系统中的`ls`），`Get-ChildItem`列出使用`-Path`参数指定的位置中的文件和目录。 它可以用于探索目录并查看其内容。 如果未指定`Path`，该cmdlet将显示当前工作目录的内容。 它可以用于探索目录并查看其内容。 如果未指定`Path`，cmdlet将显示当前工作目录的内容。
+类似于命令提示符中的`dir`命令（或类Unix系统中的`ls`），`Get-ChildItem`列出使用`-Path`参数指定的位置中的文件和目录。 它可以用于探索目录并查看其内容。 如果未指定`Path`，该cmdlet将显示当前工作目录的内容。 它可以用于探索目录并查看其内容。 如果未指定`Path`，cmdlet将显示当前工作目录的内容。 它可以用于探索目录并查看其内容。 如果未指定`Path`，cmdlet将显示当前工作目录的内容。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Get-ChildItem 
@@ -302,7 +302,7 @@ d-----          5/8/2021   9:15 AM                Saved Games
 d-r---          5/8/2021   9:15 AM                Videos
 ```
 
-要导航到不同的目录，我们可以使用`Set-Location` cmdlet。 它更改当前目录，将我们带到指定路径，类似于命令提示符中的`cd`命令。 它更改当前目录，将我们带到指定路径，类似于命令提示符中的`cd`命令。
+要导航到不同的目录，我们可以使用`Set-Location` cmdlet。 它更改当前目录，将我们带到指定路径，类似于命令提示符中的`cd`命令。 要导航到不同的目录，我们可以使用`Set-Location` cmdlet。 它更改当前目录，将我们带到指定路径，类似于命令提示符中的`cd`命令。 它更改当前目录，将我们带到指定路径，类似于命令提示符中的`cd`命令。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Set-Location -Path ".\Documents"
@@ -311,7 +311,7 @@ PS C:\Users\captain\Documents>
 
 虽然传统的Windows CLI使用单独的命令来创建和管理不同的项目（如目录和文件），但PowerShell通过提供一组统一的cmdlet来处理文件和目录的创建和管理，简化了这一过程。
 
-要在PowerShell中创建项目，我们可以使用`New-Item`。 我们需要指定项目的路径及其类型（无论是文件还是目录）。 我们需要指定项的路径及其类型（无论是文件还是目录）。
+要在PowerShell中创建项目，我们可以使用`New-Item`。 我们需要指定项目的路径及其类型（无论是文件还是目录）。 我们需要指定项的路径及其类型（无论是文件还是目录）。 我们需要指定项的路径及其类型（无论是文件还是目录）。
 
 ```powershell title="Terminal"
 PS C:\Users\captain\Documents> New-Item -Path ".\captain-cabin\captain-wardrobe" -ItemType "Directory"
@@ -361,7 +361,7 @@ d-----          9/4/2024  12:50 PM                captain-wardrobe
 
 <details>
 
-<summary> 你可以使用哪个 cmdlet 来替代传统的 Windows 命令 `type`？ </summary>
+<summary> 你可以使用哪个 cmdlet 来替代传统的 Windows 命令 `type`？ </summary> </summary>
 
 ```plaintext
 Get-Content
@@ -371,7 +371,7 @@ Get-Content
 
 <details>
 
-<summary> 你会使用哪个 PowerShell 命令来显示 "C:\Users" 目录的内容？ [为了本题目的，请在答案中避免使用引号（" 或 '）] </summary>
+<summary> 你会使用哪个 PowerShell 命令来显示 "C:\Users" 目录的内容？ [为了本题目的，请在答案中避免使用引号（" 或 '）] </summary> [为了这个问题，避免在答案中使用引号（"或'）] </summary>
 
 ```plaintext
 Get-ChildItem -Path C:\Users
@@ -381,7 +381,7 @@ Get-ChildItem -Path C:\Users
 
 <details>
 
-<summary> 上一个问题中描述的命令显示了几个项目？ </summary>
+<summary> 上一个问题中描述的命令显示了几个项目？ </summary> </summary>
 
 ```plaintext
 4
@@ -393,9 +393,9 @@ Get-ChildItem -Path C:\Users
 
 ## 任务 5 管道、过滤和排序数据
 
-`Piping`是命令行环境中使用的一种技术，允许将一个命令的输出用作另一个命令的输入。 这创建了一个操作序列，其中数据从一个命令流向下一个命令。 由`|`符号表示，管道在Windows CLI中广泛使用，如本模块前面介绍的那样，以及在基于Unix的shell中。
+`Piping`是命令行环境中使用的一种技术，允许将一个命令的输出用作另一个命令的输入。 这创建了一个操作序列，其中数据从一个命令流向下一个命令。 由`|`符号表示，管道在Windows CLI中广泛使用，如本模块前面介绍的那样，以及在基于Unix的shell中。 这创建了一个操作序列，其中数据从一个命令流向下一个命令。 由`|`符号表示，管道在Windows CLI中广泛使用，如本模块前面介绍的那样，以及在基于Unix的shell中。
 
-在 PowerShell 中，管道更加强大，因为它传递的是 **对象** 而不仅仅是文本。 这些对象不仅携带数据，还携带描述数据并与数据交互的属性和方法。 这些对象不仅携带数据，还携带描述数据并与数据交互的属性和方法。
+在 PowerShell 中，管道更加强大，因为它传递的是 **对象** 而不仅仅是文本。 这些对象不仅携带数据，还携带描述数据并与数据交互的属性和方法。 这些对象不仅携带数据，还携带描述数据并与数据交互的属性和方法。 这些对象不仅携带数据，还携带描述数据并与数据交互的属性和方法。
 
 例如，如果你想获取目录中的文件列表，然后按大小排序，可以在 PowerShell 中使用以下命令：
 
@@ -413,11 +413,11 @@ Mode                 LastWriteTime         Length Name
 d-----          9/4/2024  12:50 PM                captain-wardrobe
 ```
 
-这里，`Get-ChildItem` 检索文件（作为对象），管道（`|`）将这些文件对象发送到 `Sort-Object`，然后按它们的 `Length`（大小）属性进行排序。 这种基于对象的方法允许更详细和灵活的命令序列。 这种基于对象的方法允许更详细和灵活的命令序列。
+这里，`Get-ChildItem` 检索文件（作为对象），管道（`|`）将这些文件对象发送到 `Sort-Object`，然后按它们的 `Length`（大小）属性进行排序。 这种基于对象的方法允许更详细和灵活的命令序列。 这种基于对象的方法允许更详细和灵活的命令序列。 这种基于对象的方法允许更详细和灵活的命令序列。
 
-在上面的示例中，我们利用了 `Sort-Object` cmdlet 来根据指定属性对对象进行排序。 除了排序，PowerShell 还提供了一组 cmdlet，当与管道结合使用时，允许进行高级数据操作和分析。 除了排序，PowerShell提供了一组cmdlet，当与管道结合使用时，允许高级数据操作和分析。
+在上面的示例中，我们利用了 `Sort-Object` cmdlet 来根据指定属性对对象进行排序。 除了排序，PowerShell 还提供了一组 cmdlet，当与管道结合使用时，允许进行高级数据操作和分析。 除了排序，PowerShell提供了一组cmdlet，当与管道结合使用时，允许高级数据操作和分析。 除了排序，PowerShell提供了一组cmdlet，当与管道结合使用时，允许高级数据操作和分析。
 
-要根据指定条件过滤对象，仅返回符合标准的对象，我们可以使用 `Where-Object` cmdlet。 例如，要仅列出目录中的 `.txt` 文件，我们可以使用： 例如，要仅列出目录中的`.txt`文件，我们可以使用：
+要根据指定条件过滤对象，仅返回符合标准的对象，我们可以使用 `Where-Object` cmdlet。 例如，要仅列出目录中的 `.txt` 文件，我们可以使用： 例如，要仅列出目录中的`.txt`文件，我们可以使用： 例如，要仅列出目录中的`.txt`文件，我们可以使用：
 
 ```powershell title="Terminal"
 PS C:\Users\captain\Documents\captain-cabin> Get-ChildItem | Where-Object -Property "Extension" -eq ".txt" 
@@ -434,11 +434,11 @@ Mode                 LastWriteTime         Length Name
 
 这里，`Where-Object` 通过文件的 `Extension` 属性进行过滤，确保仅列出扩展名等于（`-eq`）`.txt` 的文件。
 
-运算符 `-eq`（即 "**等于**"）是一组 **比较运算符** 的一部分，这些运算符与其他脚本语言（例如 Bash、Python）共享。 为了展示 PowerShell 过滤的潜力，我们从该列表中挑选了一些最有用的运算符： 为了展示PowerShell过滤的潜力，我们从该列表中挑选了一些最有用的运算符：
+运算符 `-eq`（即 "**等于**"）是一组 **比较运算符** 的一部分，这些运算符与其他脚本语言（例如 Bash、Python）共享。 为了展示 PowerShell 过滤的潜力，我们从该列表中挑选了一些最有用的运算符： 为了展示PowerShell过滤的潜力，我们从该列表中挑选了一些最有用的运算符： 为了展示PowerShell过滤的潜力，我们从该列表中挑选了一些最有用的运算符：
 
 - `-ne`："**不等于**"。 此运算符可用于根据指定条件从结果中排除对象。
 - `-gt`："**大于**"。 此运算符将仅过滤超过指定值的对象。 需要注意的是，这是一个严格比较，意味着等于指定值的对象将被排除在结果之外。
-- `-ge`："**大于或等于**"。 这是前一个运算符的非严格版本。 `-ge`："**大于或等于**"。 这是前一个运算符的非严格版本。 `-gt` 和 `-eq` 的组合。
+- `-ge`："**大于或等于**"。 这是前一个运算符的非严格版本。 `-le`："**小于或等于**"。 就像其对应项`-ge`一样，这是前一个运算符的非严格版本。 `-lt`和`-eq`的组合。
 - `-lt`："**小于**"。 与其对应项"大于"一样，这是一个严格运算符。 它将仅包括严格低于某个值的对象。
 - `-le`："**小于或等于**"。 就像其对应项`-ge`一样，这是前一个运算符的非严格版本。 `-lt`和`-eq`的组合。
 
@@ -468,11 +468,11 @@ captain-hat2.txt  264
 ship-flag.txt     2116
 ```
 
-cmdlet管道可以通过添加更多命令来扩展，因为该功能不仅限于在两个cmdlet之间进行管道传输。 cmdlet 管道可以通过添加更多命令来扩展，因为该功能不仅限于在两个 cmdlet 之间进行管道传输。 作为练习，尝试构建一个 cmdlet 管道来排序和过滤输出，目标是显示 `C:\Users\captain\Documents\captain-cabin` 目录中最大的文件。
+cmdlet管道可以通过添加更多命令来扩展，因为该功能不仅限于在两个cmdlet之间进行管道传输。 cmdlet 管道可以通过添加更多命令来扩展，因为该功能不仅限于在两个 cmdlet 之间进行管道传输。 作为练习，尝试构建一个 cmdlet 管道来排序和过滤输出，目标是显示 `C:\Users\captain\Documents\captain-cabin` 目录中最大的文件。 cmdlet 管道可以通过添加更多命令来扩展，因为该功能不仅限于在两个 cmdlet 之间进行管道传输。 作为练习，尝试构建一个 cmdlet 管道来排序和过滤输出，目标是显示 `C:\Users\captain\Documents\captain-cabin` 目录中最大的文件。
 
 <details>
 
-<summary> 点击此处查看可能的解决方案。 不要作弊！ </summary>
+<summary> 点击此处查看可能的解决方案。 不要作弊！ </summary> 不要作弊！ </summary>
 
 ```powershell title="Terminal"
 Get-ChildItem | Sort-Object Length -Descending | Select-Object -First 1
@@ -486,7 +486,7 @@ Mode                 LastWriteTime         Length Name
 
 </details>
 
-这组过滤cmdlet中的最后一个是`Select-String`。 这组过滤 cmdlet 中的最后一个是 `Select-String`。 此 cmdlet 在文件中搜索文本模式，类似于基于 Unix 系统中的 `grep` 或 Windows 命令提示符中的 `findstr`。 它通常用于在日志文件或文档中查找特定内容。 它通常用于在日志文件或文档中查找特定内容。
+这组过滤cmdlet中的最后一个是`Select-String`。 这组过滤 cmdlet 中的最后一个是 `Select-String`。 此 cmdlet 在文件中搜索文本模式，类似于基于 Unix 系统中的 `grep` 或 Windows 命令提示符中的 `findstr`。 它通常用于在日志文件或文档中查找特定内容。 它通常用于在日志文件或文档中查找特定内容。 这组过滤 cmdlet 中的最后一个是 `Select-String`。 此 cmdlet 在文件中搜索文本模式，类似于基于 Unix 系统中的 `grep` 或 Windows 命令提示符中的 `findstr`。 它通常用于在日志文件或文档中查找特定内容。 它通常用于在日志文件或文档中查找特定内容。
 
 ```powershell title="Terminal"
 PS C:\Users\captain\Documents\captain-cabin> Select-String -Path ".\captain-hat.txt" -Pattern "hat" 
@@ -494,13 +494,13 @@ PS C:\Users\captain\Documents\captain-cabin> Select-String -Path ".\captain-hat.
 captain-hat.txt:8:Don't touch my hat!
 ```
 
-`Select-String` cmdlet 完全支持使用正则表达式（regex）。 此高级功能允许在文件内进行复杂的模式匹配，使其成为搜索和分析文本数据的强大工具。 此高级功能允许在文件内进行复杂模式匹配，使其成为搜索和分析文本数据的强大工具。
+`Select-String` cmdlet 完全支持使用正则表达式（regex）。 此高级功能允许在文件内进行复杂的模式匹配，使其成为搜索和分析文本数据的强大工具。 此高级功能允许在文件内进行复杂模式匹配，使其成为搜索和分析文本数据的强大工具。 此高级功能允许在文件内进行复杂模式匹配，使其成为搜索和分析文本数据的强大工具。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> 你将如何检索当前目录中大小大于 100 的项目？ [为了本题目的，请在答案中避免使用引号（" 或 '）] </summary>
+<summary> 你将如何检索当前目录中大小大于 100 的项目？ [为了本题目的，请在答案中避免使用引号（" 或 '）] </summary> [为了这个问题，避免在答案中使用引号（"或'）] </summary>
 
 ```plaintext
 Get-ChildItem | Where-Object -Property Length -gt 100
@@ -514,7 +514,7 @@ Get-ChildItem | Where-Object -Property Length -gt 100
 
 PowerShell的创建是为了满足日益增长的对强大自动化和管理工具的需求，以帮助系统管理员和IT专业人员。 因此，它提供了一系列cmdlet，允许检索有关系统配置和网络设置的详细信息。 因此，它提供了一系列cmdlet，允许检索有关系统配置和网络设置的详细信息。
 
-`Get-ComputerInfo` cmdlet检索全面的系统信息，包括操作系统信息、硬件规格、BIOS详细信息等。 它通过单个命令提供整个系统配置的快照。 其传统对应物`systeminfo`仅检索相同详细信息的一小部分。 它在单个命令中提供整个系统配置的快照。 其传统对应项`systeminfo`仅检索相同细节的一小部分。
+`Get-ComputerInfo` cmdlet检索全面的系统信息，包括操作系统信息、硬件规格、BIOS详细信息等。 它通过单个命令提供整个系统配置的快照。 其传统对应物`systeminfo`仅检索相同详细信息的一小部分。 它在单个命令中提供整个系统配置的快照。 其传统对应项`systeminfo`仅检索相同细节的一小部分。 它在单个命令中提供整个系统配置的快照。 其传统对应项`systeminfo`仅检索相同细节的一小部分。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Get-ComputerInfo
@@ -529,7 +529,7 @@ WindowsProductName                                      : Windows Server 2022 Da
 [...]
 ```
 
-对于管理用户帐户和理解机器的安全配置至关重要，Get-LocalUser列出系统上的所有本地用户帐户。 默认输出显示每个用户的用户名、帐户状态和描述。 默认输出显示每个用户的用户名、帐户状态和描述。
+对于管理用户帐户和理解机器的安全配置至关重要，Get-LocalUser列出系统上的所有本地用户帐户。 默认输出显示每个用户的用户名、帐户状态和描述。 默认输出显示每个用户的用户名、帐户状态和描述。 默认输出显示每个用户的用户名、帐户状态和描述。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Get-LocalUser
@@ -604,7 +604,7 @@ AddressFamily     : IPv4
 
 <details>
 
-<summary>除了您当前用户和默认的"Administrator"帐户外，目标机器上还有哪个其他用户已启用？ </summary>
+<summary>除了您当前用户和默认的"Administrator"帐户外，目标机器上还有哪个其他用户已启用？ </summary> </summary>
 
 ```plaintext
 p1r4t3
@@ -614,7 +614,7 @@ p1r4t3
 
 <details>
 
-<summary>这个家伙毫不顾及我们敬爱的船长，将他的帐户隐藏在其他帐户中！ 他如此直白地将其帐户描述设置为什么座右铭？ </summary>
+<summary>这个家伙毫不顾及我们敬爱的船长，将他的帐户隐藏在其他帐户中！ 他如此直白地将其帐户描述设置为什么座右铭？ </summary> 他如此直白地将其作为账户描述的口号是什么？ </summary>
 
 ```plaintext
 A merry life and a short one.
@@ -624,7 +624,8 @@ A merry life and a short one.
 
 <details>
 
-<summary> 现在是一个将所有内容整合起来的小挑战。 我们刚刚在本地用户中发现的这个可疑家伙在 "C:\Users" 目录中有他自己的主文件夹。你能导航文件系统并找到这个海盗家中隐藏的宝藏吗？ </summary>
+<summary> 现在是一个将所有内容整合起来的小挑战。 我们刚刚在本地用户中发现的这个可疑家伙在 "C:\Users" 目录中有他自己的主文件夹。
+你能导航文件系统并找到这个海盗家中隐藏的宝藏吗？ </summary>
 
 ```plaintext
 THM{p34rlInAsh3ll}
@@ -717,7 +718,7 @@ SHA256          54D2EC3C12BF3D[...]       C:\Users\captain\Documents\captain-cab
 
 <details>
 
-<summary>默认情况下，`Get-NetTCPConnection`检索的哪个属性包含有关启动连接的进程的信息？ </summary>
+<summary>默认情况下，`Get-NetTCPConnection`检索的哪个属性包含有关启动连接的进程的信息？ </summary> </summary>
 
 ```plaintext
 OwningProcess
@@ -745,9 +746,9 @@ THM{p34rlInAsh3ll}
 
 学习PowerShell脚本编写超出了本房间的范围。 尽管如此，我们必须理解其强大功能使其成为所有网络安全角色中的关键技能。 然而，我们必须理解，它的强大使其成为所有网络安全角色中的关键技能。
 
-- 对于**蓝队**专业人员，如事件响应者、恶意软件分析师和威胁猎人，PowerShell脚本可以自动化许多不同的任务，包括日志分析、检测异常和提取入侵指标（IOC）。 这些脚本还可用于逆向工程恶意代码（恶意软件）或自动化扫描系统以寻找入侵迹象。 这些脚本也可用于逆向工程恶意代码（恶意软件）或自动扫描系统以寻找入侵迹象。
-- 对于**红队**，包括渗透测试人员和道德黑客，PowerShell脚本可以自动化系统枚举、执行远程命令和制作混淆脚本以绕过防御等任务。 其与所有类型系统的深度集成使其成为模拟攻击和测试系统对现实世界威胁的抵御能力的强大工具。 它与所有类型系统的深度集成使其成为模拟攻击和测试系统抵御现实世界威胁能力的强大工具。
-- 在网络安全背景下，**系统管理员**受益于PowerShell脚本编写，用于自动化完整性检查、管理系统配置和保护网络，尤其是在远程或大规模环境中。 PowerShell脚本可以设计为强制执行安全策略、监控系统健康状况并自动响应安全事件，从而增强整体安全态势。 PowerShell 脚本可以设计用于强制执行安全策略、监控系统健康状况并自动响应安全事件，从而增强整体安全态势。
+- 对于**蓝队**专业人员，如事件响应者、恶意软件分析师和威胁猎人，PowerShell脚本可以自动化许多不同的任务，包括日志分析、检测异常和提取入侵指标（IOC）。 这些脚本还可用于逆向工程恶意代码（恶意软件）或自动化扫描系统以寻找入侵迹象。 这些脚本也可用于逆向工程恶意代码（恶意软件）或自动扫描系统以寻找入侵迹象。 这些脚本也可用于逆向工程恶意代码（恶意软件）或自动扫描系统以寻找入侵迹象。
+- 对于**红队**，包括渗透测试人员和道德黑客，PowerShell脚本可以自动化系统枚举、执行远程命令和制作混淆脚本以绕过防御等任务。 其与所有类型系统的深度集成使其成为模拟攻击和测试系统对现实世界威胁的抵御能力的强大工具。 它与所有类型系统的深度集成使其成为模拟攻击和测试系统抵御现实世界威胁能力的强大工具。 它与所有类型系统的深度集成使其成为模拟攻击和测试系统抵御现实世界威胁能力的强大工具。
+- 在网络安全背景下，**系统管理员**受益于PowerShell脚本编写，用于自动化完整性检查、管理系统配置和保护网络，尤其是在远程或大规模环境中。 PowerShell脚本可以设计为强制执行安全策略、监控系统健康状况并自动响应安全事件，从而增强整体安全态势。 PowerShell 脚本可以设计用于强制执行安全策略、监控系统健康状况并自动响应安全事件，从而增强整体安全态势。 PowerShell 脚本可以设计用于强制执行安全策略、监控系统健康状况并自动响应安全事件，从而增强整体安全态势。
 
 无论是用于防御还是进攻，PowerShell脚本编写都是网络安全工具包中的基本能力。
 
@@ -786,13 +787,13 @@ SYNOPSIS
 
 第一个示例展示了如何非常轻松地将cmdlet与任何自定义脚本结合，以自动化远程计算机上的任务。
 
-第二个示例证明我们不需要知道如何编写脚本即可受益于`Invoke-Command`的强大功能。 实际上，通过附加 `-ScriptBlock { ... }`参数附加到cmdlet的语法中，我们可以在远程计算机上执行任何命令（或命令序列）。 结果将与我们直接在远程计算机上的本地PowerShell会话中键入命令相同。 结果将与我们直接在远程计算机本地的 PowerShell 会话中键入命令相同。
+第二个示例证明我们不需要知道如何编写脚本即可受益于`Invoke-Command`的强大功能。 实际上，通过附加 `-ScriptBlock { ... 实际上，通过附加 `-ScriptBlock { ... }\`参数附加到cmdlet的语法中，我们可以在远程计算机上执行任何命令（或命令序列）。 结果将与我们直接在远程计算机上的本地PowerShell会话中键入命令相同。 结果将与我们直接在远程计算机本地的 PowerShell 会话中键入命令相同。 结果将与我们直接在远程计算机本地的 PowerShell 会话中键入命令相同。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> 在名为"RoyalFortune"的远程计算机上执行`Get-Service`命令的语法是什么？ 假设您不需要提供凭据来建立连接。 [为了这个问题，请在答案中避免使用引号（"或'）] </summary>
+<summary> 在名为"RoyalFortune"的远程计算机上执行`Get-Service`命令的语法是什么？ 假设您不需要提供凭据来建立连接。 [为了这个问题，请在答案中避免使用引号（"或'）] </summary> 假设你无需提供凭据即可建立连接。 [为了这个问题，请避免在答案中使用引号（" 或 '）] </summary>
 
 ```plaintext
 Invoke-Command -ComputerName RoyalFortune -ScriptBlock {Get-Service}
@@ -804,11 +805,11 @@ Invoke-Command -ComputerName RoyalFortune -ScriptBlock {Get-Service}
 
 ## 任务9 结论
 
-干得好，伙计们！ 干得好，伙计们！ 您已成功驾驭了PowerShell的险恶水域，在"黑珍珠号"上发现了隐藏的宝藏和难以捉摸的服务。
+干得好，伙计们！ 干得好，伙计们！ 干得好，伙计们！ 您已成功驾驭了PowerShell的险恶水域，在"黑珍珠号"上发现了隐藏的宝藏和难以捉摸的服务。
 
 有了这些工具，您已装备齐全，可以探索任何Windows系统中最受保护的角落。
 
-记住，真正的海盗永远不会停止寻找宝藏——所以继续磨练您的技能，谁知道在下次冒险中您会发现什么珍珠？ 在那之前，愿您的cmdlet锋利，脚本迅捷。 顺风而行，狩猎愉快！ 在那之前，愿你的 cmdlet 锋利，脚本迅捷。 顺风航行，狩猎愉快！
+记住，真正的海盗永远不会停止寻找宝藏——所以继续磨练您的技能，谁知道在下次冒险中您会发现什么珍珠？ 在那之前，愿您的cmdlet锋利，脚本迅捷。 顺风而行，狩猎愉快！ 在那之前，愿你的 cmdlet 锋利，脚本迅捷。 顺风航行，狩猎愉快！ 在那之前，愿你的 cmdlet 锋利，脚本迅捷。 顺风航行，狩猎愉快！
 
 要继续构建您的命令行技能，请继续学习模块中的下一个房间：[Linux命令行](Linux%20Shells.md)。
 
@@ -816,7 +817,7 @@ Invoke-Command -ComputerName RoyalFortune -ScriptBlock {Get-Service}
 
 <details>
 
-<summary> 我已准备好进入下一次冒险！ </summary>
+<summary> 我已准备好进入下一次冒险！ </summary> </summary>
 
 ```plaintext
 No answer needed
