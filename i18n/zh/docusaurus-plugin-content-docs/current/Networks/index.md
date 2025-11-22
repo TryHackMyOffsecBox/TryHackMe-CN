@@ -1,7 +1,7 @@
-# Networks
+# 网络
 
-Content that uses virtual vulnerable networks.
+使用虚拟易受攻击网络的内容。
 
-## CI/CD and Build Security
+## CI/CD 与构建安全
 
-> Learn about CI/CD and build principles to safeguard your pipelines.
+> 了解 CI/CD 和构建原则以保护您的流水线。
