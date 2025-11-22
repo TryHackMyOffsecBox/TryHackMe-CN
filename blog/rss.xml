@@ -4,7 +4,7 @@
         <title>TryHackMe-CN Blog</title>
         <link>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/blog</link>
         <description>TryHackMe-CN Blog</description>
-        <lastBuildDate>Fri, 21 Nov 2025 14:52:14 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 22 Nov 2025 06:53:33 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[index]]></title>
             <link>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/blog/index</link>
             <guid>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/blog/index</guid>
-            <pubDate>Fri, 21 Nov 2025 14:52:14 GMT</pubDate>
+            <pubDate>Sat, 22 Nov 2025 06:53:33 GMT</pubDate>
         </item>
     </channel>
 </rss>
