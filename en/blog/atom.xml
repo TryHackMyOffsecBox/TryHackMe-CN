@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="atom.xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/blog</id>
+    <title>TryHackMe-CN Blog</title>
+    <updated>2025-11-22T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/blog"/>
+    <subtitle>TryHackMe-CN Blog</subtitle>
+    <icon>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[借助 Crowdin 实现自动化翻译流程]]></title>
+        <id>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/blog/Crodin Auto Translation</id>
+        <link href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/blog/Crodin Auto Translation"/>
+        <updated>2025-11-22T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[暂时还未开工，占坑一下]]></summary>
+        <content type="html"><![CDATA[<p>暂时还未开工，占坑一下</p>]]></content>
+        <author>
+            <name>陈橘墨</name>
+            <uri>https://randark.site</uri>
+        </author>
+    </entry>
+</feed>

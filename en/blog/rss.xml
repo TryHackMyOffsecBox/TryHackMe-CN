@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>TryHackMe-CN Blog</title>
+        <link>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/blog</link>
+        <description>TryHackMe-CN Blog</description>
+        <lastBuildDate>Sat, 22 Nov 2025 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[借助 Crowdin 实现自动化翻译流程]]></title>
+            <link>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/blog/Crodin Auto Translation</link>
+            <guid>https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/blog/Crodin Auto Translation</guid>
+            <pubDate>Sat, 22 Nov 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[暂时还未开工，占坑一下]]></description>
+            <content:encoded><![CDATA[<p>暂时还未开工，占坑一下</p>]]></content:encoded>
+        </item>
+    </channel>
+</rss>
