@@ -6,11 +6,11 @@ sidebar_position: 1
 
 ## 任务 1 简介
 
-你好！ 你好！ 喂！ 如果你在这里，要么是听说了 PowerShell 的神奇之处想了解更多，要么是从命令行模块的第一个房间——[Windows 命令行](Windows%20Command%20Line.md)航行过来的。 无论哪种方式，你都将踏上一段旅程，探索这个强大 shell 的神奇之处，学习如何使用它来揭示任何 Windows 系统的秘密。 那么，停船！上船！ 无论如何，您即将踏上一段探索这个强大shell奇迹的旅程，学习如何使用它来揭示任何Windows系统的秘密。 那么，停船！上船！ 无论如何，您即将踏上一段探索这个强大shell奇迹的旅程，学习如何使用它来揭示任何Windows系统的秘密。 那么，停船！上船！
+你好！ 你好！ 喂！ 如果你在这里，要么是听说了 PowerShell 的神奇之处想了解更多，要么是从命令行模块的第一个房间——[Windows 命令行](Windows%20Command%20Line.md)航行过来的。 无论如何，您即将踏上一段探索这个强大shell奇迹的旅程，学习如何使用它来揭示任何Windows系统的秘密。 那么，上船！
 
 ### 学习目标
 
-这是命令行模块中的第二个房间。 这是一个介绍 PowerShell 的房间，PowerShell 是第二个——仅从历史角度——为 Windows 操作系统构建的命令行实用程序。 这是一个关于PowerShell的介绍性房间，PowerShell是历史上第二个为Windows操作系统构建的命令行实用程序。 这是一个关于PowerShell的介绍性房间，PowerShell是历史上第二个为Windows操作系统构建的命令行实用程序。
+这是命令行模块中的第二个房间。 这是一个关于PowerShell的介绍性房间，PowerShell是历史上第二个为Windows操作系统构建的命令行实用程序。
 
 - 了解什么是 PowerShell 及其功能。
 - 理解 PowerShell 语言的基本结构。
@@ -39,25 +39,25 @@ No answer needed
 
 来自官方 Microsoft [页面](https://learn.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.4)：“PowerShell 是一个跨平台的任务自动化解决方案，由命令行 shell、脚本语言和配置管理框架组成。”
 
-PowerShell 是微软设计的一个强大工具，用于任务自动化和配置管理。 它结合了命令行界面和基于 .NET 框架构建的脚本语言。 与旧的基于文本的命令行工具不同，PowerShell 是面向对象的，这意味着它可以处理复杂的数据类型并更有效地与系统组件交互。 最初仅限 Windows，PowerShell 最近已扩展支持 macOS 和 Linux，使其成为跨不同操作系统的 IT 专业人士的通用选择。 它结合了命令行界面和基于.NET框架构建的脚本语言。 与较旧的基于文本的命令行工具不同，PowerShell是面向对象的，这意味着它可以处理复杂的数据类型并更有效地与系统组件交互。 最初仅限Windows使用，PowerShell最近已扩展到支持macOS和Linux，使其成为跨不同操作系统的IT专业人员的多功能选择。 它结合了命令行界面和基于.NET框架构建的脚本语言。 与较旧的基于文本的命令行工具不同，PowerShell是面向对象的，这意味着它可以处理复杂的数据类型并更有效地与系统组件交互。 最初仅限Windows使用，PowerShell最近已扩展到支持macOS和Linux，使其成为跨不同操作系统的IT专业人员的多功能选择。
+PowerShell 是微软设计的一个强大工具，用于任务自动化和配置管理。 它结合了命令行界面和基于.NET框架构建的脚本语言。 与较旧的基于文本的命令行工具不同，PowerShell是面向对象的，这意味着它可以处理复杂的数据类型并更有效地与系统组件交互。 最初仅限Windows使用，PowerShell最近已扩展到支持macOS和Linux，使其成为跨不同操作系统的IT专业人员的多功能选择。
 
 ### PowerShell 简史
 
-PowerShell 的开发是为了克服 Windows 中现有命令行工具和脚本环境的局限性。 在 2000 年代初期，随着 Windows 在复杂的企业环境中日益使用，像 `cmd.exe` 和批处理文件这样的传统工具在自动化和管理这些系统方面表现不足。 微软需要一个能够处理更复杂管理任务并与 Windows 现代 API 交互的工具。 在21世纪初，随着Windows在复杂企业环境中的使用日益增多，像`cmd.exe`和批处理文件这样的传统工具在自动化和管理这些系统方面显得不足。 微软需要一个能够处理更复杂管理任务并与Windows现代API交互的工具。 在21世纪初，随着Windows在复杂企业环境中的使用日益增多，像`cmd.exe`和批处理文件这样的传统工具在自动化和管理这些系统方面显得不足。 微软需要一个能够处理更复杂管理任务并与Windows现代API交互的工具。
+PowerShell 的开发是为了克服 Windows 中现有命令行工具和脚本环境的局限性。 在21世纪初，随着Windows在复杂企业环境中的使用日益增多，像`cmd.exe`和批处理文件这样的传统工具在自动化和管理这些系统方面显得不足。 微软需要一个能够处理更复杂管理任务并与Windows现代API交互的工具。
 
 微软工程师Jeffrey Snover意识到Windows和Unix处理系统操作的方式不同——Windows使用结构化数据和API，而Unix将所有内容视为文本文件。 这种差异使得将Unix工具移植到Windows不切实际。 Snover的解决方案是开发一种面向对象的方法，将脚本编写的简单性与.NET框架的强大功能相结合。 PowerShell于2006年发布，通过操作对象，使管理员能够更有效地自动化任务，提供与Windows系统的更深层次集成。
 
-随着IT环境发展到包括各种操作系统，对多功能自动化工具的需求日益增长。 随着 IT 环境演变为包括各种操作系统，对通用自动化工具的需求增长。 2016 年，微软通过发布 PowerShell Core 做出回应，这是一个开源且跨平台的版本，可在 Windows、macOS 和 Linux 上运行。
+随着IT环境发展到包括各种操作系统，对多功能自动化工具的需求日益增长。 2016 年，微软通过发布 PowerShell Core 做出回应，这是一个开源且跨平台的版本，可在 Windows、macOS 和 Linux 上运行。
 
 ### PowerShell 中的力量
 
 要完全掌握 PowerShell 的力量，我们首先需要理解在此上下文中什么是**对象**。
 
-在编程中，**对象**代表具有**属性**（特征）和**方法**（动作）的项。 在编程中，**对象**代表具有**属性**（特征）和**方法**（动作）的项。 例如，一个 `car` 对象可能具有像 `Color`、`Model` 和 `FuelLevel` 这样的属性，以及像 `Drive()`、`HonkHorn()` 和 `Refuel()` 这样的方法。 在编程中，**对象**代表具有**属性**（特征）和**方法**（动作）的项。 例如，一个 `car` 对象可能具有像 `Color`、`Model` 和 `FuelLevel` 这样的属性，以及像 `Drive()`、`HonkHorn()` 和 `Refuel()` 这样的方法。
+在编程中，**对象**代表具有**属性**（特征）和**方法**（动作）的项。 例如，一个 `car` 对象可能具有像 `Color`、`Model` 和 `FuelLevel` 这样的属性，以及像 `Drive()`、`HonkHorn()` 和 `Refuel()` 这样的方法。
 
-类似地，在 PowerShell 中，对象是封装数据和功能的基本单元，使得管理和操作信息更容易。 PowerShell 中的对象可以包含文件名、用户名或大小作为数据（**属性**），并携带函数（**方法**），例如复制文件或停止进程。 类似地，在 PowerShell 中，对象是封装数据和功能的基本单元，使得管理和操作信息更容易。 PowerShell 中的对象可以包含文件名、用户名或大小作为数据（**属性**），并携带函数（**方法**），例如复制文件或停止进程。 PowerShell中的对象可以包含文件名、用户名或大小作为数据（**属性**），并携带函数（**方法**），例如复制文件或停止进程。
+类似地，在 PowerShell 中，对象是封装数据和功能的基本单元，使得管理和操作信息更容易。 PowerShell中的对象可以包含文件名、用户名或大小作为数据（**属性**），并携带函数（**方法**），例如复制文件或停止进程。
 
-传统命令 shell 的基本命令是基于文本的，这意味着它们以纯文本形式处理和输出数据。 相反，当在 PowerShell 中运行 **cmdlet**（发音为 command-let）时，它返回保留其属性和方法的对象。 这允许更强大和灵活的数据操作，因为这些对象不需要额外的文本解析。 相反，当在PowerShell中运行**cmdlet**（发音为command-let）时，它会返回保留其属性和方法的对象。 这允许更强大和灵活的数据操作，因为这些对象不需要额外的文本解析。
+传统命令 shell 的基本命令是基于文本的，这意味着它们以纯文本形式处理和输出数据。 相反，当在PowerShell中运行**cmdlet**（发音为command-let）时，它会返回保留其属性和方法的对象。 这允许更强大和灵活的数据操作，因为这些对象不需要额外的文本解析。
 
 我们将在接下来的部分中探索更多关于 PowerShell 的 cmdlet 及其功能。
 
@@ -79,7 +79,7 @@ object-oriented
 
 ### 启动 PowerShell
 
-PowerShell 可以通过几种方式启动，具体取决于你的需求和环境。 如果你从图形界面（GUI）在 Windows 系统上工作，这些是启动它的一些可能方式： PowerShell 可以通过几种方式启动，具体取决于你的需求和环境。 如果你从图形界面（GUI）在 Windows 系统上工作，这些是启动它的一些可能方式： 如果您从图形界面（GUI）在Windows系统上工作，以下是启动它的一些可能方式：
+PowerShell 可以通过几种方式启动，具体取决于你的需求和环境。 如果你从图形界面（GUI）在 Windows 系统上工作，这些是启动它的一些可能方式：
 
 - **开始菜单**：在 Windows 开始菜单搜索栏中输入 `powershell`，然后从结果中点击 `Windows PowerShell` 或 `PowerShell`。
 - **运行对话框**：按 `Win + R` 打开 `运行` 对话框，输入 `powershell`，然后按 `Enter`。
@@ -104,16 +104,16 @@ PowerShell 启动后，我们在当前工作目录中看到一个 `PS`（代表 
 
 ### 基本语法：动词-名词
 
-如前所述，PowerShell 命令被称为 `cmdlets`（发音为 `command-lets`）。 它们比传统的 Windows 命令强大得多，并允许更高级的数据操作。 如前所述，PowerShell 命令被称为 `cmdlets`（发音为 `command-lets`）。 它们比传统的 Windows 命令强大得多，并允许更高级的数据操作。 它们比传统的Windows命令强大得多，并允许更高级的数据操作。
+如前所述，PowerShell 命令被称为 `cmdlets`（发音为 `command-lets`）。 它们比传统的 Windows 命令强大得多，并允许更高级的数据操作。 它们比传统的Windows命令强大得多，并允许更高级的数据操作。
 
-Cmdlets 遵循一致的 `动词-名词` 命名约定。 这种结构使得理解每个 cmdlet 的作用变得容易。 `动词` 描述动作，`名词` 指定执行动作的对象。 例如： 这种结构使得理解每个cmdlet的功能变得容易。 `Verb`描述动作，而`Noun`指定执行动作的对象。 例如： 这种结构使得理解每个cmdlet的功能变得容易。 `Verb`描述动作，而`Noun`指定执行动作的对象。 例如：
+Cmdlets 遵循一致的 `动词-名词` 命名约定。 这种结构使得理解每个cmdlet的功能变得容易。 `Verb`描述动作，而`Noun`指定执行动作的对象。 例如：
 
 - `Get-Content`：检索（获取）文件的内容并在控制台中显示。
 - `Set-Location`：更改（设置）当前工作目录。
 
 ### 基本 Cmdlets
 
-要列出当前 PowerShell 会话中所有可执行的 cmdlet、函数、别名和脚本，我们可以使用 `Get-Command`。 它是发现可以使用哪些命令的基本工具。 它是发现可以使用哪些命令的基本工具。 它是发现可以使用哪些命令的基本工具。
+要列出当前 PowerShell 会话中所有可执行的 cmdlet、函数、别名和脚本，我们可以使用 `Get-Command`。 它是发现可以使用哪些命令的基本工具。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Get-Command
@@ -135,7 +135,7 @@ Cmdlet          Add-AppxVolume                                     2.0.1.0    Ap
 [...]
 ```
 
-对于 cmdlet 检索的每个 `CommandInfo` 对象，一些基本信息（属性）显示在控制台上。 可以根据显示的属性值过滤命令列表。 例如，如果我们只想显示类型为“function”的可用命令，我们可以使用 `-CommandType "Function"`，如下所示： 可以根据显示的属性值过滤命令列表。 例如，如果我们只想显示类型为“function”的可用命令，我们可以使用`-CommandType "Function"`，如下所示：
+对于 cmdlet 检索的每个 `CommandInfo` 对象，一些基本信息（属性）显示在控制台上。 可以根据显示的属性值过滤命令列表。 例如，如果我们只想显示类型为“function”的可用命令，我们可以使用`-CommandType "Function"`，如下所示：
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Get-Command -CommandType "Function"
@@ -151,7 +151,7 @@ Function        Add-DnsClientNrptRule                              1.0.0.0    Dn
 
 我们将在后续任务中学习更高效地筛选cmdlet输出的方法。
 
-我们工具箱中另一个必不可少的cmdlet是`Get-Help`：它提供有关cmdlet的详细信息，包括用法、参数和示例。 这是学习如何使用PowerShell命令的首选cmdlet。 我们工具箱中另一个必不可少的cmdlet是`Get-Help`：它提供有关cmdlet的详细信息，包括用法、参数和示例。 这是学习如何使用PowerShell命令的首选cmdlet。 它是学习如何使用PowerShell命令的首选cmdlet。
+我们工具箱中另一个必不可少的cmdlet是`Get-Help`：它提供有关cmdlet的详细信息，包括用法、参数和示例。 这是学习如何使用PowerShell命令的首选cmdlet。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Get-Help Get-Date
@@ -189,9 +189,9 @@ REMARKS
     For online help, type: "get-help Get-Date -online".
 ```
 
-如上所示，`Get-Help`告知我们可以通过在基本语法后附加一些选项来获取有关cmdlet的其他有用信息。 例如，通过在上方显示的命令后附加`-examples`，我们将看到所选cmdlet的常用用法列表。 例如，通过将`-examples`附加到上面显示的命令，我们将看到所选cmdlet可以使用的常见方式列表。 例如，通过将`-examples`附加到上面显示的命令，我们将看到所选cmdlet可以使用的常见方式列表。
+如上所示，`Get-Help`告知我们可以通过在基本语法后附加一些选项来获取有关cmdlet的其他有用信息。 例如，通过将`-examples`附加到上面显示的命令，我们将看到所选cmdlet可以使用的常见方式列表。
 
-为了让IT专业人员更容易过渡，PowerShell包含了许多传统Windows命令的别名——即cmdlet的快捷方式或替代名称。 对于已经熟悉其他命令行工具的用户来说，`Get-Alias`列出了所有可用的别名，这是必不可少的。 例如，`dir`是`Get-ChildItem`的别名，`cd`是`Set-Location`的别名。 对于已经熟悉其他命令行工具的用户来说，`Get-Alias`列出了所有可用的别名。 例如，`dir`是`Get-ChildItem`的别名，`cd`是`Set-Location`的别名。
+为了让IT专业人员更容易过渡，PowerShell包含了许多传统Windows命令的别名——即cmdlet的快捷方式或替代名称。 对于已熟悉其他命令行工具的用户来说，`Get-Alias` 是必不可少的，它列出了所有可用的别名。 例如，`dir`是`Get-ChildItem`的别名，`cd`是`Set-Location`的别名。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Get-Alias
@@ -211,13 +211,13 @@ Alias           clear -> Clear-Host
 [...]
 ```
 
-### 在哪里查找和下载Cmdlet
+### 在哪里查找和下载Cmdlets
 
 PowerShell的另一个强大功能是通过从在线存储库下载额外的cmdlet来扩展其功能。
 
 **注意**：请注意，本节列出的cmdlet需要有效的互联网连接来查询在线存储库。 附加的机器无法访问互联网，因此这些命令在此环境中无法工作。 附加的机器无法访问互联网，因此这些命令在此环境中无法工作。 附加的机器无法访问互联网，因此这些命令在此环境中无法工作。
 
-要在PowerShell Gallery等在线存储库中搜索模块（cmdlet集合），我们可以使用`Find-Module`。 有时，如果我们不知道模块的确切名称，搜索具有相似名称的模块会很有用。 我们可以通过过滤`Name`属性并在模块的部分名称后附加通配符（`*`）来实现这一点，使用以下标准PowerShell语法：`Cmdlet -Property "pattern*"`。 有时，如果我们不知道模块的确切名称，搜索具有相似名称的模块可能很有用。 我们可以通过过滤`Name`属性并在模块的部分名称后附加通配符（`*`）来实现这一点，使用以下标准PowerShell语法：`Cmdlet -Property "pattern*"`。 有时，如果我们不知道模块的确切名称，搜索具有相似名称的模块可能很有用。 我们可以通过过滤`Name`属性并在模块的部分名称后附加通配符（`*`）来实现这一点，使用以下标准PowerShell语法：`Cmdlet -Property "pattern*"`。
+要在PowerShell Gallery等在线存储库中搜索模块（cmdlet集合），我们可以使用`Find-Module`。 有时，如果我们不知道模块的确切名称，搜索具有相似名称的模块可能很有用。 我们可以通过过滤`Name`属性并在模块的部分名称后附加通配符（`*`）来实现这一点，使用以下标准PowerShell语法：`Cmdlet -Property "pattern*"`。
 
 ```powershell title="Terminal"
 PS C:\Users\captain> Find-Module -Name "PowerShell*"   
@@ -248,7 +248,7 @@ You are installing the modules from an untrusted repository. If you trust this r
 
 <details>
 
-<summary> 如何检索以动词`Remove`**开头**的命令列表？ [为了这个问题，请避免在答案中使用引号（"或'）] </summary> [为了这个问题，避免在答案中使用引号（"或'）] </summary>
+<summary> 如何检索以动词`Remove`**开头**的命令列表？ [为了这个问题，避免在答案中使用引号（"或'）] </summary>
 
 ```plaintext
 Get-Command -Name Remove*
@@ -258,7 +258,7 @@ Get-Command -Name Remove*
 
 <details>
 
-<summary> 哪个cmdlet的传统对应别名是`echo`？ </summary> </summary>
+<summary> 哪个cmdlet的传统对应别名是`echo`？ </summary>
 
 ```plaintext
 Write-Output
@@ -268,7 +268,7 @@ Write-Output
 
 <details>
 
-<summary> 获取cmdlet `New-LocalUser`的一些示例用法的命令是什么？ </summary> </summary>
+<summary> 获取cmdlet `New-LocalUser`的一些示例用法的命令是什么？ </summary>
 
 ```plaintext
 Get-Help New-LocalUser -examples
