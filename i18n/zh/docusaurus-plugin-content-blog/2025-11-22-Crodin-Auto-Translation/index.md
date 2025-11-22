@@ -1,5 +1,5 @@
 ---
-slug: Crodin Auto Translation
+slug: Crodin 自动翻译
 title: 借助 Crowdin 实现自动化翻译流程
 authors: Randark
 tags: []
