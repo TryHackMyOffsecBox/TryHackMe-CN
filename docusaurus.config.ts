@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'TryHackMe-CN',
-  tagline: 'Dinosaurs are cool',
+  tagline: 'An easier way to learn the knowledge on TryHackMe',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -31,7 +31,7 @@ const config: Config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
+    defaultLocale: 'zh',
     locales: ['en', 'zh'],
     localeConfigs: {
       en: {
@@ -150,10 +150,23 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
     },
     prism: {
+      additionalLanguages: ['powershell', 'php', 'ini', 'json', 'java', 'csharp', 'bash'],
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
-    themes: ['@docusaurus/theme-live-codeblock'],
+    themes: ['@docusaurus/theme-live-codeblock', "@easyops-cn/docusaurus-search-local",
+      ({
+        hashed: true,
+        language: ["en", "zh"],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+      })],
+    plugins: [
+      [
+        "@gracefullight/docusaurus-plugin-cloudflare-analytics",
+        { token: "419208379f5c472a9afad0d3dc0396f9" },
+      ],
+    ],
   } satisfies Preset.ThemeConfig,
 };
 
