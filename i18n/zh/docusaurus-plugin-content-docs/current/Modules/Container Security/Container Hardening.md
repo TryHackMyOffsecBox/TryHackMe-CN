@@ -2,29 +2,29 @@
 sidebar_position: 5
 ---
 
-# Container Hardening
+# 容器加固
 
-## Task 1 Introduction
+## 任务 1 简介
 
-So far, this module has taught you the basics of Docker and the potential vulnerabilities associated with containers. This room will teach you the various ways of securing your containers.
+到目前为止，本模块已向您介绍了 Docker 的基础知识以及容器相关的潜在漏洞。 本房间将教您保护容器的各种方法。
 
-### Learning Objectives
+### 学习目标
 
-- Secure the Docker daemon to prevent unauthorised interaction.
-- Correctly assign privileges (capabilities) to containers.
-- Prevent faulty or malicious containers from exhausting a system.
-- Utilise security features such as Seccomp and AppArmor to define how your containers will behave with the operating system.
-- Practice good hygiene by reviewing Docker images for vulnerabilities - Implement frameworks and tooling that reviews your code for vulnerabilities.
+- 保护 Docker 守护进程，防止未经授权的交互。
+- 正确为容器分配权限（能力）。
+- 防止有缺陷或恶意的容器耗尽系统资源。
+- 利用 Seccomp 和 AppArmor 等安全功能来定义容器与操作系统的交互方式。
+- 通过审查 Docker 镜像中的漏洞来实践良好卫生习惯 - 实施审查代码漏洞的框架和工具。
 
-### Prerequisites
+### 先决条件
 
-In order for you to complete this room, it is essential that you are familiar with the various components of Docker. I highly recommend completing the [Intro to Docker](https://tryhackme.com/room/introtodockerk8pdqk) room before proceeding.
+为了完成本房间，您必须熟悉 Docker 的各个组件。 我强烈建议在继续之前完成 [Docker 简介](https://tryhackme.com/room/introtodockerk8pdqk) 房间。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Read the above before proceeding to the next task! </summary>
+<summary> 在继续下一个任务之前阅读以上内容！ </summary>
 
 ```plaintext
 No answer needed
@@ -34,23 +34,23 @@ No answer needed
 
 :::
 
-## Task 2 Protecting the Docker Daemon
+## 任务 2 保护 Docker 守护进程
 
-You may recall from the [Container Vulnerabilities](https://tryhackme.com/room/containervulnerabilitiesDG) room that the Docker daemon is responsible for processing requests such as managing containers and pulling or uploading images to a Docker registry. Docker can be managed remotely and is often done in CI (Continuous Integration) and CD (Continuous Development) pipelines. For example, pushing and running new code in a container on another host to check for errors.
+您可能还记得 [容器漏洞](https://tryhackme.com/room/containervulnerabilitiesDG) 房间中提到的，Docker 守护进程负责处理请求，例如管理容器以及向 Docker 注册表拉取或上传镜像。 Docker 可以远程管理，通常在 CI（持续集成）和 CD（持续开发）流水线中完成。 例如，在另一台主机的容器中推送和运行新代码以检查错误。
 
-If an attacker can interact with the Docker daemon, they can interact with the containers and images. For example, they launch their own (malicious) containers or gain access to containers running applications with sensitive information (such as databases).
+如果攻击者可以与 Docker 守护进程交互，他们就可以与容器和镜像交互。 例如，他们可以启动自己的（恶意）容器或访问运行包含敏感信息（如数据库）的应用程序的容器。
 
-The Docker daemon is not exposed to the network by default and must be manually configured. However, exposing the Docker daemon is a common practice (especially in cloud environments such as CI/CD pipelines).
+Docker 守护进程默认不暴露到网络，必须手动配置。 然而，暴露 Docker 守护进程是一种常见做法（尤其是在云环境如 CI/CD 流水线中）。
 
-Implementing secure communication and authentication methods such as those listed below are extremely important in preventing unauthorised access to the Docker daemon.
+实施安全通信和身份验证方法（如下所列）对于防止未经授权访问 Docker 守护进程极为重要。
 
 ### SSH
 
-Developers can interact with other devices running Docker using SSH authentication. To do so, Docker uses contexts which can be thought of as profiles. These profiles allow developers to save and swap between configurations for other devices. For example, a developer may have one context for a device with Docker for development and another context for a device with Docker for production.
+开发人员可以使用 SSH 身份验证与运行 Docker 的其他设备交互。 为此，Docker 使用上下文，可以将其视为配置文件。 这些配置文件允许开发人员保存和切换其他设备的配置。 例如，开发人员可能有一个用于开发 Docker 设备的上下文，另一个用于生产 Docker 设备的上下文。
 
-**Note**: You must have SSH access to the remote device, and your user account on the remote device must have permission to execute Docker commands.
+**注意**：您必须具有对远程设备的 SSH 访问权限，并且您在远程设备上的用户帐户必须具有执行 Docker 命令的权限。
 
-As the developer, you will need to create the Docker context on your device. Please see the code snippet below to create a context within Docker.
+作为开发人员，您需要在您的设备上创建 Docker 上下文。 请参阅下面的代码片段以在 Docker 中创建上下文。
 
 ```shell title="Creating a new Docker context"
 client@thm:~# docker context create
@@ -61,7 +61,7 @@ development-environment-host
 Successfully created context "development-environment-host"
 ```
 
-Once this has been completed, you can switch to this context, where all Docker-related commands will now be executed on the remote host.
+完成后，您可以切换到该上下文，所有与 Docker 相关的命令现在将在远程主机上执行。
 
 ```shell title="Using our newly created Docker context"
 cmnatic@thm:~# docker context use development-environment-host
@@ -69,49 +69,49 @@ cmnatic@thm:~# docker context use development-environment-host
 Current context is now "development-environment-host"
 ```
 
-To exit this context and, for example, use your own Docker engine, you can revert to "default" via `docker context use default`.
+要退出此上下文并，例如，使用您自己的 Docker 引擎，您可以通过 `docker context use default` 恢复到 "default"。
 
-**Note**: This is not entirely secure. For example, a weak SSH password can lead to an attacker being able to authenticate. Strong password hygiene is strongly recommended. Some tips for a strong password have been included below:
+**注意**：这并不完全安全。 例如，弱 SSH 密码可能导致攻击者能够进行身份验证。 强烈建议使用强密码卫生。 以下包含了一些强密码的技巧：
 
-- A high amount of characters (i.e. 12-22+)
-- Special characters such as !, @, #, $
-- Capital letters and numbers placed sporadically throughout (i.e. sUp3rseCreT!PaSSw0rd!)
+- 大量字符（即 12-22+）
+- 特殊字符，如 !、@、#、$
+- 大写字母和数字随机分布（例如 sUp3rseCreT!PaSSw0rd!）
 
-Docker contexts allow you to interact with the Docker daemon directly over SSH, which is a secure and encrypted way of communication.
+Docker 上下文允许您通过 SSH 直接与 Docker 守护进程交互，这是一种安全且加密的通信方式。
 
-### TLS Encryption
+### TLS 加密
 
-The Docker daemon can also be interacted with using HTTP/S. This is useful if, for example, a web service or application is going to interact with Docker on a remote device.
+Docker 守护进程也可以使用 HTTP/S 进行交互。 例如，如果 Web 服务或应用程序要与远程设备上的 Docker 交互，这很有用。
 
-To do this securely, we can take advantage of the cryptographic protocol TLS to encrypt the data sent between the devices. When configured in TLS mode, Docker will only accept remote commands from devices that have been signed against the device you wish to execute Docker commands remotely.
+为了安全地执行此操作，我们可以利用加密协议 TLS 来加密设备之间发送的数据。 当配置为 TLS 模式时，Docker 将仅接受来自已针对您希望远程执行 Docker 命令的设备进行签名的设备的远程命令。
 
-**Note**: Creating and managing TLS certificates is out-of-scope for this room, as you will often need to consider factors such as expiry date and strength of encryption for your environment. Once you have created your certificates, you can tell Docker to run in TLS mode with the generated certificate.
+**注意**：创建和管理 TLS 证书超出了本房间的范围，因为您通常需要考虑诸如过期日期和加密强度等因素。 创建证书后，您可以告诉 Docker 使用生成的证书在 TLS 模式下运行。
 
-On the host (server) that you are issuing the commands from:
+在您发出命令的主机（服务器）上：
 
 ```shell title="Running Docker in TLS mode"
 server@thm:~# dockerd --tlsverify --tlscacert=myca.pem --tlscert=myserver-cert.pem --tlskey=myserver-key.pem -H=0.0.0.0:2376
 ```
 
-On the host (client) that you are issuing the commands from:
+在您发出命令的主机（客户端）上：
 
 ```shell title="Telling Docker (local) to authenticate using TLS"
 client@thm:~# docker --tlsverify --tlscacert=myca.pem --tlscert=client-cert.pem --tlskey=client-key.pem -H=SERVERIP:2376 info
 ```
 
-**Note**: It is important to remember that this is not guaranteed to be secure. For example, anyone with a valid certificate and private key can be a "trusted" device. I have explained the arguments used in generating a TLS certificate and key in the table below:
+**注意**：重要的是要记住，这并不能保证安全。 例如，任何拥有有效证书和私钥的设备都可以成为 "受信任" 设备。 我在下表中解释了生成 TLS 证书和密钥时使用的参数：
 
-| Argument      | Description                                                                                                                                                                                              |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--tlscacert` | This argument specifies the certificate of the certificate authority. A certificate authority is a trusted entity that issues the certificates used to identify devices. |
-| `--tlscert`   | This argument specifies the certificate that is used to identify the device.                                                                                                             |
-| `--tlskey`    | This argument specifies the private key that is used to decrypt the communication sent to the device.                                                                                    |
+| 参数            | 描述                                      |
+| :------------ | :-------------------------------------- |
+| `--tlscacert` | 此参数指定证书颁发机构的证书。 证书颁发机构是颁发用于识别设备证书的可信实体。 |
+| `--tlscert`   | 此参数指定用于识别设备的证书。                         |
+| `--tlskey`    | 此参数指定用于解密发送到设备的通信的私钥。                   |
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What would the command be if we wanted to create a Docker profile? </summary>
+<summary> 如果我们想创建一个 Docker 配置文件，命令会是什么？ </summary>
 
 ```plaintext
 docker context create
@@ -121,7 +121,7 @@ docker context create
 
 <details>
 
-<summary> What would the command be if we wanted to switch to a Docker profile? </summary>
+<summary> 如果我们想切换到 Docker 配置文件，命令会是什么？ </summary>
 
 ```plaintext
 docker context use
@@ -131,24 +131,24 @@ docker context use
 
 :::
 
-## Task 3 Implementing Control Groups
+## 任务 3 实施控制组
 
-Control Groups (also known as cgroups) are a feature of the Linux kernel that facilitates restricting and prioritising the number of system resources a process can utilise.
+控制组（也称为 cgroups）是 Linux 内核的一个功能，有助于限制和优先化进程可以使用的系统资源数量。
 
-For example, a process such as an application can be restricted to only use a certain amount of RAM or processing power or given priority over other processes. This often improves system stability and allows administrators to track system resource use better.
+例如，可以限制应用程序等进程仅使用一定量的 RAM 或处理能力，或给予其相对于其他进程的优先级。 这通常提高了系统稳定性，并允许管理员更好地跟踪系统资源使用情况。
 
-In the context of Docker, implementing cgroups helps achieve isolation and stability. Because cgroups can be used to determine the number of (or prioritise) resources a container uses, this helps prevent faulty or malicious containers from exhausting a system. Of course, the best mechanism is preventing this from happening, but preventing a container from bringing down a whole system is an excellent second line of defence.
+在 Docker 的上下文中，实施 cgroups 有助于实现隔离和稳定性。 因为 cgroups 可用于确定容器使用的资源数量（或优先化），这有助于防止有缺陷或恶意的容器耗尽系统资源。 当然，最好的机制是防止这种情况发生，但防止容器拖垮整个系统是一个极好的第二道防线。
 
-This behaviour is not enabled by default on Docker and must be enabled per container when starting the container. The switches used to specify the limit of resources a container can use have been provided in the table below:
+此行为在 Docker 上默认未启用，必须在启动容器时为每个容器启用。 用于指定容器可以使用的资源限制的开关已在下表中提供：
 
-| Type of Resource | Argument                                                                         | Example                                     |
-| :--------------- | :------------------------------------------------------------------------------- | :------------------------------------------ |
-| CPU              | `--cpus` (in core count)                                      | `docker run -it --cpus="1" mycontainer`     |
-| Memory           | `--memory` (in k, m, g for kilobytes, megabytes or gigabytes) | `docker run -it --memory="20m" mycontainer` |
+| 资源类型 | 参数                                | 示例                                          |
+| :--- | :-------------------------------- | :------------------------------------------ |
+| CPU  | `--cpus`（以核心数计）                   | `docker run -it --cpus="1" mycontainer`     |
+| 内存   | `--memory`（以 k、m、g 表示千字节、兆字节或吉字节） | `docker run -it --memory="20m" mycontainer` |
 
-You can also update this setting once the container is running. To do so, use the `docker update` command, the new memory value, and the container name. For example: `docker update --memory="40m" mycontainer`.
+您也可以在容器运行后更新此设置。 为此，请使用 `docker update` 命令、新的内存值和容器名称。 例如：`docker update --memory="40m" mycontainer`。
 
-You can use the `docker inspect containername` command to view information about a container (including the resource limits set). If a resource limit is set to 0, this means that no resource limits have been set.
+您可以使用 `docker inspect 容器名` 命令查看有关容器的信息（包括设置的资源限制）。 如果资源限制设置为 0，则表示未设置任何资源限制。
 
 ```shell title="Using Docker inspect to list the resource limits set for a container."
 cmnatic@thm:~# docker inspect mycontainer
@@ -164,13 +164,13 @@ cmnatic@thm:~# docker inspect mycontainer
 --cropped for brevity--
 ```
 
-Docker uses namespaces to create isolated environments. For example, namespaces are a way of performing different actions without affecting other processes. Think of these as rooms in an office; each room serves its own individual purpose. What happens in a room in this office will not affect what happens in another office. These namespaces provide security by isolating processes from one another.
+Docker 使用命名空间创建隔离环境。 例如，命名空间是一种在不影响其他进程的情况下执行不同操作的方式。 可以将这些视为办公室中的房间；每个房间都有其各自的用途。 这个办公室中某个房间内发生的事情不会影响另一个办公室内发生的事情。 这些命名空间通过隔离进程来提供安全性。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What argument would we provide when running a Docker container to enforce how many CPU cores the container can utilise? </summary>
+<summary> 运行 Docker 容器时，我们应提供什么参数来强制限制容器可以使用的 CPU 核心数量？ </summary>
 
 ```plaintext
 --cpus
@@ -180,7 +180,7 @@ Docker uses namespaces to create isolated environments. For example, namespaces 
 
 <details>
 
-<summary> What would the command be if we wanted to inspect a docker container named "Apache"? </summary>
+<summary> 如果我们想要检查名为 "Apache" 的 docker 容器，命令是什么？ </summary>
 
 ```plaintext
 docker inspect apache
@@ -190,35 +190,35 @@ docker inspect apache
 
 :::
 
-## Task 4 Preventing "Over-Privileged" Containers
+## 任务 4 防止“过度特权”容器
 
-First, we need to understand what privileged containers are in this context. Privileged containers are containers that have unchecked access to the host.
+首先，我们需要了解在此上下文中特权容器是什么。 特权容器是对主机具有不受限制访问权限的容器。
 
-The entire point of containerisation is to "isolate" a container from the host. By running Docker containers in "privileged" mode, the normal security mechanisms to isolate a container from the host are bypassed. While privileged containers can have legitimate uses, for example, running Docker-In-Docker (a container within a container) or for debugging purposes, they are extremely dangerous.
+容器化的全部意义在于将容器与主机“隔离”。 通过在“特权”模式下运行 Docker 容器，用于将容器与主机隔离的正常安全机制会被绕过。 虽然特权容器可能有合法用途，例如运行 Docker-In-Docker（容器中的容器）或用于调试目的，但它们极其危险。
 
-When running a Docker container in “privileged” mode, Docker will assign all possible capabilities to the container, meaning the container can do and access anything on the host (such as filesystems).
+在“特权”模式下运行 Docker 容器时，Docker 会将所有可能的能力分配给容器，这意味着容器可以执行和访问主机上的任何内容（例如文件系统）。
 
-![depicting the level of access a non-privileged and privileged container has to the host](img/image_20251150-205019.png)
+![描述非特权容器和特权容器对主机的访问级别](img/image_20251150-205019.png)
 
-What are capabilities, I hear you ask? Capabilities are a security feature of Linux that determines what processes can and cannot do on a granular level. Traditionally, processes can either have full root privileges or no privileges at all, which can be dangerous as we may not want to allow a process to have full root privileges as it means it will have unrestricted access to the system.
+您可能会问，能力是什么？ 能力是 Linux 的一项安全功能，用于在细粒度级别上确定进程可以做什么和不可以做什么。 传统上，进程要么拥有完整的 root 权限，要么完全没有权限，这可能很危险，因为我们可能不希望允许进程拥有完整的 root 权限，因为这意味着它将拥有对系统的无限制访问权限。
 
-Capabilities allow us to fine-tune what privileges a process has. I have placed some standard capabilities in the table below, what privileges they translate to, and where they may be used:
+能力允许我们微调进程拥有的权限。 我在下表中放置了一些标准能力、它们对应的权限以及它们可能使用的地方：
 
-| Capability                                                                          | Description                                                                                                                                                                                                     | Use Case                                                                                                                                                                                                                  |
-| :---------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| CAP_NET_BIND_SERVICE | This capability allows services to bind to ports, specifically those under 1024, which usually requires root privileges.                                                                        | Allowing a web server to bind on port 80 without root access.                                                                                                                                             |
-| CAP_SYS_ADMIN                             | This capability provides a variety of administrative privileges, including being able to mount/unmount file systems, changing network settings, performing system reboots, shutdowns, and more. | You may find this capability in a process that automates administrative tasks. For example, modifying a user or starting/stopping a service.                                              |
-| CAP_SYS_RESOURCE                          | This capability allows a process to modify the maximum limit of resources available. For example, a process can use more memory or bandwidth.                                   | This capability can control the number of resources a process can consume on a granular level. This can be either increasing the amount of resources or reducing the amount of resources. |
+| 能力                                                                                  | 描述                                           | 用例                                          |
+| :---------------------------------------------------------------------------------- | :------------------------------------------- | :------------------------------------------ |
+| CAP_NET_BIND_SERVICE | 此能力允许服务绑定到端口，特别是 1024 以下的端口，这通常需要 root 权限。   | 允许 Web 服务器在没有 root 访问权限的情况下绑定到端口 80。        |
+| CAP_SYS_ADMIN                             | 此能力提供各种管理权限，包括能够挂载/卸载文件系统、更改网络设置、执行系统重启、关机等。 | 您可能会在自动化管理任务的进程中找到此能力。 例如，修改用户或启动/停止服务。     |
+| CAP_SYS_RESOURCE                          | 此能力允许进程修改可用资源的最大限制。 例如，进程可以使用更多内存或带宽。        | 此能力可以在细粒度级别上控制进程可以消耗的资源数量。 这可以是增加资源量或减少资源量。 |
 
-To summarise, privileged containers are containers assigned full privileges - i.e., full root access. Attackers can escape a container using this method. If you would like homework, this process has been demonstrated in the [Container Vulnerabilities](https://tryhackme.com/room/containervulnerabilitiesDG) room.
+总之，特权容器是被分配了完全权限（即完全 root 访问权限）的容器。 攻击者可以使用此方法逃逸容器。 如果您想进行课外学习，此过程已在 [容器漏洞](https://tryhackme.com/room/containervulnerabilitiesDG) 房间中演示。
 
-It's recommended assigning capabilities to containers individually rather than running containers with the `--privileged` flag (which will assign all capabilities). For example, you can assign the `NET_BIND_SERVICE` capability to a container running a web server on port 80 by including the `--cap-add=NET_BIND_SERVICE` when running the container.
+建议单独为容器分配能力，而不是使用 `--privileged` 标志运行容器（这将分配所有能力）。 例如，您可以通过在运行容器时包含 `--cap-add=NET_BIND_SERVICE` 来为在端口 80 上运行 Web 服务器的容器分配 `NET_BIND_SERVICE` 能力。
 
 ```shell title="Assigning the NET_BIND_SERVICE capability to a container"
 cmnatic@thm:~# docker run -it --rm --cap-drop=ALL --cap-add=NET_BIND_SERVICE mywebserver
 ```
 
-Finally, the command `capsh --print` can be used to determine what capabilities are assigned to a process.
+最后，可以使用命令 `capsh --print` 来确定分配给进程的能力。
 
 ```shell title="Using capsh to list the capabilities currently assigned"
 cmnatic@thm:~# capsh --print
@@ -240,13 +240,13 @@ gid=1000(cmnatic)
 groups=4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),1000(cmnatic)
 ```
 
-It is important to frequently review what capabilities are assigned to a container. When a container is privileged, it shares the same namespace as the host, meaning resources on the host can be accessed by the container - breaking the "isolated" environment.
+经常审查分配给容器的能力非常重要。 当容器具有特权时，它与主机共享相同的命名空间，这意味着主机上的资源可以被容器访问——破坏了“隔离”环境。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What is the name of the capability that allows services to bind to ports (specifically those under 1024)? </summary>
+<summary> 允许服务绑定到端口（特别是 1024 以下的端口）的能力名称是什么？ </summary>
 
 ```plaintext
 CAP_NET_BIND_SERVICE
@@ -256,7 +256,7 @@ CAP_NET_BIND_SERVICE
 
 <details>
 
-<summary> What argument would we provide when starting a Docker container to add a capability? </summary>
+<summary> 启动 Docker 容器时，我们应提供什么参数来添加能力？ </summary>
 
 ```plaintext
 --cap-add
@@ -266,7 +266,7 @@ CAP_NET_BIND_SERVICE
 
 <details>
 
-<summary> Finally, what command (with argument) would we use to print the capabilities assigned to a process? </summary>
+<summary> 最后，我们应使用什么命令（带参数）来打印分配给进程的能力？ </summary>
 
 ```plaintext
 capsh --print
@@ -276,13 +276,13 @@ capsh --print
 
 :::
 
-## Task 5 Seccomp & AppArmor 101
+## 任务 5 Seccomp 和 AppArmor 基础
 
-Seccomp is an important security feature of Linux that restricts the actions a program can and cannot do. To explain, picture a security guard at the entrance of an office. The security guard is responsible for making sure that only authorised people are allowed into the building and that they do what they are supposed to do. In this scenario, Seccomp is the security guard.
+Seccomp 是 Linux 的一项重要安全功能，用于限制程序可以执行和不可以执行的操作。 为了解释，想象一下办公室入口处的保安。 保安负责确保只有授权人员才能进入大楼，并且他们做他们应该做的事情。 在此场景中，Seccomp 就是保安。
 
-Seccomp allows you to create and enforce a list of rules of what actions (system calls) the application can make. For example, allowing the application to make a system call to read a file but not allowing it to make a system call to open a new network connection (such as a reverse shell).
+Seccomp 允许您创建并强制执行一系列规则，规定应用程序可以执行哪些操作（系统调用）。 例如，允许应用程序进行读取文件的系统调用，但不允许它进行打开新网络连接（例如反向 shell）的系统调用。
 
-These profiles are helpful because they reduce attackers' ability to execute malicious commands whilst maintaining the application's functionality. For example, a Seccomp profile for a web server may look like the following:
+这些配置文件很有用，因为它们减少了攻击者执行恶意命令的能力，同时保持了应用程序的功能。 例如，Web 服务器的 Seccomp 配置文件可能如下所示：
 
 ```json
 {
@@ -299,13 +299,13 @@ These profiles are helpful because they reduce attackers' ability to execute mal
 }
 ```
 
-This Seccomp profile:
+此 Seccomp 配置文件：
 
-- Allows files to be read and written to
-- Allows a network socket to be created
-- But does not allow execution (for example, `execve`)
+- 允许读取和写入文件
+- 允许创建网络套接字
+- 但不允许执行（例如，`execve`）
 
-To create a Seccomp profile, you can simply create a profile using your favourite text editor. This room will use `nano`. An example Seccomp profile (profile.json) has been provided below. This profile will allow reading and writing access to files but no network connections.
+要创建 Seccomp 配置文件，您只需使用您喜欢的文本编辑器创建配置文件。 本房间将使用 `nano`。 下面提供了一个示例 Seccomp 配置文件 (profile.json)。 此配置文件将允许对文件的读取和写入访问，但不允许网络连接。
 
 ```json
 {
@@ -351,19 +351,19 @@ To create a Seccomp profile, you can simply create a profile using your favourit
 }
 ```
 
-With our Seccomp profile now created, we can apply it to our container at runtime by using the `--security-opt seccomp` flag with the location of the Seccomp profile. For example:
+现在我们的 Seccomp 配置文件已创建，我们可以在运行时通过使用 `--security-opt seccomp` 标志和 Seccomp 配置文件的位置将其应用到我们的容器。 例如：
 
 ```shell title="Applying our Seccomp profile when running a container"
 cmnatic@thm:~# docker run --rm -it --security-opt seccomp=/home/cmnatic/container1/seccomp/profile.json mycontainer
 ```
 
-Docker already applies a default Seccomp profile at runtime. However, this may not be suitable for your specific use case, especially if you wish to harden the container further while maintaining functionality. You can learn more about using Seccomp with Docker [here](https://docs.docker.com/engine/security/seccomp/#:~:text=Secure%20computing%20mode%20\(%20seccomp%20\)%20is,state%20of%20the%20calling%20process.).
+Docker 在运行时已经应用了默认的 Seccomp 配置文件。 但是，这可能不适合您的特定用例，特别是如果您希望在保持功能的同时进一步加固容器。 您可以在[此处](https://docs.docker.com/engine/security/seccomp/#:~:text=Secure%20computing%20mode%20\(%20seccomp%20\)%20是,state%20of%20the%20calling%20process.)了解更多关于在Docker中使用Seccomp的信息。
 
 ### AppArmor
 
-AppArmor is a similar security feature in Linux because it prevents applications from performing unauthorised actions. However, it works differently from Seccomp because it is not included in the application but in the operating system.
+AppArmor是Linux中类似的安全功能，因为它防止应用程序执行未经授权的操作。 然而，它与Seccomp的工作方式不同，因为它不包含在应用程序中，而是包含在操作系统中。
 
-This mechanism is a Mandatory Access Control (MAC) system that determines the actions a process can execute based on a set of rules at the operating system level. To use AppArmor, we first need to ensure that it is installed on our system:
+该机制是一种强制访问控制（MAC）系统，根据操作系统级别的一组规则确定进程可以执行的操作。 要使用AppArmor，我们首先需要确保它已安装在我们的系统上：
 
 ```shell title="Checking if AppArmor is installed or not"
 cmnatic@thm:~# sudo aa-status
@@ -371,20 +371,20 @@ apparmor module is loaded.
 34 profiles are loaded.
 ```
 
-With the output "apparmor module is loaded", we can confirm that AppArmor is installed and enabled. To apply an AppArmor profile to our container, we need to do the following:
+通过输出"apparmor module is loaded"，我们可以确认AppArmor已安装并启用。 要将AppArmor配置文件应用于我们的容器，我们需要执行以下操作：
 
-- Create an AppArmor profile
-- Load the profile into AppArmor
-- Run our container with the new profile
+- 创建AppArmor配置文件
+- 将配置文件加载到AppArmor中
+- 使用新配置文件运行我们的容器
 
-First, let's create our AppArmor profile. You can use your favourite text editor for this. Note that there are tools out there that can help generate AppArmor profiles based on your Dockerfile. However, this is out-of-scope for this room and can be "unreliable".
+首先，让我们创建我们的AppArmor配置文件。 您可以使用您喜欢的文本编辑器进行此操作。 请注意，有一些工具可以根据您的Dockerfile帮助生成AppArmor配置文件。 然而，这超出了本房间的范围，并且可能"不可靠"。
 
-Provided below is an example AppArmor profile (profile.json) for an "Apache" web server that:
+下面提供了一个"Apache"Web服务器的示例AppArmor配置文件（profile.json），该文件：
 
-- Can read files located in /var/www/, /etc/apache2/mime.types and /run/apache2.
-- Read & write to /var/log/apache2.
-- Bind to a TCP socket for port 80 but not other ports or protocols such as UDP.
-- Cannot read from directories such as /bin, /lib, /usr.
+- 可以读取位于/var/www/、/etc/apache2/mime.types和/run/apache2中的文件。
+- 读取和写入/var/log/apache2。
+- 绑定到端口80的TCP套接字，但不绑定到其他端口或协议，如UDP。
+- 无法从/bin、/lib、/usr等目录读取。
 
 ```plaintext
 /usr/sbin/httpd {
@@ -417,34 +417,34 @@ Provided below is an example AppArmor profile (profile.json) for an "Apache" web
 }
 ```
 
-Now that we have created the AppArmor profile, we will need to import this into the AppArmor program to be recognised.
+现在我们已经创建了AppArmor配置文件，我们需要将其导入到AppArmor程序中以被识别。
 
 ```shell title="Importing our AppArmor profile into AppArmor"
 cmnatic@thm:~# sudo apparmor_parser -r -W /home/cmnatic/container1/apparmor/profile.json
 ```
 
-With our AppArmor profile now imported, we can apply it to our container at runtime by using the `--security-opt apparmor` flag with the location of the AppArmor profile. For example:
+现在我们的AppArmor配置文件已导入，我们可以使用`--security-opt apparmor`标志和AppArmor配置文件的位置在运行时将其应用于我们的容器。 例如：
 
 ```shell title="Applying our AppArmor profile when running a container"
 cmnatic@thm:~# docker run --rm -it --security-opt apparmor=/home/cmnatic/container1/apparmor/profile.json mycontainer
 ```
 
-Just like Seccomp, Docker already applies a default AppArmor profile at runtime. However, this may not be suitable for your specific use case, especially if you wish to harden the container further while maintaining functionality. You can learn more about using AppArmor with Docker [here](https://docs.docker.com/engine/security/apparmor/).
+就像Seccomp一样，Docker在运行时已经应用了默认的AppArmor配置文件。 然而，这可能不适合您的特定用例，特别是如果您希望在保持功能的同时进一步加固容器。 您可以在[此处](https://docs.docker.com/engine/security/apparmor/)了解更多关于在Docker中使用AppArmor的信息。
 
-### What's the Difference
+### 有什么区别
 
-Well, to put it briefly:
+嗯，简而言之：
 
-- AppArmor determines what resources an application can access (i.e., CPU, RAM, Network interface, filesystem, etc) and what actions it can take on those resources.
-- Seccomp is within the program itself, which restricts what system calls the process can make (i.e. what parts of the CPU and operating system functions).
+- AppArmor确定应用程序可以访问哪些资源（即CPU、RAM、网络接口、文件系统等）以及它可以对这些资源执行哪些操作。
+- Seccomp在程序本身内部，限制进程可以进行的系统调用（即CPU和操作系统功能的哪些部分）。
 
-It's important to note that it is not a "one or the other" case. Seccomp and AppArmor can be combined to create layers of security for a container.
+需要注意的是，这不是一个"非此即彼"的情况。 Seccomp和AppArmor可以结合使用，为容器创建多层安全防护。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> If we wanted to enforce the container to only be able to read files located in /home/tryhackme, what type of profile would we use? Seccomp or AppArmor? </summary>
+<summary> 如果我们想强制容器只能读取位于/home/tryhackme中的文件，我们会使用哪种类型的配置文件？ Seccomp还是AppArmor？ </summary>
 
 ```plaintext
 AppArmor
@@ -454,7 +454,7 @@ AppArmor
 
 <details>
 
-<summary> If we wanted to disallow the container from a system call (such as clock_adjtime), what type of profile would we use? Seccomp or AppArmor? </summary>
+<summary> 如果我们想禁止容器进行系统调用（如clock_adjtime），我们会使用哪种类型的配置文件？ Seccomp还是AppArmor？ </summary>
 
 ```plaintext
 Seccomp
@@ -464,7 +464,7 @@ Seccomp
 
 <details>
 
-<summary> Finally, what command would we use if we wanted to list the status of AppArmor? </summary>
+<summary> 最后，如果我们想列出AppArmor的状态，我们会使用什么命令？ </summary>
 
 ```plaintext
 aa-status
@@ -474,31 +474,31 @@ aa-status
 
 :::
 
-## Task 6 Reviewing Docker Images
+## 任务6 审查Docker镜像
 
-Reviewing Docker images is an extremely important habit to practice. You would be wary of running unknown code on your device, so why would you consider running it in a production environment?
+审查Docker镜像是一个极其重要的习惯。 您会对在设备上运行未知代码保持警惕，那么为什么会在生产环境中考虑运行它呢？
 
-Unfortunately, there are numerous examples of malicious Docker images causing havoc. For instance, in 2020, Palo Alto discovered [cryptomining Docker images](https://unit42.paloaltonetworks.com/cryptojacking-docker-images-for-mining-monero/) that were pulled (and presumably ran) over two million times.
+不幸的是，有许多恶意Docker镜像造成破坏的例子。 例如，在2020年，Palo Alto发现了[加密货币挖矿Docker镜像](https://unit42.paloaltonetworks.com/cryptojacking-docker-images-for-mining-monero/)，这些镜像被拉取（并且可能运行）超过两百万次。
 
-Images on Docker Hub often come with the Dockerfiles attached to the repository. For example, the Docker Hub displays the layers (therefore the commands executed) of the Dockerfile.
+Docker Hub上的镜像通常附带存储库中的Dockerfiles。 例如，Docker Hub显示Dockerfile的层（因此是执行的命令）。
 
-![depicting the layers of an image on DockerHub.](img/image_20251113-211318.png)
+![描述DockerHub上镜像的层。](img/image_20251113-211318.png)
 
-In the image above, we can see the various layers of the image on DockerHub. These layers are the steps that are executed during the building process of the image.
+在上图中，我们可以看到DockerHub上镜像的各个层。 这些层是镜像构建过程中执行的步骤。
 
-Additionally, open-source code repositories for images on the Docker Hub will often be included, allowing you to review the entire Dockerfile.
+此外，Docker Hub上镜像的开源代码存储库通常会包含在内，允许您审查整个Dockerfile。
 
-![depicting the Dockerfile of an image stored in the code repository of the application.](img/image_20251113-211358.png)
+![描述存储在应用程序代码存储库中的镜像的Dockerfile。](img/image_20251113-211358.png)
 
-In the image above, we can see the code for the Dockerfile. This allows us to audit the code and understand precisely what actions are being executed in the container. By analysing the code, we can check for vulnerabilities or malicious actions.
+在上图中，我们可以看到Dockerfile的代码。 这使我们能够审计代码并准确理解容器中正在执行的操作。 通过分析代码，我们可以检查漏洞或恶意操作。
 
-Tools such as [Dive](https://github.com/wagoodman/dive) allow you to reverse engineer Docker images by inspecting what is executed and changed at each layer of the image during the build process.
+诸如[Dive](https://github.com/wagoodman/dive)之类的工具允许您通过检查镜像构建过程中每一层执行和更改的内容来逆向工程Docker镜像。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> I understand how I can review both Dockerfiles and Docker images! Complete me to proceed to the next task. </summary>
+<summary> 我了解如何审查Dockerfiles和Docker镜像！ 完成我以继续下一个任务。 </summary>
 
 ```plaintext
 No answer needed
@@ -508,28 +508,28 @@ No answer needed
 
 :::
 
-## Task 7 Compliance & Benchmarking
+## 任务7 合规性与基准测试
 
-Compliance and benchmarking play vital roles in securing assets - let alone containers. Let us begin by explaining compliance. Compliance is the process of following regulations and standards such as the NIST SP 800-190, a set of standards from the National Institute of Standards and Technology that gives guidance and best practices on container security:
+合规性和基准测试在保护资产安全方面起着至关重要的作用——更不用说容器了。 让我们从解释合规性开始。 合规性是遵循法规和标准的过程，例如NIST SP 800-190，这是国家标准与技术研究院制定的一套标准，为容器安全提供指导和最佳实践：
 
-| Compliance Framework | Description                                                                                                                                                                                                  | URL                                                                                                                                                                      |
-| :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| NIST SP 800-190      | This framework outlines the potential security concerns associated with containers and provides recommendations for addressing these concerns.                                               | [https://csrc.nist.gov/publications/detail/sp/800-190/final](https://csrc.nist.gov/publications/detail/sp/800-190/final) |
-| ISO 27001            | This framework is an international standard for information security. The standard guides implementing, maintaining and improving an information security management system. | [https://www.iso.org/standard/27001](https://www.iso.org/standard/27001)                                                 |
+| 合规框架            | 描述                                    | URL                                                                                                                                                                      |
+| :-------------- | :------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| NIST SP 800-190 | 该框架概述了与容器相关的潜在安全问题，并提供了解决这些问题的建议。     | [https://csrc.nist.gov/publications/detail/sp/800-190/final](https://csrc.nist.gov/publications/detail/sp/800-190/final) |
+| ISO 27001       | 该框架是信息安全的国际标准。 该标准指导实施、维护和改进信息安全管理体系。 | [https://www.iso.org/standard/27001](https://www.iso.org/standard/27001)                                                 |
 
-Please note that you may have to adhere to additional frameworks relevant to your Industry. For example, financial or medical. Regulations exist in all industries. For example, in the medical field, the HIPPA for handling medical data.
+请注意，您可能需要遵守与您行业相关的其他框架。 例如，金融或医疗。 所有行业都存在法规。 例如，在医疗领域，HIPPA用于处理医疗数据。
 
-Benchmarking, on the other hand, is a process used to see how well an organisation is adhering to best practices. Benchmarking allows an organisation to see where they are following best practices well and where further improvements are needed:
+另一方面，基准测试是一个用于查看组织遵循最佳实践情况的过程。 基准测试允许组织查看他们在哪些方面很好地遵循了最佳实践，以及哪些方面需要进一步改进：
 
-| Benchmarking Tool    | Description                                                                                                                                                                                                                               | URL                                                                                                                                        |
-| :------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| CIS Docker Benchmark | This tool can assess a container's compliance with the CIS Docker Benchmark framework.                                                                                                                                    | [https://www.cisecurity.org/benchmark/docker](https://www.cisecurity.org/benchmark/docker) |
-| OpenSCAP             | This tool can assess a container's compliance with multiple frameworks, including CIS Docker Benchmark, NIST SP-800-190 and more.                                                                                         | [https://www.open-scap.org/](https://www.open-scap.org/)                                   |
-| Docker Scout         | This tool is a cloud-based service provided by Docker itself that scans Docker images and libraries for vulnerabilities. This tool lists the vulnerabilities present and provides steps to resolve these. | [https://docs.docker.com/scout/](https://docs.docker.com/scout/)                           |
-| Anchore              | This tool can assess a container's compliance with multiple frameworks, including CIS Docker Benchmark, NIST SP-800-190 and more.                                                                                         | [https://github.com/anchore/anchore-engine](https://github.com/anchore/anchore-engine)                     |
-| Grype                | This tool is a modern and fast vulnerability scanner for Docker images                                                                                                                                                                    | [https://github.com/anchore/grype](https://github.com/anchore/grype)                                       |
+| 基准测试工具        | 描述                                                                   | URL                                                                                                                                        |
+| :------------ | :------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| CIS Docker 基准 | 该工具可以评估容器是否符合 CIS Docker 基准框架。                                       | [https://www.cisecurity.org/benchmark/docker](https://www.cisecurity.org/benchmark/docker) |
+| OpenSCAP      | 该工具可以评估容器是否符合多个框架，包括 CIS Docker 基准、NIST SP-800-190 等。                | [https://www.open-scap.org/](https://www.open-scap.org/)                                   |
+| Docker Scout  | 该工具是 Docker 本身提供的基于云的服务，可扫描 Docker 镜像和库中的漏洞。 该工具列出存在的漏洞并提供解决这些漏洞的步骤。 | [https://docs.docker.com/scout/](https://docs.docker.com/scout/)                           |
+| Anchore       | 该工具可以评估容器是否符合多个框架，包括 CIS Docker 基准、NIST SP-800-190 等。                | [https://github.com/anchore/anchore-engine](https://github.com/anchore/anchore-engine)                     |
+| Grype         | 该工具是一种现代且快速的 Docker 镜像漏洞扫描器                                          | [https://github.com/anchore/grype](https://github.com/anchore/grype)                                       |
 
-An example of using the Docker Scout tool to analyse a Docker image has been provided in the terminal below. Please note this will need to be [installed](https://github.com/docker/scout-cli) beforehand. You can read the [Docker Scout](https://docs.docker.com/scout/) documentation to learn more.
+下面终端中提供了一个使用 Docker Scout 工具分析 Docker 镜像的示例。 请注意，这需要事先[安装](https://github.com/docker/scout-cli)。 您可以阅读 [Docker Scout](https://docs.docker.com/scout/) 文档以了解更多信息。
 
 ```shell title="Using Docker Scout to scan our "nginx" image for vulnerabilities"
 cmnatic@thm:~# docker scout cves local://nginx:latest
@@ -585,11 +585,11 @@ pkg:deb/ubuntu/glibc@2.35-0ubuntu3.1?os_distro=jammy&os_name=ubuntu&os_version=2
       CVSS Vector    : CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H
 ```
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What is the name of the framework published by the National Institute of Standards and Technology?<br />For this answer, be sure to include the full name. </summary>
+<summary> 美国国家标准与技术研究院发布的框架名称是什么？<br />对于此答案，请务必包含全名。 </summary>
 
 ```plaintext
 NIST SP 800-190
@@ -599,7 +599,7 @@ NIST SP 800-190
 
 <details>
 
-<summary> What is the name of the analysis tool provided by Docker? </summary>
+<summary> Docker 提供的分析工具名称是什么？ </summary>
 
 ```plaintext
 Docker Scout
@@ -609,24 +609,24 @@ Docker Scout
 
 :::
 
-## Task 8 Practical
+## 任务 8 实践
 
-Deploy the machine attached to this task by pressing the green **Start Machine** button. The machine will start in split-view. If it’s not showing up, you can press the blue **Show Split View** button at the top-right of the page. Your task is to use the [Grype](https://github.com/anchore/grype) vulnerability scanner on the machine to analyse some Docker images.
+通过按下绿色的 **启动机器** 按钮来部署附加到此任务的机器。 机器将在分屏视图中启动。 如果未显示，您可以按下页面右上角的蓝色 **显示分屏视图** 按钮。 您的任务是使用机器上的 [Grype](https://github.com/anchore/grype) 漏洞扫描器分析一些 Docker 镜像。
 
-Grype can be used to analyse Docker images and container filesystems. You can refer to the table below as a cheat sheet to answer the questions in this task.
+Grype 可用于分析 Docker 镜像和容器文件系统。 您可以参考下表作为速查表来回答此任务中的问题。
 
-| Example                                   | Description                                                                                                                               | Command                              |
-| :---------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------- |
-| Scanning a Docker image                   | Scan a Docker image for vulnerabilities.                                                                                  | `grype imagename --scope all-layers` |
-| Scanning an exported container filesystem | Scan an exported container filesystem (i.e. from `docker image save`). | `grype /path/to/image.tar`           |
+| 示例           | 描述                                     | 命令                                   |
+| :----------- | :------------------------------------- | :----------------------------------- |
+| 扫描 Docker 镜像 | 扫描 Docker 镜像以查找漏洞。                     | `grype imagename --scope all-layers` |
+| 扫描导出的容器文件系统  | 扫描导出的容器文件系统（例如来自 `docker image save`）。 | `grype /path/to/image.tar`           |
 
-**Please note**, that for this room, you can safely ignore the "Unable to check for vulnerability database update" warning messages.
+**请注意**，对于此房间，您可以安全地忽略 "无法检查漏洞数据库更新" 警告消息。
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Use Docker to list the running containers on the system. What is the name of the container that is currently running? </summary>
+<summary> 使用 Docker 列出系统上运行的容器。 当前运行的容器名称是什么？ </summary>
 
 ```plaintext
 couchdb
@@ -636,7 +636,7 @@ couchdb
 
 <details>
 
-<summary> Use Grype to analyse the "struts2" image. What is the name of the library marked as "Critical"? </summary>
+<summary> 使用 Grype 分析 "struts2" 镜像。 标记为 "严重" 的库名称是什么？ </summary>
 
 ```plaintext
 struts2-core
@@ -646,7 +646,7 @@ struts2-core
 
 <details>
 
-<summary> Use Grype to analyse the exported container filesystem located at **/root/container.tar**. What severity is the "CVE-2023-45853" rated as?  </summary>
+<summary> 使用 Grype 分析位于 **/root/container.tar** 的导出容器文件系统。 "CVE-2023-45853" 的严重性评级是什么？  </summary>
 
 ```plaintext
 Critical
