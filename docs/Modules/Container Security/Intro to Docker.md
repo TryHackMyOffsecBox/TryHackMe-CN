@@ -215,7 +215,7 @@ Docker containers can be run with various options - depending on how we will use
 
 ### First, Simply Running a Container
 
-Let's recall the syntax required to run a Docker container: docker run [OPTIONS] IMAGE_NAME [COMMAND] [ARGUMENTS...] . In this example, I am going to configure the container to run:
+Let's recall the syntax required to run a Docker container: `docker run [OPTIONS] IMAGE_NAME [COMMAND] [ARGUMENTS...]` . In this example, I am going to configure the container to run:
 
 - An image named "helloworld"
 - "Interactively" by providing the `-it` switch in the [OPTIONS] command. This will allow us to interact with the container directly.
