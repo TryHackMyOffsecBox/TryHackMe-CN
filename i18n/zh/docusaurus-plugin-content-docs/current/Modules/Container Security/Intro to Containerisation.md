@@ -141,9 +141,9 @@ Docker最初是dotCloud（一个PaaS提供商）的内部项目，随后在2013�
 - 每月下载130亿个应用程序！ [3]
 - …而这仅来自官方仓库
 
-[1, 2]。 [Dockerhub.com](http://dockerhub.com/) 04/2022
+[1, 2]. [Dockerhub.com](http://dockerhub.com/) 04/2022
 
-[3]。 [Docker.com](http://docker.com/) 04/2022
+[3]. [Docker.com](http://docker.com/) 04/2022
 
 :::info 回答以下问题
 
