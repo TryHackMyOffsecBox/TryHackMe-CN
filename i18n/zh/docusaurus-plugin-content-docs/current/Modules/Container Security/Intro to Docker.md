@@ -589,13 +589,13 @@ build
 
 我已将一些基本的 Docker Compose 命令放入下表中：
 
-|   命令  |                                                            解释                                                            |           示例           |
-| :---: | :----------------------------------------------------------------------------------------------------------------------: | :--------------------: |
-|   up  |                                            此命令将（重新）创建/构建并启动 compose 文件中指定的容器。                                            |   `docker-compose up`  |
-| start |                                             此命令将启动（但要求容器已构建）compose 文件中指定的容器。                                            | `docker-compose start` |
-|  down |            This command will stop and **delete** the containers specified in the compose file.           |  `docker-compose down` |
-|  stop | This command will stop (**not** delete) the containers specified in the compose file. |  `docker-compose stop` |
-| build |                                              此命令将构建（但不会启动）compose 文件中指定的容器。                                              | `docker-compose build` |
+|   命令  |                 解释                 |           示例           |
+| :---: | :--------------------------------: | :--------------------: |
+|   up  | 此命令将（重新）创建/构建并启动 compose 文件中指定的容器。 |   `docker-compose up`  |
+| start |  此命令将启动（但要求容器已构建）compose 文件中指定的容器。 | `docker-compose start` |
+|  down |  此命令将停止并 **删除** compose 文件中指定的容器。  |  `docker-compose down` |
+|  stop |  此命令将停止（**不**删除）compose 文件中指定的容器。  |  `docker-compose stop` |
+| build |   此命令将构建（但不会启动）compose 文件中指定的容器。   | `docker-compose build` |
 
 **注意**：这些只是部分可能的命令。 查看 [compose 文档](https://docs.docker.com/compose/reference/) 了解所有可能的选项。
 
@@ -633,7 +633,7 @@ build
 
 一个文件统治所有。 docker-compose.yml 文件的格式与 Dockerfile 不同。 重要的是要注意 YAML 需要缩进（良好的做法是使用两个空格且必须保持一致！）。 首先，在我们创建 docker-compose.yml 文件之前，我将展示一些您需要学习的新指令，以便能够编写 docker-compose.yml 文件：
 
-|               Instruction               |                                  Explanation                                  |                   Example                   |
+|                    指令                   |                                       解释                                      |                      示例                     |
 | :-------------------------------------: | :---------------------------------------------------------------------------: | :-----------------------------------------: |
 |                 version                 |      这位于文件顶部，用于标识 docker-compose.yml 是为哪个版本的 Compose 编写的。     |                   `'3.3'`                   |
 |                 services                |                                此指令标记要管理的容器的开始。                                |                 `services:`                 |
