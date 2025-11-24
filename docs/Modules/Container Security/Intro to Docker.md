@@ -593,8 +593,8 @@ I have put some of the essential Docker Compose commands into the table below:
 | :-----: | :---------------------------------------------------------------------------------------------------------------------: | :--------------------: |
 |   up    |               This command will (re)create/build and start the containers specified in the compose file.                |  `docker-compose up`   |
 |  start  | This command will start (but requires the containers already being built) the containers specified in the compose file. | `docker-compose start` |
-|  down   |                    This command will stop and `delete` the containers specified in the compose file.                    | `docker-compose down`  |
-|  stop   |                   This command will stop (`not` delete) the containers specified in the compose file.                   | `docker-compose stop`  |
+|  down   |                    This command will stop and **delete** the containers specified in the compose file.                    | `docker-compose down`  |
+|  stop   |                   This command will stop (**not** delete) the containers specified in the compose file.                   | `docker-compose stop`  |
 |  build  |               This command will build (but will not start) the containers specified in the compose file.                | `docker-compose build` |
 
 **Note**: These are just a few of the possible commands. Check out the [compose documentation](https://docs.docker.com/compose/reference/) for all possible options.
