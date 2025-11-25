@@ -612,7 +612,7 @@ Pod Security Admission
 
 <details>
 
-<summary> 哪种Kubernetes对象可用于存储敏感信息，因此应安全管理？ </summary> </summary>
+<summary> 哪种Kubernetes对象可用于存储敏感信息，因此应安全管理？ </summary>
 
 ```plaintext
 Secret
