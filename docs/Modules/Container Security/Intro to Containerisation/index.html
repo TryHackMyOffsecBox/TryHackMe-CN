@@ -5,8 +5,8 @@
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">容器化入门 | TryHackMe-CN</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Modules/Container Security/Intro to Containerisation"><meta data-rh="true" property="og:locale" content="zh"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" name="docusaurus_locale" content="zh"><meta data-rh="true" name="docsearch:language" content="zh"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="容器化入门 | TryHackMe-CN"><meta data-rh="true" name="description" content="任务1 介绍"><meta data-rh="true" property="og:description" content="任务1 介绍"><link data-rh="true" rel="icon" href="/TryHackMe-CN/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Modules/Container Security/Intro to Containerisation"><link data-rh="true" rel="alternate" href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/en/docs/Modules/Container Security/Intro to Containerisation" hreflang="en"><link data-rh="true" rel="alternate" href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Modules/Container Security/Intro to Containerisation" hreflang="zh"><link data-rh="true" rel="alternate" href="https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Modules/Container Security/Intro to Containerisation" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"模块","item":"https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Modules/"},{"@type":"ListItem","position":2,"name":"容器安全","item":"https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Modules/Container Security/"},{"@type":"ListItem","position":3,"name":"容器化入门","item":"https://tryhackmyoffsecbox.github.io/TryHackMe-CN/docs/Modules/Container Security/Intro to Containerisation"}]}</script><link rel="alternate" type="application/rss+xml" href="/TryHackMe-CN/blog/rss.xml" title="TryHackMe-CN RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/TryHackMe-CN/blog/atom.xml" title="TryHackMe-CN Atom Feed"><link rel="stylesheet" href="/TryHackMe-CN/assets/css/styles.6c4c8a38.css">
-<script src="/TryHackMe-CN/assets/js/runtime~main.fc44eef0.js" defer="defer"></script>
-<script src="/TryHackMe-CN/assets/js/main.43e0f118.js" defer="defer"></script>
+<script src="/TryHackMe-CN/assets/js/runtime~main.c53a8494.js" defer="defer"></script>
+<script src="/TryHackMe-CN/assets/js/main.fab95784.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -64,7 +64,7 @@
 <ul>
 <li class="">1300万开发人员正在使用Docker [1]</li>
 <li class="">有700万个应用程序已制作并准备与Docker一起使用 [2]</li>
-<li class="">每月下载130亿个应用程序！ [3]</li>
+<li class="">每月下载130亿个应用程序！ [3] [3]</li>
 <li class="">…而这仅来自官方仓库</li>
 </ul>
 <p>[1, 2]. <a href="http://dockerhub.com/" target="_blank" rel="noopener noreferrer" class="">Dockerhub.com</a> 04/2022</p>
@@ -107,11 +107,11 @@
 <li class="">一个命名空间</li>
 <li class="">一个进程标识符（PID）</li>
 </ul>
-<p>命名空间是实现容器化的方式！ 进程只能“看到”同一命名空间中的其他进程——理论上没有冲突。 以Docker为例，每个新容器都将作为一个新的命名空间运行，尽管容器可能运行多个应用程序（进而有多个进程）。</p>
+<p>命名空间是实现容器化的方式！ 进程只能“看到”同一命名空间中的其他进程——理论上没有冲突。 例如，以Docker为例，每个新容器都会作为一个新的命名空间运行，虽然容器可能运行多个应用程序(进而是过程)。</p>
 <p>让我们通过比较运行Web服务器的Docker容器中的进程数量与当时主机操作系统中的进程数量来证明容器化的概念：</p>
 <p><img decoding="async" loading="lazy" alt="描绘正常操作系统中运行大量进程的图像" src="/TryHackMe-CN/assets/images/image_20251123-232338-dcf2a4ab47a5fba67bdc9cd9a3206a85.png" width="866" height="491" class="img_ev3q"></p>
 <p>简而言之，ID为0的进程是系统启动时启动的进程。 进程号递增且必须由另一个进程启动，因此自然下一个进程ID将是#1。 这个进程是系统的<code>init</code>，例如，最新版本的Ubuntu使用<code>systemd</code>。 任何其他运行的进程都将由<code>systemd</code>（进程#1）控制。</p>
-<p>我们可以使用操作系统上进程#1的命名空间来提升我们的权限。 虽然容器设计为使用这些命名空间相互隔离，但它们可以与主机计算机的进程共存…… 这给了我们一个很好的逃脱机会！</p>
+<p>我们可以使用操作系统上进程#1的命名空间来提升我们的权限。 虽然容器设计为使用这些命名空间相互隔离，但它们可以与主机计算机的进程共存... 这给了我们一个很好的逃脱机会！</p>
 <p><img decoding="async" loading="lazy" alt="描绘容器内运行有限数量进程的图像" src="/TryHackMe-CN/assets/images/image_20251124-232411-b096728b960c935d890f866e8fe116c4.png" width="1044" height="215" class="img_ev3q"></p>
 <div class="theme-admonition theme-admonition-info admonition_xJq3 alert alert--info"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg></span>回答以下问题</div><div class="admonitionContent_BuS1"><details class="details_lb9f alert alert--info details_b_Ee" data-collapsed="true"><summary> 我们可以使用什么命令查看运行进程的列表？ </summary><div><div class="collapsibleContent_i85q"><div class="language-plaintext codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-plaintext codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">ps aux</span><br></span></code></pre></div></div></div></div></details></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="任务7-实践">任务7 实践<a href="#任务7-实践" class="hash-link" aria-label="任务7 实践的直接链接" title="任务7 实践的直接链接" translate="no">​</a></h2>
