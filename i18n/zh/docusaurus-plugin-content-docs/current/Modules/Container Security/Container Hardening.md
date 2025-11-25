@@ -351,17 +351,17 @@ Seccomp 允许您创建并强制执行一系列规则，规定应用程序可以
 }
 ```
 
-现在我们的 Seccomp 配置文件已创建，我们可以在运行时通过使用 `--security-opt seccomp` 标志和 Seccomp 配置文件的位置将其应用到我们的容器。 例如： 例如：
+现在我们的 Seccomp 配置文件已创建，我们可以在运行时通过使用 `--security-opt seccomp` 标志和 Seccomp 配置文件的位置将其应用到我们的容器。 例如：
 
 ```shell title="Applying our Seccomp profile when running a container"
 cmnatic@thm:~# docker run --rm -it --security-opt seccomp=/home/cmnatic/container1/seccomp/profile.json mycontainer
 ```
 
-Docker 在运行时已经应用了默认的 Seccomp 配置文件。 但是，这可能不适合您的特定用例，特别是如果您希望在保持功能的同时进一步加固容器。 Docker 在运行时已经应用了默认的 Seccomp 配置文件。 但是，这可能不适合您的特定用例，特别是如果您希望在保持功能的同时进一步加固容器。 您可以在[此处](https://docs.docker.com/engine/security/seccomp/#:~:text=Secure%20computing%20mode%20\\(%20seccomp%20\\)%20是,state%20of%20the%20calling%20process.)了解更多关于在Docker中使用Seccomp的信息。
+Docker 在运行时已经应用了默认的 Seccomp 配置文件。 但是，这可能不适合您的特定用例，特别是如果您希望在保持功能的同时进一步加固容器。 您可以在[此处](https://docs.docker.com/engine/security/seccomp/#:~:text=Secure%20computing%20mode%20\(%20seccomp%20\)%20是,state%20of%20the%20calling%20process.)了解更多关于在Docker中使用Seccomp的信息。
 
 ### AppArmor
 
-AppArmor是Linux中类似的安全功能，因为它防止应用程序执行未经授权的操作。 然而，它与Seccomp的工作方式不同，因为它不包含在应用程序中，而是包含在操作系统中。 然而，它与Seccomp的工作方式不同，因为它不包含在应用程序中，而是包含在操作系统中。
+AppArmor是Linux中类似的安全功能，因为它防止应用程序执行未经授权的操作。 然而，它与Seccomp的工作方式不同，因为它不包含在应用程序中，而是包含在操作系统中。
 
 该机制是一种强制访问控制（MAC）系统，根据操作系统级别的一组规则确定进程可以执行的操作。 要使用AppArmor，我们首先需要确保它已安装在我们的系统上：
 
@@ -371,13 +371,13 @@ apparmor module is loaded.
 34 profiles are loaded.
 ```
 
-通过输出"apparmor module is loaded"，我们可以确认AppArmor已安装并启用。 要将AppArmor配置文件应用于我们的容器，我们需要执行以下操作： 要将AppArmor配置文件应用于我们的容器，我们需要执行以下操作：
+通过输出"apparmor module is loaded"，我们可以确认AppArmor已安装并启用。 要将AppArmor配置文件应用于我们的容器，我们需要执行以下操作：
 
 - 创建AppArmor配置文件
 - 将配置文件加载到AppArmor中
 - 使用新配置文件运行我们的容器
 
-首先，让我们创建我们的AppArmor配置文件。 您可以使用您喜欢的文本编辑器进行此操作。 首先，让我们创建我们的AppArmor配置文件。 您可以使用您喜欢的文本编辑器进行此操作。 请注意，有一些工具可以根据您的Dockerfile帮助生成AppArmor配置文件。 然而，这超出了本房间的范围，并且可能"不可靠"。 然而，这超出了本房间的范围，并且可能"不可靠"。
+首先，让我们创建我们的AppArmor配置文件。 您可以使用您喜欢的文本编辑器进行此操作。 请注意，有一些工具可以根据您的Dockerfile帮助生成AppArmor配置文件。 然而，这超出了本房间的范围，并且可能"不可靠"。
 
 下面提供了一个"Apache"Web服务器的示例AppArmor配置文件（profile.json），该文件：
 
@@ -423,13 +423,13 @@ apparmor module is loaded.
 cmnatic@thm:~# sudo apparmor_parser -r -W /home/cmnatic/container1/apparmor/profile.json
 ```
 
-现在我们的AppArmor配置文件已导入，我们可以使用`--security-opt apparmor`标志和AppArmor配置文件的位置在运行时将其应用于我们的容器。 例如： 例如：
+现在我们的AppArmor配置文件已导入，我们可以使用`--security-opt apparmor`标志和AppArmor配置文件的位置在运行时将其应用于我们的容器。 例如：
 
 ```shell title="Applying our AppArmor profile when running a container"
 cmnatic@thm:~# docker run --rm -it --security-opt apparmor=/home/cmnatic/container1/apparmor/profile.json mycontainer
 ```
 
-就像Seccomp一样，Docker在运行时已经应用了默认的AppArmor配置文件。 然而，这可能不适合您的特定用例，特别是如果您希望在保持功能的同时进一步加固容器。 就像Seccomp一样，Docker在运行时已经应用了默认的AppArmor配置文件。 然而，这可能不适合您的特定用例，特别是如果您希望在保持功能的同时进一步加固容器。 您可以在[此处](https://docs.docker.com/engine/security/apparmor/)了解更多关于在Docker中使用AppArmor的信息。
+就像Seccomp一样，Docker在运行时已经应用了默认的AppArmor配置文件。 然而，这可能不适合您的特定用例，特别是如果您希望在保持功能的同时进一步加固容器。 您可以在[此处](https://docs.docker.com/engine/security/apparmor/)了解更多关于在Docker中使用AppArmor的信息。
 
 ### 有什么区别
 
@@ -444,7 +444,7 @@ cmnatic@thm:~# docker run --rm -it --security-opt apparmor=/home/cmnatic/contain
 
 <details>
 
-<summary> 如果我们想强制容器只能读取位于/home/tryhackme中的文件，我们会使用哪种类型的配置文件？ Seccomp还是AppArmor？ </summary> Seccomp还是AppArmor？ </summary>
+<summary> 如果我们想强制容器只能读取位于/home/tryhackme中的文件，我们会使用哪种类型的配置文件？ Seccomp还是AppArmor？ </summary>
 
 ```plaintext
 AppArmor
@@ -454,7 +454,7 @@ AppArmor
 
 <details>
 
-<summary> 如果我们想禁止容器进行系统调用（如clock_adjtime），我们会使用哪种类型的配置文件？ Seccomp还是AppArmor？ </summary> Seccomp还是AppArmor？ </summary>
+<summary> 如果我们想禁止容器进行系统调用（如clock_adjtime），我们会使用哪种类型的配置文件？ Seccomp还是AppArmor？ </summary>
 
 ```plaintext
 Seccomp
@@ -464,7 +464,7 @@ Seccomp
 
 <details>
 
-<summary> 最后，如果我们想列出AppArmor的状态，我们会使用什么命令？ </summary> </summary>
+<summary> 最后，如果我们想列出AppArmor的状态，我们会使用什么命令？ </summary>
 
 ```plaintext
 aa-status
@@ -476,21 +476,21 @@ aa-status
 
 ## 任务6 审查Docker镜像
 
-审查Docker镜像是一个极其重要的习惯。 审查Docker镜像是一个极其重要的习惯。 您会对在设备上运行未知代码保持警惕，那么为什么会在生产环境中考虑运行它呢？
+审查Docker镜像是一个极其重要的习惯。 您会对在设备上运行未知代码保持警惕，那么为什么会在生产环境中考虑运行它呢？
 
-不幸的是，有许多恶意Docker镜像造成破坏的例子。 不幸的是，有许多恶意Docker镜像造成破坏的例子。 例如，在2020年，Palo Alto发现了[加密货币挖矿Docker镜像](https://unit42.paloaltonetworks.com/cryptojacking-docker-images-for-mining-monero/)，这些镜像被拉取（并且可能运行）超过两百万次。
+不幸的是，有许多恶意Docker镜像造成破坏的例子。 例如，在2020年，Palo Alto发现了[加密货币挖矿Docker镜像](https://unit42.paloaltonetworks.com/cryptojacking-docker-images-for-mining-monero/)，这些镜像被拉取（并且可能运行）超过两百万次。
 
-Docker Hub上的镜像通常附带存储库中的Dockerfiles。 Docker Hub上的镜像通常附带存储库中的Dockerfiles。 例如，Docker Hub显示Dockerfile的层（因此是执行的命令）。
+Docker Hub上的镜像通常附带存储库中的Dockerfiles。 例如，Docker Hub显示Dockerfile的层（因此是执行的命令）。
 
 ![描述DockerHub上镜像的层。](img/image_20251113-211318.png)
 
-在上图中，我们可以看到DockerHub上镜像的各个层。 这些层是镜像构建过程中执行的步骤。 这些层是镜像构建过程中执行的步骤。
+在上图中，我们可以看到DockerHub上镜像的各个层。 这些层是镜像构建过程中执行的步骤。
 
 此外，Docker Hub上镜像的开源代码存储库通常会包含在内，允许您审查整个Dockerfile。
 
 ![描述存储在应用程序代码存储库中的镜像的Dockerfile。](img/image_20251113-211358.png)
 
-在上图中，我们可以看到Dockerfile的代码。 这使我们能够审计代码并准确理解容器中正在执行的操作。 通过分析代码，我们可以检查漏洞或恶意操作。 这使我们能够审计代码并准确理解容器中正在执行的操作。 通过分析代码，我们可以检查漏洞或恶意操作。
+在上图中，我们可以看到Dockerfile的代码。 这使我们能够审计代码并准确理解容器中正在执行的操作。 通过分析代码，我们可以检查漏洞或恶意操作。
 
 诸如[Dive](https://github.com/wagoodman/dive)之类的工具允许您通过检查镜像构建过程中每一层执行和更改的内容来逆向工程Docker镜像。
 
@@ -498,7 +498,7 @@ Docker Hub上的镜像通常附带存储库中的Dockerfiles。 Docker Hub上的
 
 <details>
 
-<summary> 我了解如何审查Dockerfiles和Docker镜像！ 完成我以继续下一个任务。 </summary> 完成我以继续下一个任务。 </summary>
+<summary> 我了解如何审查Dockerfiles和Docker镜像！ 完成我以继续下一个任务。 </summary>
 
 ```plaintext
 No answer needed
@@ -512,24 +512,24 @@ No answer needed
 
 合规性和基准测试在保护资产安全方面起着至关重要的作用——更不用说容器了。 让我们从解释合规性开始。 合规性是遵循法规和标准的过程，例如NIST SP 800-190，这是国家标准与技术研究院制定的一套标准，为容器安全提供指导和最佳实践：
 
-| 合规框架            | 描述                                                           | URL                                                                                                                                                                      |
-| :-------------- | :----------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| NIST SP 800-190 | 该框架概述了与容器相关的潜在安全问题，并提供了解决这些问题的建议。                            | [https://csrc.nist.gov/publications/detail/sp/800-190/final](https://csrc.nist.gov/publications/detail/sp/800-190/final) |
-| ISO 27001       | 该框架是信息安全的国际标准。 该标准指导实施、维护和改进信息安全管理体系。 该标准指导实施、维护和改进信息安全管理体系。 | [https://www.iso.org/standard/27001](https://www.iso.org/standard/27001)                                                 |
+| 合规框架            | 描述                                    | URL                                                                                                                                                                      |
+| :-------------- | :------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| NIST SP 800-190 | 该框架概述了与容器相关的潜在安全问题，并提供了解决这些问题的建议。     | [https://csrc.nist.gov/publications/detail/sp/800-190/final](https://csrc.nist.gov/publications/detail/sp/800-190/final) |
+| ISO 27001       | 该框架是信息安全的国际标准。 该标准指导实施、维护和改进信息安全管理体系。 | [https://www.iso.org/standard/27001](https://www.iso.org/standard/27001)                                                 |
 
 请注意，您可能需要遵守与您行业相关的其他框架。 例如，金融或医疗。 所有行业都存在法规。 例如，在医疗领域，HIPPA用于处理医疗数据。
 
-另一方面，基准测试是一个用于查看组织遵循最佳实践情况的过程。 另一方面，基准测试是一个用于查看组织遵循最佳实践情况的过程。 基准测试允许组织查看他们在哪些方面很好地遵循了最佳实践，以及哪些方面需要进一步改进：
+另一方面，基准测试是一个用于查看组织遵循最佳实践情况的过程。 基准测试允许组织查看他们在哪些方面很好地遵循了最佳实践，以及哪些方面需要进一步改进：
 
-| 基准测试工具        | 描述                                                                                           | URL                                                                                                                                        |
-| :------------ | :------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| CIS Docker 基准 | 该工具可以评估容器是否符合 CIS Docker 基准框架。                                                               | [https://www.cisecurity.org/benchmark/docker](https://www.cisecurity.org/benchmark/docker) |
-| OpenSCAP      | 该工具可以评估容器是否符合多个框架，包括 CIS Docker 基准、NIST SP-800-190 等。                                        | [https://www.open-scap.org/](https://www.open-scap.org/)                                   |
-| Docker Scout  | 该工具是 Docker 本身提供的基于云的服务，可扫描 Docker 镜像和库中的漏洞。 该工具列出存在的漏洞并提供解决这些漏洞的步骤。 该工具列出存在的漏洞并提供解决这些漏洞的步骤。 | [https://docs.docker.com/scout/](https://docs.docker.com/scout/)                           |
-| Anchore       | 该工具可以评估容器是否符合多个框架，包括 CIS Docker 基准、NIST SP-800-190 等。                                        | [https://github.com/anchore/anchore-engine](https://github.com/anchore/anchore-engine)                     |
-| Grype         | 该工具是一种现代且快速的 Docker 镜像漏洞扫描器                                                                  | [https://github.com/anchore/grype](https://github.com/anchore/grype)                                       |
+| 基准测试工具        | 描述                                                                   | URL                                                                                                                                        |
+| :------------ | :------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| CIS Docker 基准 | 该工具可以评估容器是否符合 CIS Docker 基准框架。                                       | [https://www.cisecurity.org/benchmark/docker](https://www.cisecurity.org/benchmark/docker) |
+| OpenSCAP      | 该工具可以评估容器是否符合多个框架，包括 CIS Docker 基准、NIST SP-800-190 等。                | [https://www.open-scap.org/](https://www.open-scap.org/)                                   |
+| Docker Scout  | 该工具是 Docker 本身提供的基于云的服务，可扫描 Docker 镜像和库中的漏洞。 该工具列出存在的漏洞并提供解决这些漏洞的步骤。 | [https://docs.docker.com/scout/](https://docs.docker.com/scout/)                           |
+| Anchore       | 该工具可以评估容器是否符合多个框架，包括 CIS Docker 基准、NIST SP-800-190 等。                | [https://github.com/anchore/anchore-engine](https://github.com/anchore/anchore-engine)                     |
+| Grype         | 该工具是一种现代且快速的 Docker 镜像漏洞扫描器                                          | [https://github.com/anchore/grype](https://github.com/anchore/grype)                                       |
 
-下面终端中提供了一个使用 Docker Scout 工具分析 Docker 镜像的示例。 请注意，这需要事先[安装](https://github.com/docker/scout-cli)。 您可以阅读 [Docker Scout](https://docs.docker.com/scout/) 文档以了解更多信息。 请注意，这需要事先[安装](https://github.com/docker/scout-cli)。 您可以阅读 [Docker Scout](https://docs.docker.com/scout/) 文档以了解更多信息。
+下面终端中提供了一个使用 Docker Scout 工具分析 Docker 镜像的示例。 请注意，这需要事先[安装](https://github.com/docker/scout-cli)。 您可以阅读 [Docker Scout](https://docs.docker.com/scout/) 文档以了解更多信息。
 
 ```shell title="Using Docker Scout to scan our "nginx" image for vulnerabilities"
 cmnatic@thm:~# docker scout cves local://nginx:latest
@@ -589,7 +589,7 @@ pkg:deb/ubuntu/glibc@2.35-0ubuntu3.1?os_distro=jammy&os_name=ubuntu&os_version=2
 
 <details>
 
-<summary> 美国国家标准与技术研究院发布的框架名称是什么？<br />对于此答案，请务必包含全名。 </summary>对于此答案，请务必包含全名。 </summary>
+<summary> 美国国家标准与技术研究院发布的框架名称是什么？<br />对于此答案，请务必包含全名。 </summary>
 
 ```plaintext
 NIST SP 800-190
@@ -599,7 +599,7 @@ NIST SP 800-190
 
 <details>
 
-<summary> Docker 提供的分析工具名称是什么？ </summary> </summary>
+<summary> Docker 提供的分析工具名称是什么？ </summary>
 
 ```plaintext
 Docker Scout
@@ -626,7 +626,7 @@ Grype 可用于分析 Docker 镜像和容器文件系统。 您可以参考下�
 
 <details>
 
-<summary> 使用 Docker 列出系统上运行的容器。 当前运行的容器名称是什么？ </summary> 当前运行的容器名称是什么？ </summary>
+<summary> 使用 Docker 列出系统上运行的容器。 当前运行的容器名称是什么？ </summary>
 
 ```plaintext
 couchdb
@@ -646,7 +646,7 @@ struts2-core
 
 <details>
 
-<summary> 使用 Grype 分析位于 **/root/container.tar** 的导出容器文件系统。 "CVE-2023-45853" 的严重性评级是什么？  </summary> "CVE-2023-45853" 的严重性评级是什么？  </summary>
+<summary> 使用 Grype 分析位于 **/root/container.tar** 的导出容器文件系统。 "CVE-2023-45853" 的严重性评级是什么？  </summary>
 
 ```plaintext
 Critical
