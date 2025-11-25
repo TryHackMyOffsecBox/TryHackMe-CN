@@ -25,7 +25,7 @@ sidebar_position: 1
 
 <details>
 
-<summary> 在继续下一个任务之前完成此问题。 </summary> </summary>
+<summary> 在继续下一个任务之前完成此问题。 </summary>
 
 ```plaintext
 No answer needed
@@ -80,7 +80,7 @@ cmnatic@thm:~$
 |  ubuntu  | 20.04 |                docker pull ubuntu:20.04                |                             此命令将拉取"ubuntu"镜像的"20.04 (Focal)"版本。                            |
 |  ubuntu  | 18.04 |                docker pull ubuntu:18.04                |                            此命令将拉取"ubuntu"镜像的"18.04 (Bionic)"版本。                            |
 
-指定标签时，必须在镜像名称和标签之间包含冒号`:`，例如`ubuntu:22.04`（镜像:标签）。 不要忘记标签 - 我们将在未来的任务中再次讨论这些！ 不要忘记标签 - 我们将在未来的任务中再次讨论这些！
+指定标签时，必须在镜像名称和标签之间包含冒号`:`，例如`ubuntu:22.04`（镜像:标签）。 不要忘记标签 - 我们将在未来的任务中再次讨论这些！
 
 ### Docker Image x/y/z
 
@@ -139,7 +139,7 @@ cmnatic@thm:~$
 
 ### Docker 镜像 rm
 
-如果我们想从系统中删除一个镜像，我们可以使用 `docker image rm` 以及名称（或镜像 ID）。 在以下示例中，我将删除标签为 "22.04" 的 "ubuntu" 镜像。 我的命令将是 `docker image rm ubuntu:22.04`： 在以下示例中，我将删除标签为 "22.04" 的 "ubuntu" 镜像。 我的命令将是 `docker image rm ubuntu:22.04`：
+如果我们想从系统中删除一个镜像，我们可以使用 `docker image rm` 以及名称（或镜像 ID）。 在以下示例中，我将删除标签为 "22.04" 的 "ubuntu" 镜像。 我的命令将是 `docker image rm ubuntu:22.04`：
 
 记住要包含镜像名称的标签很重要。
 
@@ -165,7 +165,7 @@ cmnatic@thm:~$
 
 <details>
 
-<summary> 如果我们想 `pull` 一个 Docker 镜像，我们的命令会是什么样子？ </summary> </summary>
+<summary> 如果我们想 `pull` 一个 Docker 镜像，我们的命令会是什么样子？ </summary>
 
 ```plaintext
 docker pull
@@ -175,7 +175,7 @@ docker pull
 
 <details>
 
-<summary> 如果我们想列出运行 Docker 的设备上的所有镜像，我们的命令会是什么样子？ </summary> </summary>
+<summary> 如果我们想列出运行 Docker 的设备上的所有镜像，我们的命令会是什么样子？ </summary>
 
 ```plaintext
 docker image ls
@@ -185,7 +185,7 @@ docker image ls
 
 <details>
 
-<summary> 假设我们想拉取镜像 "tryhackme"（不带引号）；我们的命令会是什么样子？ </summary> </summary>
+<summary> 假设我们想拉取镜像 "tryhackme"（不带引号）；我们的命令会是什么样子？ </summary>
 
 ```plaintext
 docker pull tryhackme
@@ -195,7 +195,7 @@ docker pull tryhackme
 
 <details>
 
-<summary> 假设我们想拉取标签为 "1337"（不带引号）的 "tryhackme" 镜像。 我们的命令会是什么样子？ </summary> 我们的命令会是什么样子？ </summary>
+<summary> 假设我们想拉取标签为 "1337"（不带引号）的 "tryhackme" 镜像。 我们的命令会是什么样子？ </summary>
 
 ```plaintext
 docker pull tryhackme:1337
@@ -207,7 +207,7 @@ docker pull tryhackme:1337
 
 ## 任务 3 运行你的第一个容器
 
-Docker run 命令从镜像创建运行中的容器。 这是运行 Dockerfile 中的命令（以及我们在运行时的输入）的地方。 因此，这必须是你首先学习的一些语法。 这是运行 Dockerfile 中的命令（以及我们在运行时的输入）的地方。 因此，这必须是你首先学习的一些语法。
+Docker run 命令从镜像创建运行中的容器。 这是运行 Dockerfile 中的命令（以及我们在运行时的输入）的地方。 因此，这必须是你首先学习的一些语法。
 
 该命令的工作方式如下：`docker run [OPTIONS] IMAGE_NAME [COMMAND] [ARGUMENTS...]` 括号中的选项对于容器运行不是必需的。
 
@@ -215,11 +215,11 @@ Docker 容器可以使用各种选项运行 - 取决于我们将如何使用容�
 
 ### 首先，简单运行一个容器
 
-让我们回顾运行 Docker 容器所需的语法：`docker run [OPTIONS] IMAGE_NAME [COMMAND] [ARGUMENTS...]`。 在此示例中，我将配置容器运行： 在此示例中，我将配置容器运行：
+让我们回顾运行 Docker 容器所需的语法：`docker run [OPTIONS] IMAGE_NAME [COMMAND] [ARGUMENTS...]`。 在此示例中，我将配置容器运行：
 
 - 一个名为 "helloworld" 的镜像
 - 通过在 [OPTIONS] 命令中提供 `-it` 开关来"交互式"运行。 这将允许我们直接与容器交互。 这将允许我们直接与容器交互。
-- 我将在容器内生成一个 shell，通过提供 `/bin/bash` 作为 [COMMAND] 部分。 此参数是你放置要在容器内运行的命令（如文件、应用程序或 shell！）的地方。 此参数是你放置要在容器内运行的命令（如文件、应用程序或 shell！）的地方。
+- 我将在容器内生成一个 shell，通过提供 `/bin/bash` 作为 [COMMAND] 部分。 此参数是你放置要在容器内运行的命令（如文件、应用程序或 shell！）的地方。
 
 因此，要实现上述目标，我的命令将如下所示：`docker run -it helloworld /bin/bash`
 
@@ -228,22 +228,22 @@ cmnatic@thm-intro-to-docker:~$ docker run -it helloworld /bin/bash
 root@30eff5ed7492:/#
 ```
 
-我们可以验证我们已成功启动 shell，因为我们的提示符将更改为另一个用户帐户和主机名。 容器的主机名是容器 ID（可以通过使用 `docker ps` 找到）。 例如，在上面的终端中，我们的用户名和主机名是 `root@30eff5ed7492` 容器的主机名是容器 ID（可以通过使用 `docker ps` 找到）。 例如，在上面的终端中，我们的用户名和主机名是 `root@30eff5ed7492`
+我们可以验证我们已成功启动 shell，因为我们的提示符将更改为另一个用户帐户和主机名。 容器的主机名是容器 ID（可以通过使用 `docker ps` 找到）。 例如，在上面的终端中，我们的用户名和主机名是 `root@30eff5ed7492`
 
 ### 运行容器...继续
 
-如前所述，Docker 容器可以使用各种选项运行。 容器的目的和 Dockerfile 中设置的指令（我们将在后面的任务中讨论）决定了我们需要使用哪些选项来运行容器。 如前所述，Docker 容器可以使用各种选项运行。 容器的目的和 Dockerfile 中设置的指令（我们将在后面的任务中讨论）决定了我们需要使用哪些选项来运行容器。 首先，我将你可能需要运行 Docker 容器的一些最常见选项放入下表中。
+如前所述，Docker 容器可以使用各种选项运行。 容器的目的和 Dockerfile 中设置的指令（我们将在后面的任务中讨论）决定了我们需要使用哪些选项来运行容器。 首先，我将你可能需要运行 Docker 容器的一些最常见选项放入下表中。
 
-| [OPTION] |                                                                               解释                                                                               | 相关 Dockerfile 指令 |                                 示例                                 |
-| :----------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------: | :----------------------------------------------------------------: |
-|                              -d                              |                                                          此参数告诉容器以"分离"模式启动。 这意味着容器将在后台运行。 这意味着容器将在后台运行。                                                         |        N/A       |                     `docker run -d helloworld`                     |
-|                              -it                             |                     此参数有两个部分。 此参数有两个部分。 "i" 表示以交互方式运行，"t" 告诉 Docker 在容器内运行 shell。 如果我们希望在容器运行后直接与其交互，我们将使用此选项。 如果我们希望在容器运行后直接与其交互，我们将使用此选项。                    |        N/A       |                     `docker run -it helloworld`                    |
-|                              -v                              |                             此参数是"Volume"的缩写，告诉 Docker 将主机操作系统的目录或文件挂载到容器内的位置。 这些文件存储的位置在 Dockerfile 中定义。 这些文件存储的位置在 Dockerfile 中定义。                            |      VOLUME      | `docker run -v /host/os/directory:/container/directory helloworld` |
-|                              -p                              | 此参数告诉 Docker 将主机操作系统上的端口绑定到容器中暴露的端口。 如果你在容器中运行应用程序或服务（如 Web 服务器）并希望通过导航到 IP 地址访问该应用程序/服务，你将使用此指令。 如果你在容器中运行应用程序或服务（如 Web 服务器）并希望通过导航到 IP 地址访问该应用程序/服务，你将使用此指令。 |      EXPOSE      |                   `docker run -p 80:80 webserver`                  |
-|                             --rm                             |                                                              此参数告诉 Docker 在容器完成运行其被指示执行的任何操作后删除容器。                                                             |        N/A       |                    `docker run --rm helloworld`                    |
-|                            --name                            |                  此参数让我们为容器起一个友好、易记的名称。 此参数让我们为容器起一个友好、易记的名称。 当容器在没有此选项的情况下运行时，名称是两个随机单词。 我们可以使用此选项根据容器运行的应用程序来命名容器。 我们可以使用此选项根据容器运行的应用程序来命名容器。                 |        N/A       |                   `docker run --name helloworld`                   |
+| [OPTION] |                                                 解释                                                | 相关 Dockerfile 指令 |                                 示例                                 |
+| :----------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: | :--------------: | :----------------------------------------------------------------: |
+|                              -d                              |                           此参数告诉容器以"分离"模式启动。 这意味着容器将在后台运行。 这意味着容器将在后台运行。                           |        N/A       |                     `docker run -d helloworld`                     |
+|                              -it                             |          此参数有两个部分。 "i" 表示以交互方式运行，"t" 告诉 Docker 在容器内运行 shell。 如果我们希望在容器运行后直接与其交互，我们将使用此选项。         |        N/A       |                     `docker run -it helloworld`                    |
+|                              -v                              |            此参数是"Volume"的缩写，告诉 Docker 将主机操作系统的目录或文件挂载到容器内的位置。 这些文件存储的位置在 Dockerfile 中定义。           |      VOLUME      | `docker run -v /host/os/directory:/container/directory helloworld` |
+|                              -p                              | 此参数告诉 Docker 将主机操作系统上的端口绑定到容器中暴露的端口。 如果你在容器中运行应用程序或服务（如 Web 服务器）并希望通过导航到 IP 地址访问该应用程序/服务，你将使用此指令。 |      EXPOSE      |                   `docker run -p 80:80 webserver`                  |
+|                             --rm                             |                               此参数告诉 Docker 在容器完成运行其被指示执行的任何操作后删除容器。                               |        N/A       |                    `docker run --rm helloworld`                    |
+|                            --name                            |            此参数让我们为容器起一个友好、易记的名称。 当容器在没有此选项的情况下运行时，名称是两个随机单词。 我们可以使用此选项根据容器运行的应用程序来命名容器。           |        N/A       |                   `docker run --name helloworld`                   |
 
-这些只是我们在运行容器时可以提供的一些参数。 同样，我们需要运行的大多数参数将由容器的构建方式决定。 这些只是我们在运行容器时可以提供的一些参数。 同样，我们需要运行的大多数参数将由容器的构建方式决定。 然而，诸如 `--rm` 和 `--name` 等参数将指示 Docker 如何运行容器。 其他参数包括（但不限于！）： 其他参数包括（但不限于！）：
+这些只是我们在运行容器时可以提供的一些参数。 同样，我们需要运行的大多数参数将由容器的构建方式决定。 然而，诸如 `--rm` 和 `--name` 等参数将指示 Docker 如何运行容器。 其他参数包括（但不限于！）：
 
 - 告诉 Docker 容器应使用哪个网络适配器
 - 容器应具有哪些功能的访问权限。 容器应具有哪些功能的访问权限。 这在 TryHackMe 上的 "[Docker Rodeo](https://tryhackme.com/room/dockerrodeo)" 房间中有介绍。
@@ -253,7 +253,7 @@ root@30eff5ed7492:/#
 
 ### 列出正在运行的容器
 
-要列出正在运行的容器，我们可以使用 docker ps 命令。 此命令将列出当前正在运行的容器 - 如下所示： 此命令将列出当前正在运行的容器 - 如下所示：
+要列出正在运行的容器，我们可以使用 docker ps 命令。 此命令将列出当前正在运行的容器 - 如下所示：
 
 ```shell title="A terminal showing a list of running containers and their information"
 cmnatic@thm:~/intro-to-docker$ docker ps
@@ -283,7 +283,7 @@ CONTAINER ID   IMAGE                             COMMAND                  CREATE
 
 <details>
 
-<summary> 如果我们想要以**交互式**方式运行容器，我们的命令会是什么样子？<br />**注意**：假设我们在此处未指定任何镜像。 </summary>**注意**：假设我们在此处未指定任何镜像。 </summary>
+<summary> 如果我们想要以**交互式**方式运行容器，我们的命令会是什么样子？<br />**注意**：假设我们在此处未指定任何镜像。 </summary>
 
 ```plaintext
 docker run -it
@@ -293,7 +293,7 @@ docker run -it
 
 <details>
 
-<summary> 如果我们想要以"**分离**"模式运行容器，我们的命令会是什么样子？<br />**注意**：假设我们在此处未指定任何镜像。 </summary>**注意**：假设我们在此处未指定任何镜像。 </summary>
+<summary> 如果我们想要以"**分离**"模式运行容器，我们的命令会是什么样子？<br />**注意**：假设我们在此处未指定任何镜像。 </summary>
 
 ```plaintext
 docker run -d
@@ -303,7 +303,7 @@ docker run -d
 
 <details>
 
-<summary> 假设我们想要运行一个容器，该容器将运行**并**在端口 80 上绑定一个 Web 服务器。 我们的命令会是什么样子？<br />**注意**：假设我们在此处未指定任何镜像。 </summary> 我们的命令会是什么样子？<br />**注意**：假设我们在此处未指定任何镜像。 </summary>
+<summary> 假设我们想要运行一个容器，该容器将运行**并**在端口 80 上绑定一个 Web 服务器。 我们的命令会是什么样子？<br />**注意**：假设我们在此处未指定任何镜像。 </summary>
 
 ```plaintext
 docker run -p 80:80
@@ -313,7 +313,7 @@ docker run -p 80:80
 
 <details>
 
-<summary> 我们如何列出所有正在运行的容器？ </summary> </summary>
+<summary> 我们如何列出所有正在运行的容器？ </summary>
 
 ```plaintext
 docker ps
@@ -323,7 +323,7 @@ docker ps
 
 <details>
 
-<summary> 现在，我们如何列出所有容器（包括已停止的）？ </summary> </summary>
+<summary> 现在，我们如何列出所有容器（包括已停止的）？ </summary>
 
 ```plaintext
 docker ps -a
@@ -335,24 +335,24 @@ docker ps -a
 
 ## 任务 4 Dockerfile 简介
 
-Dockerfile 在 Docker 中扮演着至关重要的角色。 Dockerfile 在 Docker 中扮演着至关重要的角色。 Dockerfile 是一个格式化的文本文件，本质上充当了容器应执行操作的指令手册，并最终组装成一个 Docker 镜像。
+Dockerfile 在 Docker 中扮演着至关重要的角色。 Dockerfile 是一个格式化的文本文件，本质上充当了容器应执行操作的指令手册，并最终组装成一个 Docker 镜像。
 
-您使用 Dockerfile 来包含容器构建时应执行的命令。 要开始使用 Dockerfile，我们需要了解一些基本的语法和指令。 Dockerfile 的格式如下： 要开始使用 Dockerfile，我们需要了解一些基本的语法和指令。 Dockerfile 的格式如下：
+您使用 Dockerfile 来包含容器构建时应执行的命令。 要开始使用 Dockerfile，我们需要了解一些基本的语法和指令。 Dockerfile 的格式如下：
 
 `INSTRUCTION argument`
 
 首先，让我们介绍一些基本指令：
 
-|    指令   |                            描述                           |                                     示例                                     |
-| :-----: | :-----------------------------------------------------: | :------------------------------------------------------------------------: |
-|   FROM  |    此指令为容器设置构建阶段，并设置基础镜像（操作系统）。 所有 Dockerfile 都必须以此开头。   |                                `FROM ubuntu`                               |
-|   RUN   |                    此指令将在新层中执行容器内的命令。                    |                                `RUN whoami`                                |
-|   COPY  |           此指令将文件从本地系统复制到容器中的工作目录（语法类似于 cp 命令）。          |                     `COPY /home/cmnatic/myfolder/app/`                     |
-| WORKDIR | 此指令设置容器的工作目录。 （类似于在 Linux 上使用 cd）。 （类似于在 Linux 上使用 cd）。 |                      `WORKDIR /` <br />（设置为容器文件系统的根目录）                     |
-|   CMD   |          此指令确定容器启动时运行什么命令（您可以使用此指令来启动服务或应用程序）。          |                         `CMD /bin/sh -c script.sh`                         |
-|  EXPOSE |               此指令用于告诉运行容器的人在运行容器时应发布哪个端口。               | `EXPOSE 80` <br />（告诉运行容器的人发布到端口 80，即 docker run -p 80:80） |
+|    指令   |                         描述                         |                                     示例                                     |
+| :-----: | :------------------------------------------------: | :------------------------------------------------------------------------: |
+|   FROM  | 此指令为容器设置构建阶段，并设置基础镜像（操作系统）。 所有 Dockerfile 都必须以此开头。 |                                `FROM ubuntu`                               |
+|   RUN   |                  此指令将在新层中执行容器内的命令。                 |                                `RUN whoami`                                |
+|   COPY  |        此指令将文件从本地系统复制到容器中的工作目录（语法类似于 cp 命令）。        |                     `COPY /home/cmnatic/myfolder/app/`                     |
+| WORKDIR |         此指令设置容器的工作目录。 （类似于在 Linux 上使用 cd）。         |                      `WORKDIR /` <br />（设置为容器文件系统的根目录）                     |
+|   CMD   |        此指令确定容器启动时运行什么命令（您可以使用此指令来启动服务或应用程序）。       |                         `CMD /bin/sh -c script.sh`                         |
+|  EXPOSE |             此指令用于告诉运行容器的人在运行容器时应发布哪个端口。            | `EXPOSE 80` <br />（告诉运行容器的人发布到端口 80，即 docker run -p 80:80） |
 
-既然我们了解了构成 Dockerfile 的核心指令，让我们来看一个 Dockerfile 的实际示例。 但首先，我将解释我希望容器做什么： 但首先，我将解释我希望容器做什么：
+既然我们了解了构成 Dockerfile 的核心指令，让我们来看一个 Dockerfile 的实际示例。 但首先，我将解释我希望容器做什么：
 
 1. 使用 "Ubuntu"（版本 22.04）操作系统作为基础。
 2. 将工作目录设置为容器的根目录。
@@ -380,7 +380,7 @@ RUN touch helloworld.txt
 2. 您将要给镜像起的名称。
 3. 您希望构建的 Dockerfile 的位置。
 
-我将提供场景，然后解释相关命令。 我将提供场景，然后解释相关命令。 假设我们想要构建一个镜像 - 让我们填写上面列出的两个必需信息：
+我将提供场景，然后解释相关命令。 假设我们想要构建一个镜像 - 让我们填写上面列出的两个必需信息：
 
 1. 我们将自己命名它，因此我们将使用 `-t` 参数。
 2. 我们想要命名该镜像。
@@ -399,7 +399,7 @@ WORKDIR /
 RUN touch helloworld.txt
 ```
 
-命令将如下所示：`docker build -t helloworld .`（我们使用点号告诉 Docker 在我们的工作目录中查找）。 如果我们正确填写了命令，我们将看到 Docker 开始构建镜像： 如果我们正确填写了命令，我们将看到 Docker 开始构建镜像：
+命令将如下所示：`docker build -t helloworld .`（我们使用点号告诉 Docker 在我们的工作目录中查找）。 如果我们正确填写了命令，我们将看到 Docker 开始构建镜像：
 
 ```shell title="A terminal showing the building process of the "helloworld" image"
 cmnatic@thm:~$ docker build -t helloworld .
@@ -423,7 +423,7 @@ Successfully tagged helloworld:latest
 cmnatic@thm:~$
 ```
 
-太好了！ 看起来成功了。 太好了！ 看起来成功了。 现在让我们使用 `docker image ls` 来查看这个镜像是否已构建：
+太好了！ 看起来成功了。 现在让我们使用 `docker image ls` 来查看这个镜像是否已构建：
 
 ```shell title="Using the "docker image ls" command to confirm whether or not our image has successfully built"
 cmnatic@thm:~$ docker image ls
@@ -433,21 +433,21 @@ ubuntu       22.04     2dc39ba059dc   10 days ago     77.8MB
 cmnatic@thm:~$
 ```
 
-注意：您在 Dockerfile 的 `FROM` 指令中列出的任何基础操作系统也将被下载。 这就是为什么我们可以看到两个镜像： 这就是为什么我们可以看到两个镜像：
+注意：您在 Dockerfile 的 `FROM` 指令中列出的任何基础操作系统也将被下载。 这就是为什么我们可以看到两个镜像：
 
 1. helloworld（我们的镜像）。
 2. ubuntu（我们镜像中使用的基础操作系统）。
 
-您现在将能够在容器中使用此镜像。 您现在将能够在容器中使用此镜像。 请参考“运行您的第一个容器”任务以提醒您如何启动容器。
+您现在将能够在容器中使用此镜像。 请参考“运行您的第一个容器”任务以提醒您如何启动容器。
 
 ### 升级我们的 Dockerfile
 
-让我们升级我们的 Dockerfile。 到目前为止，我们的容器只会创建一个文件 - 这不太有用！ 让我们升级我们的 Dockerfile。 到目前为止，我们的容器只会创建一个文件 - 这不太有用！ 在下面的 Dockerfile 中，我将：
+让我们升级我们的 Dockerfile。 到目前为止，我们的容器只会创建一个文件 - 这不太有用！ 在下面的 Dockerfile 中，我将：
 
 1. 使用 Ubuntu 22.04 作为容器的基础操作系统。
 2. 安装“apache2” Web 服务器。
-3. 添加一些网络配置。 由于这是一个 Web 服务器，我们需要能够通过网络以某种方式连接到容器。 添加一些网络配置。 由于这是一个 Web 服务器，我们需要能够通过网络以某种方式连接到容器。 我将通过使用 `EXPOSE` 指令并告诉容器暴露端口 80 来实现这一点。
-4. 告诉容器在启动时启动“apache2”服务。 容器没有像 `systemd` 这样的服务管理器（这是设计使然 - 在同一容器中运行多个应用程序是不良实践。 例如，这个容器用于 apache2 Web 服务器 - 并且仅用于 apache2 Web 服务器）。 容器没有像 `systemd` 这样的服务管理器（这是设计使然 - 在同一容器中运行多个应用程序是不良实践。 例如，这个容器用于 apache2 Web 服务器 - 并且仅用于 apache2 Web 服务器）。
+3. 添加一些网络配置。 由于这是一个 Web 服务器，我们需要能够通过网络以某种方式连接到容器。 我将通过使用 `EXPOSE` 指令并告诉容器暴露端口 80 来实现这一点。
+4. 告诉容器在启动时启动“apache2”服务。 容器没有像 `systemd` 这样的服务管理器（这是设计使然 - 在同一容器中运行多个应用程序是不良实践。 例如，这个容器用于 apache2 Web 服务器 - 并且仅用于 apache2 Web 服务器）。
 
 ```dockerfile
 # THIS IS A COMMENT
@@ -466,16 +466,16 @@ EXPOSE 80
 CMD ["apache2ctl", "-D","FOREGROUND"]
 ```
 
-作为参考，构建此镜像的命令将是 `docker build -t webserver .`（假设 Dockerfile 位于您运行命令的同一目录中）。 一旦使用适当的选项启动容器（`docker run -d --name webserver -p 80:80 webserver`），我们可以在浏览器中导航到我们本地机器的 IP 地址！ 一旦使用适当的选项启动容器（`docker run -d --name webserver -p 80:80 webserver`），我们可以在浏览器中导航到我们本地机器的 IP 地址！
+作为参考，构建此镜像的命令将是 `docker build -t webserver .`（假设 Dockerfile 位于您运行命令的同一目录中）。 一旦使用适当的选项启动容器（`docker run -d --name webserver -p 80:80 webserver`），我们可以在浏览器中导航到我们本地机器的 IP 地址！
 
 ![apache2 的默认登录页面，可用于确认服务正在运行](img/image_20251144-144442.png)
 
 ### 优化我们的 Dockerfile
 
-Docker 确实是一门艺术 - 而且它不止于 Dockerfiles！ 首先，我们需要问自己为什么优化我们的 Dockerfile 至关重要？ 臃肿的 Dockerfiles 难以阅读和维护，并且通常使用大量不必要的存储！ 例如，您可以减小 docker 镜像的大小（并减少构建时间！） 通过使用几种方式： 首先，我们需要问自己为什么优化我们的 Dockerfile 至关重要？ 臃肿的 Dockerfiles 难以阅读和维护，并且通常使用大量不必要的存储！ 例如，您可以减小 docker 镜像的大小（并减少构建时间！） 通过使用几种方式：
+Docker 确实是一门艺术 - 而且它不止于 Dockerfiles！ 首先，我们需要问自己为什么优化我们的 Dockerfile 至关重要？ 臃肿的 Dockerfiles 难以阅读和维护，并且通常使用大量不必要的存储！ 例如，您可以减小 docker 镜像的大小（并减少构建时间！） 通过使用几种方式：
 
 1. 仅安装必要的软件包。 容器的一个优点是它们从一开始就几乎是空的 - 我们完全自由地决定我们想要什么。
-2. 删除缓存文件（例如 APT 缓存或与工具一起安装的文档）。 删除缓存文件（例如 APT 缓存或与工具一起安装的文档）。 容器内的代码只会执行一次（在构建时！），因此我们不需要存储任何东西供以后使用。
+2. 删除缓存文件（例如 APT 缓存或与工具一起安装的文档）。 容器内的代码只会执行一次（在构建时！），因此我们不需要存储任何东西供以后使用。
 3. 在我们的 `FROM` 指令中使用最小的基础操作系统。 尽管像 Ubuntu 这样的容器操作系统已经相当精简，但考虑使用更精简的版本（即 `ubuntu:22.04-minimal`）。 或者，例如，使用 Alpine（可以小到 5.59MB！）。
 4. 最小化层数 - 我将在下面进一步解释这一点。
 
@@ -523,13 +523,13 @@ cmnatic@thm:~$
 
 ![一个插图显示命令已被压缩为两个层。](img/image_20251147-144702.png)
 
-请注意，现在只有两个构建步骤（这将是两个层，使构建更快）。 请注意，现在只有两个构建步骤（这将是两个层，使构建更快）。 这只是 Dockerfile 的一个小例子，因此构建时间不会如此剧烈，但在更大的 Dockerfiles 中 - 减少层数将在构建期间带来显著的性能提升。
+请注意，现在只有两个构建步骤（这将是两个层，使构建更快）。 这只是 Dockerfile 的一个小例子，因此构建时间不会如此剧烈，但在更大的 Dockerfiles 中 - 减少层数将在构建期间带来显著的性能提升。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> 我们将使用什么指令来指定容器应使用的基础镜像？ </summary> </summary>
+<summary> 我们将使用什么指令来指定容器应使用的基础镜像？ </summary>
 
 ```plaintext
 FROM
@@ -539,7 +539,7 @@ FROM
 
 <details>
 
-<summary> 我们将使用什么指令来告诉容器运行命令？ </summary> </summary>
+<summary> 我们将使用什么指令来告诉容器运行命令？ </summary>
 
 ```plaintext
 RUN
@@ -549,7 +549,7 @@ RUN
 
 <details>
 
-<summary> 我们将使用什么 docker 命令来使用 Dockerfile 构建镜像？ </summary> </summary>
+<summary> 我们将使用什么 docker 命令来使用 Dockerfile 构建镜像？ </summary>
 
 ```plaintext
 build
@@ -559,7 +559,7 @@ build
 
 <details>
 
-<summary> 假设我们想命名这个镜像；我们将使用什么参数？ </summary> </summary>
+<summary> 假设我们想命名这个镜像；我们将使用什么参数？ </summary>
 
 ```plaintext
 -t
@@ -571,19 +571,19 @@ build
 
 ## 任务 5 Docker Compose 简介
 
-让我们首先了解 Docker Compose 是什么以及为什么值得理解。 到目前为止，我们只单独与容器交互。 让我们首先了解 Docker Compose 是什么以及为什么值得理解。 到目前为止，我们只单独与容器交互。 总之，Docker Compose 允许多个容器（或应用程序）在需要时相互交互，同时彼此隔离运行。
+让我们首先了解 Docker Compose 是什么以及为什么值得理解。 到目前为止，我们只单独与容器交互。 总之，Docker Compose 允许多个容器（或应用程序）在需要时相互交互，同时彼此隔离运行。
 
 您可能已经注意到 Docker 到目前为止的一个问题。 通常，应用程序需要额外的服务才能运行，而我们无法在单个容器中做到这一点。 例如，现代 - 动态 - 网站使用诸如数据库和 Web 服务器之类的服务。 为了本任务的目的，我们将每个应用程序视为一个“微服务”。
 
-虽然我们可以单独启动多个容器或“微服务”并连接它们，但逐个操作既繁琐又低效。 Docker Compose 允许我们将这些“微服务”创建为一个单一的“服务”。 Docker Compose 允许我们将这些“微服务”创建为一个单一的“服务”。
+虽然我们可以单独启动多个容器或“微服务”并连接它们，但逐个操作既繁琐又低效。 Docker Compose 允许我们将这些“微服务”创建为一个单一的“服务”。
 
-此插图展示了不同之处在部署容器时 - 通过 Docker Compose 与 Docker： Docker：
+此插图展示了不同之处在部署容器时 - 通过 Docker Compose 与 Docker：
 
 ![一个蓝色框（代表一台计算机）带有 docker 的标题，与另一组蓝色框（代表一台计算机）隔离。](img/image_20251151-145132.png)
 
 在我们演示 Docker Compose 之前，让我们先介绍使用 Docker Compose 的基础知识。
 
-1. 我们需要安装 Docker Compose（它默认不随 Docker 提供）。 安装它超出了本房间的范围，因为它根据您的操作系统和其他因素而变化。 您可以在此处查看安装文档。 安装它超出了本房间的范围，因为它根据您的操作系统和其他因素而变化。 您可以在此处查看安装文档。
+1. 我们需要安装 Docker Compose（它默认不随 Docker 提供）。 安装它超出了本房间的范围，因为它根据您的操作系统和其他因素而变化。 您可以在此处查看安装文档。
 2. 我们需要一个有效的 docker-compose.yml 文件 - 我们稍后会谈到这一点。
 3. 对使用 Docker Compose 构建和管理容器的基础理解。
 
@@ -597,11 +597,11 @@ build
 |  stop |  此命令将停止（**不**删除）compose 文件中指定的容器。  |  `docker-compose stop` |
 | build |   此命令将构建（但不会启动）compose 文件中指定的容器。   | `docker-compose build` |
 
-**注意**：这些只是部分可能的命令。 **注意**：这些只是部分可能的命令。 查看 [compose 文档](https://docs.docker.com/compose/reference/) 了解所有可能的选项。
+**注意**：这些只是部分可能的命令。 查看 [compose 文档](https://docs.docker.com/compose/reference/) 了解所有可能的选项。
 
 ### Docker Compose 展示
 
-既然如此，让我们看看如何自己使用 Docker Compose。 在此场景中，我假设以下要求： 在此场景中，我假设以下要求：
+既然如此，让我们看看如何自己使用 Docker Compose。 在此场景中，我假设以下要求：
 
 1. 在 Apache 上运行的电子商务网站
 2. 此电子商务网站将客户信息存储在 MySQL 数据库中
@@ -616,38 +616,38 @@ build
 
 图示显示两个容器彼此独立运行，无法相互通信。
 
-……但我们想每次都这样做吗？ ……但我们想每次都这样做吗？ 或者如果我们决定扩展并涉及多个 Web 服务器呢？ 我们想为每个容器每次都这样做吗？ 我当然不想。 我们想为每个容器每次都这样做吗？ 我当然不想。
+……但我们想每次都这样做吗？ 或者如果我们决定扩展并涉及多个 Web 服务器呢？ 我们想为每个容器每次都这样做吗？ 我当然不想。
 
 相反，我们可以通过 `docker-compose up` 使用 Docker Compose 一起运行这些容器，这为我们提供了以下优势：
 
 1. 一个简单的命令即可运行两者
 2. 这两个容器已联网在一起，因此我们无需配置网络。
-3. 极其便携。 极其便携。 我们可以将 docker-compose.yml 文件与他人共享，他们可以在不了解各个容器工作原理的情况下获得完全相同的设置。
+3. 极其便携。 我们可以将 docker-compose.yml 文件与他人共享，他们可以在不了解各个容器工作原理的情况下获得完全相同的设置。
 4. 易于维护和更改。 我们不必担心特定容器使用（可能过时的）镜像。
 
 ![img](img/image_20251156-145632.png)
 
-显示两个容器作为组合服务部署的图示。 这两个容器可以相互通信。 这两个容器可以相互通信。
+显示两个容器作为组合服务部署的图示。 这两个容器可以相互通信。
 
 ### Docker-compose.yml 文件 101
 
-一个文件统治所有。 一个文件统治所有。 docker-compose.yml 文件的格式与 Dockerfile 不同。 重要的是要注意 YAML 需要缩进（良好的做法是使用两个空格且必须保持一致！）。 首先，在我们创建 docker-compose.yml 文件之前，我将展示一些您需要学习的新指令，以便能够编写 docker-compose.yml 文件： 重要的是要注意 YAML 需要缩进（良好的做法是使用两个空格且必须保持一致！）。 首先，在我们创建 docker-compose.yml 文件之前，我将展示一些您需要学习的新指令，以便能够编写 docker-compose.yml 文件：
+一个文件统治所有。 docker-compose.yml 文件的格式与 Dockerfile 不同。 重要的是要注意 YAML 需要缩进（良好的做法是使用两个空格且必须保持一致！）。 首先，在我们创建 docker-compose.yml 文件之前，我将展示一些您需要学习的新指令，以便能够编写 docker-compose.yml 文件：
 
-|                    指令                   |                                            解释                                            |                      示例                     |
-| :-------------------------------------: | :--------------------------------------------------------------------------------------: | :-----------------------------------------: |
-|                 version                 |           这位于文件顶部，用于标识 docker-compose.yml 是为哪个版本的 Compose 编写的。           |                   `'3.3'`                   |
-|                 services                |                                      此指令标记要管理的容器的开始。                                     |                 `services:`                 |
-| name (replace value) | 此指令是您定义容器及其配置的地方。 此指令是您定义容器及其配置的地方。 "name" 需要替换为您要定义的实际容器名称，例如 "webserver" 或 "database"。 |                 `webserver`                 |
-|                  build                  |        此指令定义包含此容器/服务的 Dockerfile 的目录。 （您需要使用此指令或 image 指令）。 （您需要使用此指令或 image 指令）。        |                `./webserver`                |
-|                  ports                  |                            此指令将端口发布到暴露的端口（这取决于镜像/Dockerfile）。                            |                  `'80:80'`                  |
-|                 volumes                 |                                  此指令列出应从主机操作系统挂载到容器中的目录。                                 | `'./home/cmnatic/webserver/:/var/www/html'` |
-|               environment               |                             此指令用于传递环境变量（不安全），例如密码、用户名、时区配置等。                             |       `MYSQL_ROOT_PASSWORD=helloworld`      |
-|                  image                  |                           此指令定义容器应使用哪个镜像构建（您需要使用此指令或 build 指令）。                          |                `mysql:latest`               |
-|                 networks                |       此指令定义容器将成为哪些网络的一部分。 容器可以是多个网络的一部分（例如，一个 Web 服务器只能联系一个数据库，但数据库可以联系多个 Web 服务器）。      |                 `ecommerce`                 |
+|                    指令                   |                                       解释                                      |                      示例                     |
+| :-------------------------------------: | :---------------------------------------------------------------------------: | :-----------------------------------------: |
+|                 version                 |      这位于文件顶部，用于标识 docker-compose.yml 是为哪个版本的 Compose 编写的。     |                   `'3.3'`                   |
+|                 services                |                                此指令标记要管理的容器的开始。                                |                 `services:`                 |
+| name (replace value) |     此指令是您定义容器及其配置的地方。 "name" 需要替换为您要定义的实际容器名称，例如 "webserver" 或 "database"。    |                 `webserver`                 |
+|                  build                  |              此指令定义包含此容器/服务的 Dockerfile 的目录。 （您需要使用此指令或 image 指令）。             |                `./webserver`                |
+|                  ports                  |                       此指令将端口发布到暴露的端口（这取决于镜像/Dockerfile）。                      |                  `'80:80'`                  |
+|                 volumes                 |                            此指令列出应从主机操作系统挂载到容器中的目录。                            | `'./home/cmnatic/webserver/:/var/www/html'` |
+|               environment               |                        此指令用于传递环境变量（不安全），例如密码、用户名、时区配置等。                       |       `MYSQL_ROOT_PASSWORD=helloworld`      |
+|                  image                  |                     此指令定义容器应使用哪个镜像构建（您需要使用此指令或 build 指令）。                     |                `mysql:latest`               |
+|                 networks                | 此指令定义容器将成为哪些网络的一部分。 容器可以是多个网络的一部分（例如，一个 Web 服务器只能联系一个数据库，但数据库可以联系多个 Web 服务器）。 |                 `ecommerce`                 |
 
-**注意**：这些只是部分可能的指令。 **注意**：这些只是部分可能的指令。 查看 [compose 文件](https://docs.docker.com/compose/compose-file/) 文档了解所有可能的指令。
+**注意**：这些只是部分可能的指令。 查看 [compose 文件](https://docs.docker.com/compose/compose-file/) 文档了解所有可能的指令。
 
-既然如此，让我们看看我们的第一个 docker-compose.yml 文件。 此 docker-compose.yml 文件假设以下内容： 此 docker-compose.yml 文件假设以下内容：
+既然如此，让我们看看我们的第一个 docker-compose.yml 文件。 此 docker-compose.yml 文件假设以下内容：
 
 1. 我们将从前面提到的场景中运行一个Web服务器（名为web）。
 2. 我们将从前面提到的场景中运行一个数据库服务器（名为database）。
@@ -687,7 +687,7 @@ networks:
 
 <details>
 
-<summary> 我想使用`docker-compose`来启动一系列容器。 什么参数允许我这样做？ </summary> 什么参数允许我这样做？ </summary>
+<summary> 我想使用`docker-compose`来启动一系列容器。 什么参数允许我这样做？ </summary>
 
 ```plaintext
 up
@@ -697,7 +697,7 @@ up
 
 <details>
 
-<summary> 我想使用`docker-compose`来删除这一系列容器。 什么参数允许我这样做？ </summary> 什么参数允许我这样做？ </summary>
+<summary> 我想使用`docker-compose`来删除这一系列容器。 什么参数允许我这样做？ </summary>
 
 ```plaintext
 down
@@ -707,7 +707,7 @@ down
 
 <details>
 
-<summary> `docker-compose`使用的.yml文件的名称是什么？ <br />**注意**：对于这个问题，你需要在答案中包含.yml文件扩展名</summary> <br />**注意**：对于这个问题，你需要在答案中包含.yml文件扩展名</summary>
+<summary> `docker-compose`使用的.yml文件的名称是什么？ <br />**注意**：对于这个问题，你需要在答案中包含.yml文件扩展名</summary>
 
 ```plaintext
 docker-compose.yml
@@ -719,12 +719,12 @@ docker-compose.yml
 
 ## 任务6 Docker套接字简介
 
-本任务将解释Docker如何在操作系统和容器之间进行交互。 当你安装Docker时，会安装两个程序： 当你安装Docker时，会安装两个程序：
+本任务将解释Docker如何在操作系统和容器之间进行交互。 当你安装Docker时，会安装两个程序：
 
 1. Docker客户端
 2. Docker服务器
 
-Docker采用客户端/服务器模型工作。 具体来说，这两个程序相互通信，构成了我们所熟知和喜爱的Docker。 Docker使用一种称为套接字的东西来实现这种通信。 套接字是操作系统的一个基本特性，允许数据通信。 具体来说，这两个程序相互通信，构成了我们所熟知和喜爱的Docker。 Docker使用一种称为套接字的东西来实现这种通信。 套接字是操作系统的一个基本特性，允许数据通信。
+Docker采用客户端/服务器模型工作。 具体来说，这两个程序相互通信，构成了我们所熟知和喜爱的Docker。 Docker使用一种称为套接字的东西来实现这种通信。 套接字是操作系统的一个基本特性，允许数据通信。
 
 例如，在使用聊天程序时，可能有两个套接字：
 
@@ -733,23 +733,23 @@ Docker采用客户端/服务器模型工作。 具体来说，这两个程序相
 
 程序将与这两个套接字交互，以存储或检索其中的数据！ 套接字可以是网络连接，也可以是表示为文件的形式。 关于套接字，重要的是要知道它们允许进程间通信（IPC）。 这仅仅意味着操作系统上的进程可以相互通信！
 
-在Docker的上下文中，Docker服务器实际上只是一个API。 在Docker的上下文中，Docker服务器实际上只是一个API。 Docker服务器使用此API来**监听**请求，而Docker客户端使用该API来**发送**请求。
+在Docker的上下文中，Docker服务器实际上只是一个API。 Docker服务器使用此API来**监听**请求，而Docker客户端使用该API来**发送**请求。
 
-例如，我们来看这个命令：**docker run helloworld**。 例如，我们来看这个命令：**docker run helloworld**。 Docker客户端将请求Docker服务器使用镜像"helloworld"运行一个容器。 现在，虽然这个解释相当基础，但它是Docker工作原理的基本前提。 现在，虽然这个解释相当基础，但它是Docker工作原理的基本前提。
+例如，我们来看这个命令：**docker run helloworld**。 Docker客户端将请求Docker服务器使用镜像"helloworld"运行一个容器。 现在，虽然这个解释相当基础，但它是Docker工作原理的基本前提。
 
 让我们看下面的图表来展示这个过程：
 
 ![说明使用操作系统上的docker.sock文件进行Docker交互的流程](img/image_20251105-150556.png)
 
-有趣的是，正因为如此，我们可以使用像curl或Postman这样的API开发工具与Docker服务器交互。 但是，使用这些超出了本房间的范围。 但是，使用这些超出了本房间的范围。
+有趣的是，正因为如此，我们可以使用像curl或Postman这样的API开发工具与Docker服务器交互。 但是，使用这些超出了本房间的范围。
 
-最后，重要的是要注意，正因为如此，运行Docker的主机可以被配置为处理从另一台设备发送的命令。 最后，重要的是要注意，正因为如此，运行Docker的主机可以被配置为处理从另一台设备发送的命令。 如果配置不当，这是一个极其危险的漏洞，因为这意味着有人可以远程停止、启动和访问Docker容器。 尽管如此，在某些用例中，Docker的这个特性非常有用！ 我们将在后续房间中更详细地介绍这一点！ 尽管如此，在某些用例中，Docker的这个特性非常有用！ 我们将在后续房间中更详细地介绍这一点！
+最后，重要的是要注意，正因为如此，运行Docker的主机可以被配置为处理从另一台设备发送的命令。 如果配置不当，这是一个极其危险的漏洞，因为这意味着有人可以远程停止、启动和访问Docker容器。 尽管如此，在某些用例中，Docker的这个特性非常有用！ 我们将在后续房间中更详细地介绍这一点！
 
 :::info 回答以下问题
 
 <details>
 
-<summary> 术语"IPC"代表什么？ </summary> </summary>
+<summary> 术语"IPC"代表什么？ </summary>
 
 ```plaintext
 Interprocess Communication
@@ -759,7 +759,7 @@ Interprocess Communication
 
 <details>
 
-<summary> Docker服务器可以等同于什么技术？ </summary> </summary>
+<summary> Docker服务器可以等同于什么技术？ </summary>
 
 ```plaintext
 API
@@ -771,13 +771,13 @@ API
 
 ## 任务7 实践
 
-通过按下绿色的"`Start Machine`"按钮来部署附加到此任务的虚拟机。 完全加载后，虚拟机将以分屏视图出现在你的网页浏览器中。 通过按下绿色的"`Start Machine`"按钮来部署附加到此任务的虚拟机。 完全加载后，虚拟机将以分屏视图出现在你的网页浏览器中。 如果你没有看到虚拟机，请点击此页面顶部附近右上角的蓝色"`Show Split View`"按钮。
+通过按下绿色的"`Start Machine`"按钮来部署附加到此任务的虚拟机。 完全加载后，虚拟机将以分屏视图出现在你的网页浏览器中。 如果你没有看到虚拟机，请点击此页面顶部附近右上角的蓝色"`Show Split View`"按钮。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> 连接到机器。 <summary> 连接到机器。 当前正在运行的容器的名称是什么？ </summary> </summary>
+<summary> 连接到机器。 当前正在运行的容器的名称是什么？ </summary>
 
 ```plaintext
 cloudisland
@@ -787,7 +787,7 @@ cloudisland
 
 <details>
 
-<summary> 使用Docker启动一个带有"webserver"镜像的Web服务器（不带引号）。 你需要`使用端口80运行容器`。<br />启动容器后，尝试在你的浏览器中连接到[https://LAB_WEB_URL.p.thmlabs.com/](https://LAB_WEB_URL.p.thmlabs.com/)。 标志是什么？ </summary> 你需要`使用端口80运行容器`。<br />启动容器后，尝试在你的浏览器中连接到[https://LAB_WEB_URL.p.thmlabs.com/](https://LAB_WEB_URL.p.thmlabs.com/)。 标志是什么？ </summary>
+<summary> 使用Docker启动一个带有"webserver"镜像的Web服务器（不带引号）。 你需要`使用端口80运行容器`。<br />启动容器后，尝试在你的浏览器中连接到[https://LAB_WEB_URL.p.thmlabs.com/](https://LAB_WEB_URL.p.thmlabs.com/)。 标志是什么？ </summary>
 
 ```plaintext
 THM{WEBSERVER_CONTAINER}

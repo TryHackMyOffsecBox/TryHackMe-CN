@@ -339,7 +339,7 @@ spec:
 
 <details>
 
-<summary> 在配置文件中，您刚刚声明需要 4 个 nginx Pod。 这是在哪个“必需字段”中声明的？ </summary> 这是在哪个“必需字段”中声明的？ </summary>
+<summary> 在配置文件中，您刚刚声明需要 4 个 nginx Pod。 这是在哪个“必需字段”中声明的？ </summary>
 
 ```plaintext
 spec
@@ -403,7 +403,7 @@ example-pod   1/1     Running             0          2m18s
 
 `kubectl describe pod example-pod -n example-namespace`
 
-这将返回有关出错 Pod 的一些详细信息。 例如： 例如：
+这将返回有关出错 Pod 的一些详细信息。 例如：
 
 ```shell title="Terminal"
 user@tryhackme$ kubectl describe pod example-pod -n example-namespace
@@ -454,7 +454,7 @@ IP:               10.244.0.21
 
 <details>
 
-<summary> ...通过收集有关 Pod 的一些详细信息来对其进行故障排除？ </summary> </summary>
+<summary> ...通过收集有关 Pod 的一些详细信息来对其进行故障排除？ </summary>
 
 ```plaintext
 describe
@@ -464,7 +464,7 @@ describe
 
 <details>
 
-<summary> ...访问容器的 shell？ </summary> </summary>
+<summary> ...访问容器的 shell？ </summary>
 
 ```plaintext
 exec
@@ -474,7 +474,7 @@ exec
 
 <details>
 
-<summary> ...检查运行中的 pod 状态？ </summary> </summary>
+<summary> ...检查运行中的 pod 状态？ </summary>
 
 ```plaintext
 get
@@ -484,7 +484,7 @@ get
 
 <details>
 
-<summary> ...将定义的配置（YAML 文件）转换为运行中的进程？ </summary> </summary>
+<summary> ...将定义的配置（YAML 文件）转换为运行中的进程？ </summary>
 
 ```plaintext
 apply
@@ -512,7 +512,7 @@ Kubernetes 加固正是如此，通过遵循作为 DevSecOps 工程师应执行�
 
 #### 保护你的 Pod
 
-让我们从几种保护 pod 本身的方法开始。 让我们从几种保护 pod 本身的方法开始。 一些 pod 安全最佳实践包括：
+让我们从几种保护 pod 本身的方法开始。 一些 pod 安全最佳实践包括：
 
 - 运行应用程序的容器不应具有 root 权限
 - 容器应具有不可变文件系统，这意味着它们不能被更改或添加（根据容器的用途，这可能无法实现）
@@ -582,7 +582,7 @@ Pod安全准入（使用Pod安全准入控制器）通过拦截API服务器请�
 
 <details>
 
-<summary> 哪种最佳容器安全实践用于规范对Kubernetes集群及其资源的访问？ </summary> </summary>
+<summary> 哪种最佳容器安全实践用于规范对Kubernetes集群及其资源的访问？ </summary>
 
 ```plaintext
 RBAC
@@ -592,7 +592,7 @@ RBAC
 
 <details>
 
-<summary> 什么用于在3个级别定义安全策略？ </summary> </summary>
+<summary> 什么用于在3个级别定义安全策略？ </summary>
 
 ```plaintext
 Pod Security Standards
@@ -602,7 +602,7 @@ Pod Security Standards
 
 <details>
 
-<summary> 什么强制执行这些策略？ </summary> </summary>
+<summary> 什么强制执行这些策略？ </summary>
 
 ```plaintext
 Pod Security Admission
@@ -736,13 +736,13 @@ Secret
 
 `kubectl auth can-i get secret/terminal-creds --as=system:serviceaccount:default:terminal-admin`
 
-通过这个"yes"输出，您已确认RBAC已就位，并履行了作为DevSecOps工程师的职责，加固了集群，并在强化此集群方面迈出了良好的第一步。 希望您喜欢这次Kubernetes集群的小小巡游并了解了基础知识。 下次再见！ 希望您喜欢这次Kubernetes集群的小小巡游并了解了基础知识。 下次再见！
+通过这个"yes"输出，您已确认RBAC已就位，并履行了作为DevSecOps工程师的职责，加固了集群，并在强化此集群方面迈出了良好的第一步。 希望您喜欢这次Kubernetes集群的小小巡游并了解了基础知识。 下次再见！
 
 :::info 回答以下问题
 
 <details>
 
-<summary> 您能掌握Kubernetes基础知识并获取标志吗？ </summary> </summary>
+<summary> 您能掌握Kubernetes基础知识并获取标志吗？ </summary>
 
 ```plaintext
 THM{k8s_k3nno1ssarus}
@@ -752,7 +752,7 @@ THM{k8s_k3nno1ssarus}
 
 <details>
 
-<summary> RoleBinding使用了什么apiVersion？ </summary> </summary>
+<summary> RoleBinding使用了什么apiVersion？ </summary>
 
 ```plaintext
 rbac.authorization.k8s.io/v1
