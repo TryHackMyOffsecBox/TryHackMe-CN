@@ -10,6 +10,10 @@
 
 > 诸如Docker之类的容器化技术在开发和部署应用程序方面很受欢迎。 在本模块中，您将学习Docker的工作原理、一些常见漏洞以及可以采取的各种措施来保护您的容器免受攻击。
 
+## [Host Evasions](Host%20Evasions/index.md)
+
+> This module provides the essential knowledge and fundamental techniques to bypass various host-based security solutions, including AV products, UAC and AppLocker, Logging, Runtime Detection, and AMSI. You will also learn the Living-Off-the-Land technique and how to leverage the Windows Sysinternals tool to perform various Red Team purposes.
+
 ## [Microsoft Defender XDR](Microsoft%20Defender%20XDR/index.md)
 
 > Microsoft Defender XDR 旨在关联端点、身份、电子邮件和云应用中的威胁信号。 本模块将逐步引导您了解攻击者杀伤链，帮助您理解攻击的不同阶段如何在 Defender 工具中呈现。 在整个模块中，您将调查与初始访问、权限提升、横向移动等相关的警报和信号。 通过处理真实场景，您将获得 Microsoft Defender for Endpoint 和 Identity 的实践经验，培养使用 XDR 检测、调查和响应复杂威胁所需的技能。
