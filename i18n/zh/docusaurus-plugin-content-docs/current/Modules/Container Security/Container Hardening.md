@@ -646,7 +646,7 @@ struts2-core
 
 <details>
 
-<summary> 使用 Grype 分析位于 **/root/container.tar** 的导出容器文件系统。 "CVE-2023-45853" 的严重性评级是什么？ </summary>
+<summary> 使用 Grype 分析位于 **/root/container.tar** 的导出容器文件系统。 "CVE-2023-45853"被评为什么严重性？ </summary>
 
 ```plaintext
 Critical
