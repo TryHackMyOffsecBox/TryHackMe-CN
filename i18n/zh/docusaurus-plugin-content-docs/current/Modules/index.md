@@ -10,9 +10,9 @@
 
 > 诸如Docker之类的容器化技术在开发和部署应用程序方面很受欢迎。 在本模块中，您将学习Docker的工作原理、一些常见漏洞以及可以采取的各种措施来保护您的容器免受攻击。
 
-## [Host Evasions](Host%20Evasions/index.md)
+## [主机规避](Host%20Evasions/index.md)
 
-> This module provides the essential knowledge and fundamental techniques to bypass various host-based security solutions, including AV products, UAC and AppLocker, Logging, Runtime Detection, and AMSI. You will also learn the Living-Off-the-Land technique and how to leverage the Windows Sysinternals tool to perform various Red Team purposes.
+> 本模块提供绕过各种基于主机的安全解决方案所需的基本知识和基础技术，包括防病毒产品、用户账户控制（UAC）和应用锁定器、日志记录、运行时检测以及反恶意软件扫描接口（AMSI）。 您还将学习利用现有资源技术以及如何使用Windows Sysinternals工具来实现各种红队目的。
 
 ## [Microsoft Defender XDR](Microsoft%20Defender%20XDR/index.md)
 
