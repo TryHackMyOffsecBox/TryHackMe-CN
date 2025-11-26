@@ -14,6 +14,14 @@
 
 > 本模块提供绕过各种基于主机的安全解决方案所需的基本知识和基础技术，包括防病毒产品、用户账户控制（UAC）和应用锁定器、日志记录、运行时检测以及反恶意软件扫描接口（AMSI）。 您还将学习利用现有资源技术以及如何使用Windows Sysinternals工具来实现各种红队目的。
 
+## [Memory Analysis](Memory%20Analysis/index.md)
+
+> In this module, we'll learn how to investigate volatile memory to uncover signs of suspicious behaviour, hidden programs, user activity, and potential security threats. We will explore how memory stores valuable information about running programs, system usage, and network interactions that often disappear after shutdown. Through guided practice and real scenarios, we'll develop the skills to identify unusual patterns, trace actions taken on a system, and connect the dots to understand what happened. Each step combines clear explanations with practical exercises using the Volatility Framework to build confidence and prepare us for real investigation work.
+
 ## [Microsoft Defender XDR](Microsoft%20Defender%20XDR/index.md)
 
 > Microsoft Defender XDR 旨在关联端点、身份、电子邮件和云应用中的威胁信号。 本模块将逐步引导您了解攻击者杀伤链，帮助您理解攻击的不同阶段如何在 Defender 工具中呈现。 在整个模块中，您将调查与初始访问、权限提升、横向移动等相关的警报和信号。 通过处理真实场景，您将获得 Microsoft Defender for Endpoint 和 Identity 的实践经验，培养使用 XDR 检测、调查和响应复杂威胁所需的技能。
+
+## [Starters](Starters/index.md)
+
+> This module offers a collection of fun, standalone CTF-style challenges designed to help learners build practical hacking skills. These are not part of a linear learning path but serve as valuable, varied practice for foundational techniques across different domains.
