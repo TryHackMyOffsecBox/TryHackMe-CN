@@ -582,7 +582,9 @@ In our goal to bypass the AV, we will find two main approaches to delivering the
 
 A stageless payload embeds the final shellcode directly into itself. Think of it as a packaged app that executes the shellcode in a single-step process. In previous tasks, we embedded an executable that embedded a simple `calc` shellcode, making a stageless payload.
 
-![Stageless Payload](img/image_20251141-104108.png)
+<!-- ![Stageless Payload](img/image_20251141-104108.png) -->
+
+![Stageless Payload](img/image_20251149-204902.png)
 
 In the example above, when the user executes the malicious payload, the embedded shellcode will run, providing a reverse shell to the attacker.
 
@@ -592,11 +594,15 @@ Staged payloads work by using intermediary shellcodes that act as steps leading 
 
 While there might be payloads with several stages, the usual case involves having a two-stage payload where the first stage, which we'll call **stage0**, is a stub shellcode that will connect back to the attacker's machine to download the final shellcode to be executed.
 
-![Staged Payload - stage0](img/image_20251141-104147.png)
+<!-- ![Staged Payload - stage0](img/image_20251141-104147.png) -->
+
+![Staged Payload - stage0](img/image_20251149-204920.png)
 
 Once retrieved, the stage0 stub will inject the final shellcode somewhere in the memory of the payload's process and execute it (as shown below).
 
-![Staged Payload - Send ReveseShell](img/image_20251142-104203.png)
+<!-- ![Staged Payload - Send ReveseShell](img/image_20251142-104203.png) -->
+
+![Staged Payload - Send ReveseShell](img/image_20251149-204935.png)
 
 ### Staged vs. Stageless
 
@@ -927,7 +933,9 @@ Final size of csharp file: 2170 bytes
 
 If we try uploading our newly generated payload to our test machine, the AV will instantly flag it before we even get a chance to execute it:
 
-![Windows Defender detected our payload as malicious!](img/image_20251154-165410.png)
+<!-- ![Windows Defender detected our payload as malicious!](img/image_20251154-165410.png) -->
+
+![Windows Defender detected our payload as malicious!](img/image_20251150-205017.png)
 
 If encoding doesn't work, we can always try encrypting the payload. Intuitively, we would expect this to have a higher success rating, as decrypting the payload should prove a harder task for the AV. Let's try that now.
 

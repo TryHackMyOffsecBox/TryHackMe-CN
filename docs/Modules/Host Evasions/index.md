@@ -24,7 +24,7 @@ Understand how antivirus software works and what detection techniques are used t
 
 Learn shellcode encoding, packing, binders, and crypters.
 
-## Obfuscation Principles
+## [Obfuscation Principles](obfuscationprinciples.md)
 
 Leverage tool-agnostic software obfuscation practices to hide malicious functions and create unique code.
 
