@@ -2,24 +2,24 @@
 sidebar_position: 5
 ---
 
-# Obfuscation Principles
+# 混淆原理
 
 TODO 未完成
 
-## Task 1 Introduction
+## 任务1 介绍
 
-## Task 2 Origins of Obfuscation
+## 任务2 混淆的起源
 
-## Task 3 Obfuscation's Function for Static Evasion
+## 任务3 混淆在静态规避中的作用
 
-## Task 4 Object Concatenation
+## 任务4 对象拼接
 
-## Task 5 Obfuscation's Function for Analysis Deception
+## 任务5 混淆在分析欺骗中的作用
 
-## Task 6 Code Flow and Logic
+## 任务6 代码流程和逻辑
 
-## Task 7 Arbitrary Control Flow Patterns
+## 任务7 任意控制流模式
 
-## Task 8 Protecting and Stripping Identifiable Information
+## 任务8 保护和剥离可识别信息
 
-## Task 9 Conclusion
+## 任务9 结论
