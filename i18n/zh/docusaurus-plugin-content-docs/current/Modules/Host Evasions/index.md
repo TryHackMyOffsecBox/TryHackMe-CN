@@ -1,49 +1,49 @@
-# Host Evasions
+# 主机规避
 
-Understand the techniques behind host-based security and bypass the most common security products in Windows operating systems.
+了解基于主机的安全技术，并绕过Windows操作系统中最常见的安全产品。
 
-This module provides the essential knowledge and fundamental techniques to bypass various host-based security solutions, including AV products, UAC and AppLocker, Logging, Runtime Detection, and AMSI. You will also learn the Living-Off-the-Land technique and how to leverage the Windows Sysinternals tool to perform various Red Team purposes.
+本模块提供绕过各种基于主机的安全解决方案所需的基础知识和基本技术，包括AV产品、UAC和AppLocker、日志记录、运行时检测和AMSI。 您还将学习Living-Off-the-Land技术以及如何利用Windows Sysinternals工具执行各种红队目的。
 
-## Windows Internals
+## Windows内部原理
 
-Learn and understand the fundamentals of how Windows operates at its core.
+学习和理解Windows核心运作的基本原理。
 
-## Introduction to Windows API
+## Windows API简介
 
-Learn how to interact with the win32 API and understand its wide range of use cases
+学习如何与win32 API交互并了解其广泛的应用场景
 
-## Abusing Windows Internals
+## 滥用Windows内部原理
 
-Leverage windows internals components to evade common detection solutions, using modern tool-agnostic approaches.
+利用Windows内部组件，使用现代工具无关的方法规避常见检测解决方案。
 
-## Introduction to Antivirus
+## 防病毒软件简介
 
-Understand how antivirus software works and what detection techniques are used to bypass malicious file checks.
+了解防病毒软件的工作原理以及用于绕过恶意文件检查的检测技术。
 
-## [AV Evasion: Shellcode](avevasionshellcode.md)
+## [AV规避：Shellcode](avevasionshellcode.md)
 
-Learn shellcode encoding, packing, binders, and crypters.
+学习Shellcode编码、打包、绑定器和加密器。
 
-## Obfuscation Principles
+## 混淆原理
 
-Leverage tool-agnostic software obfuscation practices to hide malicious functions and create unique code.
+利用工具无关的软件混淆实践来隐藏恶意功能并创建独特代码。
 
-## Signature Evasion
+## 签名规避
 
-Learn how to break signatures and evade common AV, using modern tool-agnostic approaches.
+学习如何使用现代工具无关的方法破坏签名并规避常见AV。
 
-## Bypassing UAC
+## 绕过UAC
 
-Learn common ways to bypass User Account Control (UAC) in Windows hosts.
+学习在Windows主机中绕过用户账户控制（UAC）的常见方法。
 
-## Runtime Detection Evasion
+## 运行时检测规避
 
-Learn how to bypass common runtime detection measures, such as AMSI, using modern tool-agnostic approaches.
+学习如何使用现代工具无关的方法绕过常见运行时检测措施，如AMSI。
 
-## Evading Logging and Monitoring
+## 规避日志记录和监控
 
-Learn how to bypass common logging and system monitoring, such as ETW, using modern tool-agnostic approaches.
+学习如何使用现代工具无关的方法绕过常见日志记录和系统监控，如ETW。
 
 ## Living Off the Land
 
-Learn the essential concept of "Living Off the Land" in Red Team engagements.
+学习红队演练中"Living Off the Land"的基本概念。
