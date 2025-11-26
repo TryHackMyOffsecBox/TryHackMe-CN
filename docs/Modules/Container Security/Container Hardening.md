@@ -646,7 +646,7 @@ struts2-core
 
 <details>
 
-<summary> Use Grype to analyse the exported container filesystem located at **/root/container.tar**. What severity is the "CVE-2023-45853" rated as?  </summary>
+<summary> Use Grype to analyse the exported container filesystem located at **/root/container.tar**. What severity is the "CVE-2023-45853" rated as? </summary>
 
 ```plaintext
 Critical
