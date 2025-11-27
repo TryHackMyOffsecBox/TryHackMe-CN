@@ -4,17 +4,17 @@ sidebar_position: 0
 
 # picklerick
 
-## Task 1 Pickle Rick
+## 任务1 腌黄瓜瑞克
 
-This Rick and Morty-themed challenge requires you to exploit a web server and find three ingredients to help Rick make his potion and transform himself back into a human from a pickle.
+这个以《瑞克和莫蒂》为主题的挑战要求你利用一个网络服务器，找到三种成分来帮助瑞克制作他的药剂，将他从腌黄瓜变回人类。
 
-Deploy the virtual machine on this task and explore the web application: MACHINE_IP
+在此任务上部署虚拟机并探索网络应用程序：MACHINE_IP
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What is the first ingredient that Rick needs? </summary>
+<summary> 瑞克需要的第一个成分是什么？ </summary>
 
 ```plaintext
 mr. meeseek hair
@@ -24,7 +24,7 @@ mr. meeseek hair
 
 <details>
 
-<summary> What is the second ingredient in Rick’s potion? </summary>
+<summary> 瑞克药剂中的第二个成分是什么？ </summary>
 
 ```plaintext
 1 jerry tear
@@ -34,7 +34,7 @@ mr. meeseek hair
 
 <details>
 
-<summary> What is the last and final ingredient? </summary>
+<summary> 最后一种成分是什么？ </summary>
 
 ```plaintext
 fleeb juice
