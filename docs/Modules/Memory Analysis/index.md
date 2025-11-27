@@ -4,7 +4,7 @@ Learn how to analyse volatile memory to detect suspicious activity, track user b
 
 In this module, we'll learn how to investigate volatile memory to uncover signs of suspicious behaviour, hidden programs, user activity, and potential security threats. We will explore how memory stores valuable information about running programs, system usage, and network interactions that often disappear after shutdown. Through guided practice and real scenarios, we'll develop the skills to identify unusual patterns, trace actions taken on a system, and connect the dots to understand what happened. Each step combines clear explanations with practical exercises using the Volatility Framework to build confidence and prepare us for real investigation work.
 
-## Memory Analysis Introduction
+## [Memory Analysis Introduction](memoryanalysisintroduction.md)
 
 Learn how memory analysis helps detect threats during live investigations.
 
