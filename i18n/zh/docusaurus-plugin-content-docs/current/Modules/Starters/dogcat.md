@@ -4,17 +4,17 @@ sidebar_position: 3
 
 # dogcat
 
-## Task 1 Dogcat
+## 任务1 Dogcat
 
-I made this website for viewing cat and dog images with PHP. If you're feeling down, come look at some dogs/cats!
+我用PHP制作了这个用于查看猫和狗图片的网站。 如果你感到沮丧，来看看一些狗/猫吧！
 
-**This machine may take a few minutes to fully start up.**
+**这台机器可能需要几分钟才能完全启动。**
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> What is flag 1? </summary>
+<summary> 什么是flag 1？ </summary>
 
 ```plaintext
 THM{Th1s_1s_N0t_4_Catdog_ab67edfa}
@@ -24,7 +24,7 @@ THM{Th1s_1s_N0t_4_Catdog_ab67edfa}
 
 <details>
 
-<summary> What is flag 2? </summary>
+<summary> 什么是flag 2？ </summary>
 
 ```plaintext
 THM{LF1_t0_RC3_aec3fb}
@@ -34,7 +34,7 @@ THM{LF1_t0_RC3_aec3fb}
 
 <details>
 
-<summary> What is flag 3? </summary>
+<summary> 什么是flag 3？ </summary>
 
 ```plaintext
 THM{D1ff3r3nt_3nv1ronments_874112}
@@ -44,7 +44,7 @@ THM{D1ff3r3nt_3nv1ronments_874112}
 
 <details>
 
-<summary> What is flag 4? </summary>
+<summary> 什么是flag 4？ </summary>
 
 ```plaintext
 THM{esc4l4tions_on_esc4l4tions_on_esc4l4tions_7a52b17dba6ebb0dc38bc1049bcba02d}

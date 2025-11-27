@@ -1,37 +1,37 @@
-# Memory Analysis
+# 内存分析
 
-Learn how to analyse volatile memory to detect suspicious activity, track user behaviour, and investigate network threats through hands-on labs.
+通过动手实验学习如何分析易失性内存以检测可疑活动、跟踪用户行为并调查网络威胁。
 
-In this module, we'll learn how to investigate volatile memory to uncover signs of suspicious behaviour, hidden programs, user activity, and potential security threats. We will explore how memory stores valuable information about running programs, system usage, and network interactions that often disappear after shutdown. Through guided practice and real scenarios, we'll develop the skills to identify unusual patterns, trace actions taken on a system, and connect the dots to understand what happened. Each step combines clear explanations with practical exercises using the Volatility Framework to build confidence and prepare us for real investigation work.
+在本模块中，我们将学习如何调查易失性内存以发现可疑行为迹象、隐藏程序、用户活动和潜在安全威胁。 我们将探讨内存如何存储有关运行程序、系统使用情况和网络交互的宝贵信息，这些信息通常在关机后消失。 通过指导实践和真实场景，我们将培养识别异常模式、追踪系统上采取的行动并串联线索以了解发生情况的能力。 每个步骤都结合了清晰解释与使用Volatility框架的实践练习，以建立信心并为我们做好真实调查工作的准备。
 
-## Memory Analysis Introduction
+## 内存分析简介
 
-Learn how memory analysis helps detect threats during live investigations.
+了解内存分析如何在实时调查中帮助检测威胁。
 
-## Memory Acquisition
+## 内存获取
 
-Learn the techniques and best practices to acquire digitally sound memory.
+学习获取数字可靠内存的技术和最佳实践。
 
-## Volatility Essentials
+## Volatility基础
 
-Learn how to perform memory forensics with Volatility!
+学习如何使用Volatility执行内存取证！
 
-## Windows Memory & Processes
+## Windows内存与进程
 
-Analyze a memory dump of a Windows host and uncover malicious processes.
+分析Windows主机的内存转储并发现恶意进程。
 
-## Windows Memory & User Activity
+## Windows内存与用户活动
 
-Trace user behavior, command execution, file access, and macro-based payload delivery from memory.
+从内存中追踪用户行为、命令执行、文件访问和基于宏的有效载荷传递。
 
-## Windows Memory & Network
+## Windows内存与网络
 
-Identify C2 traffic & post-exploit activity in Windows memory.
+在Windows内存中识别C2流量和利用后活动。
 
-## Linux Memory Analysis
+## Linux内存分析
 
-Learn how to investigate and find the footprints of a threat actor in the Linux memory.
+学习如何调查并查找威胁行为者在Linux内存中的足迹。
 
-## Supplemental Memory
+## 补充内存
 
-Investigate lateral movement, credential theft, and additional adversary actions in a memory dump.
+在内存转储中调查横向移动、凭据盗窃和其他对手行动。

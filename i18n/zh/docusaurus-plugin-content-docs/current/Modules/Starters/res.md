@@ -4,17 +4,17 @@ sidebar_position: 5
 
 # res
 
-## Task 1 Resy Set Go
+## 任务1 准备开始
 
-**Are you ready to take the challenge?**
+**你准备好接受挑战了吗？**
 
-The machine may take up to 2 minutes to boot and configure
+机器可能需要长达2分钟的时间来启动和配置
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Scan the machine, how many ports are open? </summary>
+<summary> 扫描机器，有多少个端口是开放的？ </summary>
 
 ```plaintext
 3
@@ -24,7 +24,7 @@ The machine may take up to 2 minutes to boot and configure
 
 <details>
 
-<summary> What's is the database management system installed on the server? </summary>
+<summary> 服务器上安装的是什么数据库管理系统？ </summary>
 
 ```plaintext
 redis
@@ -34,7 +34,7 @@ redis
 
 <details>
 
-<summary> What port is the database management system running on? </summary>
+<summary> 数据库管理系统运行在哪个端口上？ </summary>
 
 ```plaintext
 3679
@@ -44,7 +44,7 @@ redis
 
 <details>
 
-<summary> What's is the version of management system installed on the server? </summary>
+<summary> 服务器上安装的管理系统版本是什么？ </summary>
 
 ```plaintext
 6.0.7
@@ -54,7 +54,7 @@ redis
 
 <details>
 
-<summary> Compromise the machine and locate user.txt </summary>
+<summary> 入侵机器并找到user.txt </summary>
 
 ```plaintext
 thm{red1s_rce_w1thout_credent1als}
@@ -64,7 +64,7 @@ thm{red1s_rce_w1thout_credent1als}
 
 <details>
 
-<summary> What is the local user account password? </summary>
+<summary> 本地用户账户密码是什么？ </summary>
 
 ```plaintext
 beautiful1
@@ -74,7 +74,7 @@ beautiful1
 
 <details>
 
-<summary> Escalate privileges and obtain root.txt </summary>
+<summary> 提升权限并获取root.txt </summary>
 
 ```plaintext
 thm{xxd_pr1v_escalat1on}

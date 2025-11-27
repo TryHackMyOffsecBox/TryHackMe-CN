@@ -4,15 +4,15 @@ sidebar_position: 2
 
 # tomghost
 
-## Task 1 Flags
+## 任务1 标志
 
-Admins Note: This room contains inappropriate content in the form of a username that contains a swear word and should be noted for an educational setting. - Dark
+管理员注意：此房间包含不当内容，形式为包含脏话的用户名，应在教育环境中予以注意。 - 暗黑
 
-:::info Answer the questions below
+:::info 回答以下问题
 
 <details>
 
-<summary> Compromise this machine and obtain user.txt </summary>
+<summary> 入侵此机器并获取 user.txt </summary>
 
 ```plaintext
 THM{GhostCat_1s_so_cr4sy}
@@ -22,7 +22,7 @@ THM{GhostCat_1s_so_cr4sy}
 
 <details>
 
-<summary> Escalate privileges and obtain root.txt </summary>
+<summary> 提升权限并获取 root.txt </summary>
 
 ```plaintext
 THM{Z1P_1S_FAKE}
