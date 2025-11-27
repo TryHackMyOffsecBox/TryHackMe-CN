@@ -1,45 +1,45 @@
-# Starters
+# 入门挑战
 
-A collection of fun independent challenges that should not be overlooked.
+一系列有趣的独立挑战，不容忽视。
 
-This module offers a collection of fun, standalone CTF-style challenges designed to help learners build practical hacking skills. These are not part of a linear learning path but serve as valuable, varied practice for foundational techniques across different domains.
+本模块提供了一系列有趣、独立的CTF风格挑战，旨在帮助学习者建立实用的黑客技能。 这些挑战不属于线性学习路径，而是作为跨不同领域基础技术的宝贵多样化练习。
 
 ## [Pickle Rick](picklerick.md)
 
-A Rick and Morty CTF. Help turn Rick back into a human!
+一个瑞克和莫蒂CTF。 帮助瑞克变回人类！
 
 ## [Mr Robot CTF](mrrobot.md)
 
-Based on the Mr. Robot show, can you root this box?
+基于《黑客军团》剧集，你能攻破这个系统吗？
 
 ## [tomghost](tomghost.md)
 
-Identify recent vulnerabilities to try exploit the system or read files that you should not have access to.
+识别最近的漏洞，尝试利用系统或读取您不应访问的文件。
 
 ## [dogcat](dogcat.md)
 
-I made a website where you can look at pictures of dogs and/or cats! Exploit a PHP application via LFI and break out of a docker container.
+我创建了一个网站，您可以在上面查看狗和/或猫的图片！ 通过LFI利用PHP应用程序并逃逸Docker容器。
 
 ## Git Happens
 
-Boss wanted me to create a prototype, so here it is! We even used something called "version control" that made deploying this really easy!
+老板让我创建一个原型，所以这就是了！ 我们甚至使用了一种叫做"版本控制"的东西，使得部署变得非常容易！
 
 ## [Res](res.md)
 
-Hack into a vulnerable database server with an in-memory data-structure in this semi-guided challenge!
+在这个半引导式挑战中，利用内存数据结构入侵易受攻击的数据库服务器！
 
 ## Nax
 
-Identify the critical security flaw in the most powerful and trusted network monitoring software on the market, that allows an user authenticated execute remote code execution.
+识别市场上最强大和受信任的网络监控软件中的关键安全漏洞，该漏洞允许经过身份验证的用户执行远程代码执行。
 
 ## The Marketplace
 
-Can you take over The Marketplace's infrastructure?
+你能接管The Marketplace的基础设施吗？
 
 ## kiba
 
-Identify the critical security flaw in the data visualization dashboard, that allows execute remote code execution.
+识别数据可视化仪表板中的关键安全漏洞，该漏洞允许执行远程代码执行。
 
 ## Binex
 
-Escalate your privileges by exploiting vulnerable binaries.
+通过利用易受攻击的二进制文件来提升您的权限。
