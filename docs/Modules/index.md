@@ -2,6 +2,10 @@
 
 Modules are made up of bite-sized labs.
 
+## [Attacking LLMs](Attacking%20LLMs/index.md)
+
+> In this module, we cover practical attacks against systems that use large language models, including prompt injection, unsafe output handling, and model poisoning . You will learn how crafted inputs and careless handling of model output can expose secrets or trigger unauthorised actions, and how poisoned training data can cause persistent failures. Each topic includes hands-on exercises and realistic scenarios that show how small issues can be linked into larger attack paths. By the end, participants can build concise proof of concept attacks and suggest clear, practical mitigations.
+
 ## [Command Line](Command%20Line/index.md)
 
 > Understanding command-line interfaces (CLI) is essential, as many security tools and tasks require their configuration and usage through them. CLIs are imperative for scripting and automation and can prove very helpful in carrying out penetration testing and incident analysis. This module will teach us how to use the command line and PowerShell in Windows and Bash in Linux.
