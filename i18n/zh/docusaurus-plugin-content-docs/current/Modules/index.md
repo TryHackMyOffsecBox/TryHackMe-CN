@@ -2,6 +2,10 @@
 
 模块由易于消化的小型实验组成。
 
+## [Attacking LLMs](Attacking%20LLMs/index.md)
+
+> In this module, we cover practical attacks against systems that use large language models, including prompt injection, unsafe output handling, and model poisoning . You will learn how crafted inputs and careless handling of model output can expose secrets or trigger unauthorised actions, and how poisoned training data can cause persistent failures. Each topic includes hands-on exercises and realistic scenarios that show how small issues can be linked into larger attack paths. By the end, participants can build concise proof of concept attacks and suggest clear, practical mitigations.
+
 ## [命令行](Command%20Line/index.md)
 
 > 理解命令行界面（CLI）至关重要，因为许多安全工具和任务需要通过它们进行配置和使用。 命令行界面对于脚本编写和自动化至关重要，在执行渗透测试和事件分析时非常有用。 本模块将教会我们如何在Windows中使用命令行和PowerShell，在Linux中使用Bash。
