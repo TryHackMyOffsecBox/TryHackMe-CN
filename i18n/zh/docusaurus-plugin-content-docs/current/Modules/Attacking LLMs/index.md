@@ -1,29 +1,29 @@
-# Attacking LLMs
+# 攻击大型语言模型
 
-Learn to identify and exploit LLM vulnerabilities, covering prompt injection, insecure output handling, and model poisoning.
+学习识别和利用大型语言模型漏洞，涵盖提示注入、不安全输出处理和模型投毒。
 
-In this module, we cover practical attacks against systems that use large language models, including prompt injection, unsafe output handling, and model poisoning . You will learn how crafted inputs and careless handling of model output can expose secrets or trigger unauthorised actions, and how poisoned training data can cause persistent failures. Each topic includes hands-on exercises and realistic scenarios that show how small issues can be linked into larger attack paths. By the end, participants can build concise proof of concept attacks and suggest clear, practical mitigations.
+在本模块中，我们将介绍针对使用大型语言模型的系统的实际攻击，包括提示注入、不安全输出处理和模型投毒。 您将学习精心设计的输入和模型输出的粗心处理如何暴露机密或触发未经授权的操作，以及被投毒的训练数据如何导致持续性故障。 每个主题都包含动手练习和真实场景，展示小问题如何连接成更大的攻击路径。 最终，参与者能够构建简洁的概念验证攻击，并提出清晰、实用的缓解措施。
 
-## [Input Manipulation & Prompt Injection](inputmanipulationpromptinjection.md)
+## [输入操纵与提示注入](inputmanipulationpromptinjection.md)
 
-Understand the basics of LLM Prompt Injection attacks.
+了解大型语言模型提示注入攻击的基础知识。
 
-## LLM Output Handling and Privacy Risks
+## 大型语言模型输出处理与隐私风险
 
-Learn how LLMs handle their output and the privacy risks behind it.
+了解大型语言模型如何处理其输出及其背后的隐私风险。
 
-## Data Integrity & Model Poisoning
+## 数据完整性与模型投毒
 
-Understand how supply chain and model poisoning attacks can corrupt the underlying LLM.
+了解供应链和模型投毒攻击如何破坏底层大型语言模型。
 
 ## Juicy
 
-A friendly golden retriever who answers your questions.
+一只友好的金毛寻回犬，可以回答您的问题。
 
 ## BankGPT
 
-A customer service assistant used by a banking system.
+银行系统使用的客户服务助手。
 
 ## HealthGPT
 
-A safety-compliant AI assistant that has strict rules against revealing sensitive internal data.
+一个符合安全规范的AI助手，严格遵守不泄露敏感内部数据的规则。
