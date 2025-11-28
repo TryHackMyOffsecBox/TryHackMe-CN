@@ -2,9 +2,9 @@
 
 模块由易于消化的小型实验组成。
 
-## [Attacking LLMs](Attacking%20LLMs/index.md)
+## [攻击大型语言模型](Attacking%20LLMs/index.md)
 
-> In this module, we cover practical attacks against systems that use large language models, including prompt injection, unsafe output handling, and model poisoning . You will learn how crafted inputs and careless handling of model output can expose secrets or trigger unauthorised actions, and how poisoned training data can cause persistent failures. Each topic includes hands-on exercises and realistic scenarios that show how small issues can be linked into larger attack paths. By the end, participants can build concise proof of concept attacks and suggest clear, practical mitigations.
+> 在本模块中，我们将介绍针对使用大型语言模型的系统的实用攻击方法，包括提示注入、不安全输出处理和模型投毒。 您将学习精心设计的输入和模型输出的粗心处理如何暴露机密或触发未经授权的操作，以及被投毒的训练数据如何导致持续性故障。 每个主题都包含实践练习和真实场景，展示小问题如何串联成更大的攻击路径。 最后，参与者能够构建简洁的概念验证攻击，并提出清晰实用的缓解措施。
 
 ## [命令行](Command%20Line/index.md)
 
