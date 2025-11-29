@@ -6,8 +6,9 @@ sidebar_position: 1
 
 ## 任务 1 介绍
 
-Before you can analyze memory, you must acquire it. This involves copying the contents of volatile memory to non-volatile storage (The Art of Memory Forensics). The effectiveness of memory analysis hinges on the quality of the process of memory acquisition—capturing memory accurately is just as crucial as interpreting it. In this room, we will discuss all the variables that you need to consider before, during, and after memory acquisition. These variables include tooling, timing, formatting, environment, and more. You will then proceed to effectively create forensically sound memory images on Windows, Linux, and Hypervisors.
-学习目标
+在分析内存之前，您必须先获取它。 这涉及将易失性内存的内容复制到非易失性存储中（《内存取证的艺术》）。 内存分析的有效性取决于内存获取过程的质量——准确捕获内存与解释它同样重要。 在本房间中，我们将讨论在内存获取之前、期间和之后需要考虑的所有变量。 这些变量包括工具、时机、格式、环境等。 然后，您将继续在Windows、Linux和Hypervisor上有效创建符合取证要求的内存映像。
+
+### 学习目标
 
 - Create a forensically sound memory image on Windows
 - Create a forensically sound memory image on Linux
@@ -15,7 +16,7 @@ Before you can analyze memory, you must acquire it. This involves copying the co
 - Create a forensically sound memory image in a cloud environment
 - Understand and apply best practices during the process of acquisition
 
-房间先决条件
+### 房间先决条件
 
 - [Memory Analysis Introduction](https://tryhackme.com/room/memoryanalysisintroduction)
 - [Windows Fundamentals](https://tryhackme.com/module/windows-fundamentals)
