@@ -8,7 +8,7 @@
 
 了解内存分析如何在实时调查中帮助检测威胁。
 
-## 内存获取
+## [Memory Acquisition](memoryacquisition.md)
 
 学习获取数字可靠内存的技术和最佳实践。
 
