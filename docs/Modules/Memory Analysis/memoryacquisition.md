@@ -7,7 +7,8 @@ sidebar_position: 1
 ## Task 1 Introduction
 
 Before you can analyze memory, you must acquire it. This involves copying the contents of volatile memory to non-volatile storage (The Art of Memory Forensics). The effectiveness of memory analysis hinges on the quality of the process of memory acquisition—capturing memory accurately is just as crucial as interpreting it. In this room, we will discuss all the variables that you need to consider before, during, and after memory acquisition. These variables include tooling, timing, formatting, environment, and more. You will then proceed to effectively create forensically sound memory images on Windows, Linux, and Hypervisors.
-Learning Objectives
+
+### Learning Objectives
 
 - Create a forensically sound memory image on Windows
 - Create a forensically sound memory image on Linux
@@ -15,7 +16,7 @@ Learning Objectives
 - Create a forensically sound memory image in a cloud environment
 - Understand and apply best practices during the process of acquisition
 
-Room Prerequisites
+### Room Prerequisites
 
 - [Memory Analysis Introduction](https://tryhackme.com/room/memoryanalysisintroduction)
 - [Windows Fundamentals](https://tryhackme.com/module/windows-fundamentals)
