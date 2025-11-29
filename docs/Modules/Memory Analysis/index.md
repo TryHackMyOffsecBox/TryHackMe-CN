@@ -8,7 +8,7 @@ In this module, we'll learn how to investigate volatile memory to uncover signs 
 
 Learn how memory analysis helps detect threats during live investigations.
 
-## Memory Acquisition
+## [Memory Acquisition](memoryacquisition.md)
 
 Learn the techniques and best practices to acquire digitally sound memory.
 
