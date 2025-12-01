@@ -12,9 +12,11 @@ Learn how memory analysis helps detect threats during live investigations.
 
 Learn the techniques and best practices to acquire digitally sound memory.
 
-## Volatility Essentials
+## [Volatility Essentials](volatilityessentials.md)
 
 Learn how to perform memory forensics with Volatility!
+
+TODO Memory Analysis not finished
 
 ## Windows Memory & Processes
 
