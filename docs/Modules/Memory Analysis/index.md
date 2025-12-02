@@ -16,13 +16,11 @@ Learn the techniques and best practices to acquire digitally sound memory.
 
 Learn how to perform memory forensics with Volatility!
 
-TODO Memory Analysis not finished
-
-## Windows Memory & Processes
+## [Windows Memory & Processes](windowsmemoryandprocs.md)
 
 Analyze a memory dump of a Windows host and uncover malicious processes.
 
-## Windows Memory & User Activity
+## [Windows Memory & User Activity](windowsmemoryanduseractivity.md)
 
 Trace user behavior, command execution, file access, and macro-based payload delivery from memory.
 
