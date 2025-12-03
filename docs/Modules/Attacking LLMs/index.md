@@ -8,7 +8,7 @@ In this module, we cover practical attacks against systems that use large langua
 
 Understand the basics of LLM Prompt Injection attacks.
 
-## LLM Output Handling and Privacy Risks
+## [LLM Output Handling and Privacy Risks](outputhandlingandprivacyrisks.md)
 
 Learn how LLMs handle their output and the privacy risks behind it.
 
