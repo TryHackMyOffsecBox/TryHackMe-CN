@@ -381,3 +381,17 @@ In this room, we learned the importance of memory analysis in digital forensics 
 We also covered memory dumps and how they are created, the types available, and the challenges involved in capturing them. Finally, we examined common attack techniques that can be identified through memory analysis, such as credential dumping, DLL injection, script execution, and signs of persistence or lateral movement.
 
 Together, these topics build a strong understanding of how RAM plays a critical role in identifying threats.
+
+:::info Answer the questions below
+
+<details>
+
+<summary> Click to complete the room. </summary>
+
+```plaintext
+No answer needed
+```
+
+</details>
+
+:::
