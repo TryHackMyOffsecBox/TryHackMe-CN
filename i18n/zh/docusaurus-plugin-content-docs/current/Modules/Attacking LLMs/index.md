@@ -8,7 +8,7 @@
 
 了解大型语言模型提示注入攻击的基础知识。
 
-## 大型语言模型输出处理与隐私风险
+## [LLM Output Handling and Privacy Risks](outputhandlingandprivacyrisks.md)
 
 了解大型语言模型如何处理其输出及其背后的隐私风险。
 

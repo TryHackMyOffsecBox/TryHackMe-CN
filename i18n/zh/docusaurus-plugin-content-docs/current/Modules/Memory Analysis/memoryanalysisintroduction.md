@@ -381,3 +381,17 @@ THM{m3mory_analyst_g00d_job}
 我们还介绍了内存转储及其创建方式、可用类型以及捕获它们所涉及的挑战。 最后，我们检查了可以通过内存分析识别的常见攻击技术，例如凭据转储、DLL 注入、脚本执行以及持久化或横向移动的迹象。
 
 总之，这些主题构建了对 RAM 在识别威胁中如何发挥关键作用的深刻理解。
+
+:::info 回答以下问题
+
+<details>
+
+<summary> Click to complete the room. </summary>
+
+```plaintext
+No answer needed
+```
+
+</details>
+
+:::

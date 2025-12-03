@@ -10,23 +10,23 @@ sidebar_position: 1
 
 ### 学习目标
 
-- Create a forensically sound memory image on Windows
-- Create a forensically sound memory image on Linux
-- Create a forensically sound memory image on a hypervisor
-- Create a forensically sound memory image in a cloud environment
-- Understand and apply best practices during the process of acquisition
+- 在Windows上创建符合取证要求的内存映像
+- 在Linux上创建符合取证要求的内存映像
+- 在Hypervisor上创建符合取证要求的内存映像
+- 在云环境中创建符合取证要求的内存映像
+- 在获取过程中理解并应用最佳实践
 
 ### 房间先决条件
 
-- [Memory Analysis Introduction](https://tryhackme.com/room/memoryanalysisintroduction)
-- [Windows Fundamentals](https://tryhackme.com/module/windows-fundamentals)
+- [内存分析简介](https://tryhackme.com/room/memoryanalysisintroduction)
+- [Windows基础](https://tryhackme.com/module/windows-fundamentals)
 - [Linux基础](https://tryhackme.com/module/linux-fundamentals)
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Are you ready to capture memory? </summary>
+<summary> 您准备好捕获内存了吗？ </summary>
 
 ```plaintext
 No answer needed
@@ -36,82 +36,82 @@ No answer needed
 
 :::
 
-## Task 2 Techniques, Tools and, Best Practices
+## 任务2 技术、工具和最佳实践
 
-The memory acquisition process does not start when you capture an image of the RAM and transfer it to a non-volatile storage. It starts well before that as a sequence of well-defined choices you have outlined in your incident response plan. This outline should detail decisions on:
+内存获取过程并非从您捕获RAM映像并将其传输到非易失性存储时开始。 它在此之前的很早就开始了，作为您在事件响应计划中概述的一系列明确定义的选择。 此概述应详细说明以下决策：
 
-- Which acquisition techniques to use
-- Which tools to use
-- Timing
-- What part of the memory to focus on
-- Ensuring integrity
+- 使用哪种获取技术
+- 使用哪些工具
+- 时机
+- 关注内存的哪个部分
+- 确保完整性
 
-This task will cover each of these essential considerations.
+本任务将涵盖这些基本考虑因素中的每一个。
 
-### Selecting the Right Memory Part
+### 选择正确的内存部分
 
-Before you acquire memory on a system, you must decide what part of the memory is of forensic value. This is decided on a case-to-case basis and will be affected by the IOAs and IOCs you observed. Consider the following examples:
+在系统上获取内存之前，您必须确定内存的哪个部分具有取证价值。 这是根据具体情况决定的，并将受到您观察到的IOA和IOC的影响。 考虑以下示例：
 
-- **Unusual resource usage**: You notice that a common process has been using an unusual amount of CPU and memory. You decide to take an image of the processes (also known as a process dump). In this case, a full memory dump would take too long and include too much forensic noise, impeding analysis.
+- **异常资源使用**：您注意到一个常见进程使用了异常数量的CPU和内存。 您决定获取进程映像（也称为进程转储）。 在这种情况下，完整内存转储将花费太长时间并包含太多取证噪声，妨碍分析。
 
-- **Malware infection**: You discovered a malware-infected host and found evidence in the firewall logs that the host has an active C2 connection. You decide to take a full memory capture to aid your investigation.
+- **恶意软件感染**：您发现了一个受恶意软件感染的主机，并在防火墙日志中发现了该主机具有活跃C2连接的证据。 您决定进行完整内存捕获以协助调查。
 
-- **System shut down**: You detected signs of fraud on an employee’s system. To avoid tipping off the employee, you decide to take a memory capture during the lunch pause. The system in question is powered off. Luckily, due to configured policies, the system went into hibernation instead, and you can acquire the `hiberfil.sys` file for analysis.
+- **系统关闭**：您在员工的系统上检测到欺诈迹象。 为了避免惊动该员工，您决定在午餐休息期间进行内存捕获。 相关系统已关闭电源。 幸运的是，由于配置的策略，系统进入了休眠状态，您可以获取`hiberfil.sys`文件进行分析。
 
-In the table below, you can find an overview of the type of memory dumps you can take, their content, and use cases. Note that the `pagefile`, `Hibernation File`, and `VM Memory file` are not direct memory dumps. They are files that exist on a disk after performing a certain type of action. The pagefile is filled up with the memory of processes that are suspended or were recently terminated; the hibernation file is created as a result of the host system being put in hibernation mode, and the VM memory file is created when the VM its state is saved or snapshotted.
+在下表中，您可以找到可以获取的内存转储类型、其内容和用例的概述。 请注意，`pagefile`、`Hibernation File`和`VM Memory file`不是直接的内存转储。 它们是执行某种类型操作后存在于磁盘上的文件。 页面文件填充了已暂停或最近终止的进程的内存；休眠文件是主机系统进入休眠模式时创建的；VM内存文件是在保存或快照VM状态时创建的。
 
-| 类型                                                          | Captures                                                                                                           | 用例                                                                                                                                                                    |
-| :---------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Full Memory Dump**                                        | Entire physical memory (RAM)                                                                    | Full forensic analysis, malware behavior, valuable for CTI as well                                                                                                    |
-| **Process Dump / Core Dump**                                | Memory of a single process (heap, stack, code, modules)                                         | Detect malware injection, behavior analysis                                                                                                                           |
-| **Memory Region Dump**                                      | Specific region of a process (e.g., stack, heap, injected code) | Focused on extracting malware or shellcode                                                                                                                            |
-| **Pagefile/swapfile**                                       | Swapped-out virtual memory ( `pagefile.sys` - `\swapfile`)                                     | Collect memory from recent terminated/suspended processes                                                                                                             |
-| **Hibernation File Dump (Only Windows)** | RAM snapshot saved during sleep (`hiberfil.sys`)                                                | Full memory capture from hibernated systems (e.g., laptops). Use when live memory is not available |
-| **VM Memory Dump**                                          | Volatile memory of a virtual machine                                                                               | Safe malware testing, replayable incident analysis                                                                                                                    |
+| 类型                    | 捕获内容                                    | 用例                                   |
+| :-------------------- | :-------------------------------------- | :----------------------------------- |
+| **完整内存转储**            | 整个物理内存（RAM）                             | 完整取证分析、恶意软件行为、对CTI也很有价值              |
+| **进程转储/核心转储**         | 单个进程的内存（堆、栈、代码、模块）                      | 检测恶意软件注入、行为分析                        |
+| **内存区域转储**            | 进程的特定区域（例如，栈、堆、注入代码）                    | 专注于提取恶意软件或shellcode                  |
+| **页面文件/交换文件**         | 交换出的虚拟内存（`pagefile.sys` - `\swapfile`） | 收集最近终止/暂停进程的内存                       |
+| **休眠文件转储（仅限Windows）** | 休眠期间保存的RAM快照（`hiberfil.sys`）            | 来自休眠系统的完整内存捕获（例如，笔记本电脑）。 在实时内存不可用时使用 |
+| **VM内存转储**            | 虚拟机的易失性内存                               | 安全的恶意软件测试、可重放的事件分析                   |
 
-In the next tasks, you will perform multiple of these types of captures on Windows and Linux.
+在接下来的任务中，您将在Windows和Linux上执行多种这些类型的捕获。
 
-### Choosing the Appropriate File Format
+### 选择合适的文件格式
 
-There is no standard format when it comes to memory images. So, you must choose a format compatible with the tool you will use for analysis. The memory dump format will largely depend on the platform you target and the tool you use. Below, we list the most common formats.
+在内存映像方面没有标准格式。 因此，您必须选择与您将用于分析的工具兼容的格式。 内存转储格式将在很大程度上取决于您针对的平台和您使用的工具。 下面，我们列出了最常见的格式。
 
-- `.raw` and `.mem`: This format is a raw physical memory dump supported on most Operating Systems like macOS, Windows, and Linux. It is also the preferred format for ensuring compatibility with most analysis tools
-- `.dmp`: This is the Windows built-in format for a memory dump. Windows includes multiple types of `.dmp` files, which in most cases, need to be configured first. You will explore this in the task ‘Memory acquisition for Windows’
-- VM formats (`.vmem`, `.vmsn`, `.vmss`, `.bin`, `.sav`): These files represent the memory state of a Virtual Machine after taking a snapshot or suspending it in a hypervisor like VMware, Hyper-V, or VirtualBox. Note that you need to convert the `.sav`  file to be usable in analysis
-- `.core`: This is a process-level memory dump formatted in ELF in Linux using the `gcore` tool. This type of file is also created when a process crashes
-- Expert Witness Format: This format is generated using the Encase tool, which is an industry-standard for advanced forensic analysis
-- `.lime`: This memory capture file is a structured full memory dump created with the LiME (Linux Memory Extractor) tool
+- `.raw`和`.mem`：此格式是在大多数操作系统（如macOS、Windows和Linux）上支持的原始物理内存转储。 它也是确保与大多数分析工具兼容的首选格式
+- `.dmp`：这是Windows内置的内存转储格式。 Windows包含多种类型的`.dmp`文件，在大多数情况下需要先进行配置。 您将在“Windows内存获取”任务中探索这一点
+- VM格式（`.vmem`、`.vmsn`、`.vmss`、`.bin`、`.sav`）：这些文件表示虚拟机在Hypervisor（如VMware、Hyper-V或VirtualBox）中拍摄快照或暂停后的内存状态。 请注意，您需要转换`.sav`文件才能在分析中使用
+- `.core`：这是在Linux中使用`gcore`工具以ELF格式化的进程级内存转储。 当进程崩溃时也会创建此类文件
+- Expert Witness Format：此格式是使用Encase工具生成的，该工具是高级取证分析的行业标准
+- `.lime`：此内存捕获文件是使用LiME（Linux内存提取器）工具创建的结构化完整内存转储
 
-### Choosing the Acquisition Technique
+### 选择获取技术
 
-There are multiple ways you can acquire memory on a system. Depending on your use case, you will choose one over the other. Let’s have a look at which methods you can use.
+有多种方法可以在系统上获取内存。 根据您的用例，您将选择其中一种。 让我们看看可以使用哪些方法。
 
-- **Local**: You take an external storage device, plug it into the target machine, and then run the tools to acquire the memory. This method requires physical access to the target system
-- **Remote**: You run the tools to acquire the memory and then transfer the memory capture over the network. This method is ideal for when you have to target machines that are not easily accessed in person, such as physical servers without any keyboard or monitor attached or systems in another location than your primary work location
-- **Hardware**: You have installed a dedicated PCIe card that allows you to acquire memory without accessing the OS
-- **RAM freezing**: RAM is volatile, and the content disappears in mere seconds after cutting the power. A technique involves freezing the RAM, which allows the RAM content to be retained for a longer time. Depending on the freezing method, this would allow you enough time to move the RAM modules to another system with a dedicated OS that enables a memory dump of the RAM modules
+- **本地**：您取一个外部存储设备，将其插入目标机器，然后运行工具以获取内存。 此方法需要对目标系统进行物理访问
+- **远程**：您运行工具以获取内存，然后通过网络传输内存捕获。 这种方法非常适合需要针对难以亲自访问的机器的情况，例如没有连接任何键盘或显示器的物理服务器，或者位于您主要工作地点以外的系统
+- **硬件**：您已安装专用PCIe卡，允许您在不访问操作系统的情况下获取内存
+- **RAM冻结**：RAM是易失性的，断电后内容在几秒钟内就会消失。 一种技术涉及冻结RAM，这可以使RAM内容保留更长时间。 根据冻结方法的不同，这将为您提供足够的时间将RAM模块移动到另一个系统，该系统具有专用操作系统，可以对RAM模块进行内存转储
 
-#### Important considerations
+#### 重要注意事项
 
-- You need administrator privileges to be able to acquire a complete memory dump
-- When transferring the acquired memory remotely, there is always a risk that the receiving system gets compromised as well. This can be due to the nature of the malware or the attacker taking the opportunity to move laterally
-- When using local storage, there is also a possibility that the storage gets compromised. Use a disposable system to do the initial analysis
-- A hardware card is a costly option for memory acquisition. Ensure the cost matches the importance of the system
+- 您需要管理员权限才能获取完整的内存转储
+- 远程传输获取的内存时，接收系统也被入侵的风险。 这可能是由于恶意软件的性质或攻击者利用机会进行横向移动
+- 使用本地存储时，存储设备也有可能被入侵。 使用一次性系统进行初步分析
+- 硬件卡是一种成本较高的内存获取选项。 确保成本与系统的重要性相匹配
 
-### Tools
+### 工具
 
-Selecting the right tool for the right job is a key factor in determining the quality of the memory capture. No tool fits all use cases, so it is important to consider the available options carefully. You should consider the following factors:
+为正确的工作选择正确的工具是决定内存捕获质量的关键因素。 没有工具适合所有用例，因此仔细考虑可用选项非常重要。 您应考虑以下因素：
 
-- Integrity
-- Compatibility
-- Speed and scalability
-- Compliance
-- Cost
-- Forensic noise introduced
+- 完整性
+- 兼容性
+- 速度和可扩展性
+- 合规性
+- 成本
+- 引入的取证噪声
 
-Below are some of the most commonly used tools.
+以下是一些最常用的工具。
 
-| Commercial tools                                                         | Free tools         |
+| 商业工具                                                                     | 免费工具               |
 | :----------------------------------------------------------------------- | :----------------- |
 | EnCase Forensic                                                          | FTK Imager         |
 | CaptureGUARD (PCIe & ExpressCard) | Magnet RAM Capture |
@@ -119,36 +119,36 @@ Below are some of the most commonly used tools.
 | Cellebrite UFED                                                          | WinPmem/LinuxPmem  |
 | PCILeech                                                                 | LiMe               |
 
-### Timing Your Memory Capture
+### 内存捕获时机
 
-Timing is of utmost importance when taking a memory capture. The content of the RAM is continuously changing, meaning a memory capture only contains the content of that moment in time. Proper timing allows you to maximize the success of capturing valuable forensic evidence. The following scenarios demonstrate the importance of timing:
+进行内存捕获时，时机至关重要。 RAM的内容不断变化，这意味着内存捕获仅包含该时刻的内容。 适当的时机可以让您最大程度地成功捕获有价值的取证证据。 以下场景说明了时机的重要性：
 
-- **Lateral movement**:  You identified a host likely used as an entry point for lateral movement. You decide to monitor it, and when you notice suspicious activity, you immediately take a memory capture, resulting in actionable forensic evidence like remote sessions running, compromised user credentials, and much more.
-- **Fileless malware**: You detected a common process on a system that shows irregular behavior. You decide to take a memory capture to analyze it. Because of your quick decision, you found a malicious PowerShell script, active C2 IP addresses, and the attacker’s next-stage payloads.
-- **Evidence destruction**: You notice the strange behavior of a user on his system. The user has copied sensitive documents to his local system. You send a message to the user to ask about this behavior. The user suddenly appears offline, so you check his system in person. When you arrive at the user’s desk, you notice that the user’s system is just booting up again. The user said something weird was happening with his system, so he rebooted it. Unfortunately, you lost the opportunity to gather potential evidence of exfiltration.
+- **横向移动**：您确定了一个可能用作横向移动入口点的主机。 您决定对其进行监控，当您注意到可疑活动时，立即进行内存捕获，从而获得可操作的取证证据，如正在运行的远程会话、受损的用户凭据等等。
+- **无文件恶意软件**：您在系统上检测到一个显示异常行为的常见进程。 您决定进行内存捕获以进行分析。 由于您的快速决策，您发现了恶意的PowerShell脚本、活跃的C2 IP地址以及攻击者的下一阶段有效载荷。
+- **证据销毁**：您注意到用户在其系统上的异常行为。 该用户已将敏感文档复制到其本地系统。 您向该用户发送消息询问此行为。 该用户突然显示为离线，因此您亲自检查其系统。 当您到达用户办公桌时，您注意到用户的系统正在重新启动。 用户表示其系统出现了一些奇怪的情况，因此他重新启动了系统。 不幸的是，您失去了收集潜在数据外泄证据的机会。
 
-#### Other considerations
+#### 其他注意事项
 
-- Attackers are often active during certain hours and will try to remove evidence when discovered and run their malware completely in memory
-- Try to avoid taking a capture during periods when the memory is changing fast, such as during bootup, virus scans, backups, and more
+- 攻击者通常在特定时间段活动，并在被发现时尝试删除证据，并完全在内存中运行其恶意软件
+- 尽量避免在内存变化较快的时间段进行捕获，例如启动期间、病毒扫描期间、备份期间等
 
-Conclusion
+结论
 
-YYou have discovered the essential considerations you need to consider when acquiring memory. These consideration actually form the memory acquisition process. In the following tasks, when acquiring memory, you will repeatedly need to make decisions based on them.
-You will need to provide an answer to:
+您已经发现了获取内存时需要考虑的基本注意事项。 这些注意事项实际上构成了内存获取流程。 在以下任务中，当获取内存时，您将需要反复基于这些注意事项做出决策。
+您需要回答以下问题：
 
-- **What part** of the memory do I need to acquire?
-- **Which tool** and/or technique will I use to acquire the memory?
-- **When** will I capture the memory?
-- How will I ensure **integrity**?
+- 我需要获取内存的**哪一部分**？
+- 我将使用**哪种工具**和/或技术来获取内存？
+- 我**何时**捕获内存？
+- 我将如何确保**完整性**？
 
-![Memory acquisition process](img/image_20251123-092328.png)
+![内存获取流程](img/image_20251123-092328.png)
 
 :::info 回答以下问题
 
 <details>
 
-<summary> What is the file name that contains the memory of a hibernated Windows system? The answer is in the format: filename.extension </summary>
+<summary> 包含休眠Windows系统内存的文件名是什么？ 答案格式为：文件名.扩展名 </summary>
 
 ```plaintext
 hiberfil.sys
@@ -158,7 +158,7 @@ hiberfil.sys
 
 <details>
 
-<summary> Which tool can you use to obtain a process memory dump on a linux host? </summary>
+<summary> 您可以使用哪种工具在Linux主机上获取进程内存转储？ </summary>
 
 ```plaintext
 gcore
@@ -168,51 +168,51 @@ gcore
 
 :::
 
-## Task 3 Memory Acquisition on Windows
+## 任务3 Windows内存获取
 
 ### 简介
 
-Acquiring memory on a Windows host is straightforward. You can apply the steps listed in the previous task: what, when, tools, and integrity. During this task, you will focus on acquiring the following memory dumps during regular business hours:
+在Windows主机上获取内存很简单。 您可以应用上一个任务中列出的步骤：内容、时机、工具和完整性。 在此任务中，您将专注于在正常工作时间获取以下内存转储：
 
-- Full memory capture with the `FTK imager` tool
-- Process memory dump with the `procdump.exe` tool that is part of the `SysinternalsSuite`
-- Configure Windows to generate a small memory dump when the system crashes
+- 使用`FTK imager`工具进行完整内存捕获
+- 使用`SysinternalsSuite`中的`procdump.exe`工具进行进程内存转储
+- 配置Windows在系统崩溃时生成小型内存转储
 
-The formatting of the memory dumps should be compatible with the memory analysis tool you will use later on. For this task and the next ones, you need to ensure compatibility with  `volatility`. The choice for `volatility` is simple. It is a free tool with many great features, and it can process multiple formats of memory dumps, including:
+内存转储的格式应与您稍后将使用的内存分析工具兼容。 对于此任务及后续任务，您需要确保与`volatility`兼容。 选择`volatility`很简单。 它是一个具有许多强大功能的免费工具，可以处理多种格式的内存转储，包括：
 
-- Raw/Padded Physical Memory
+- 原始/填充物理内存
 - Firewire (IEEE 1394)
 - Expert Witness (EWF)
-- 32- and 64-bit Windows Crash Dump
-- 32- and 64-bit Windows Hibernation
-- 32- and 64-bit MachO files
-- Virtualbox Core Dumps
-- VMware Saved State (.vmss) and Snapshot (.vmsn)
-- HPAK Format (FastDump)
-- LiME (Linux Memory Extractor)
-- QEMU VM memory dumps
+- 32位和64位Windows崩溃转储
+- 32位和64位Windows休眠文件
+- 32位和64位MachO文件
+- Virtualbox核心转储
+- VMware保存状态(.vmss)和快照(.vmsn)
+- HPAK格式(FastDump)
+- LiME(Linux内存提取器)
+- QEMU虚拟机内存转储
 
-After each memory capture, you need to generate an MD5 hash of the memory capture to **ensure integrity**. Integrity is critical throughout the memory forensics process. Multiple parties will likely analyze the memory capture, which can introduce unwanted changes contaminating its forensic value. Therefore, you should always create a copy of the memory capture and use that for analysis. You can use a hash to ensure the copy is identical to the original.
+每次内存采集后，您需要生成内存采集的MD5哈希值以**确保完整性**。 完整性在整个内存取证过程中至关重要。 多个方可能会分析内存采集，这可能会引入不必要的更改，污染其取证价值。 因此，您应始终创建内存采集的副本，并使用该副本进行分析。 您可以使用哈希来确保副本与原始文件完全相同。
 
-### Full Memory Capture
+### 完整内存采集
 
-Go to the VM, navigate to the desktop, and double-click the FTK imager icon to start the FTK imager tool.
+转到虚拟机，导航到桌面，双击FTK imager图标以启动FTK imager工具。
 
-Now follow these steps to take a memory capture:
+现在按照以下步骤进行内存采集：
 
-- Click File => Capture Memory
-- Enter the destination path to save the memory capture. Ideally, this should be an external storage device with enough disk space to accommodate the memory capture. For this exercise, give in the path `C:\Users\administrator\Documents\Full Memory Capture`
-- Give the capture file a fitting name. Ideally, you use the name pattern defined in the memory process outline in your IR playbook. For this exercise, you can use the `Hostname_Date.mem` format as the filename:  `FS-ANALYSIS_07April2025.mem`
-- Choose whether to include the page file or not. **Note: The page file can be large, depending on your system configuration**
-- Click on `Capture Memory`
+- 点击文件 => 捕获内存
+- 输入保存内存采集的目标路径。 理想情况下，这应该是一个具有足够磁盘空间以容纳内存采集的外部存储设备。 对于本练习，请给出路径`C:\Users\administrator\Documents\完整内存采集`
+- 为采集文件指定一个合适的名称。 理想情况下，您应使用IR手册中内存流程大纲定义的模式。 对于本练习，您可以使用`主机名_日期.mem`格式作为文件名：`FS-ANALYSIS_2025年4月7日.mem`
+- 选择是否包含页面文件。 **注意：页面文件可能很大，具体取决于您的系统配置**
+- 点击`捕获内存`
 
-![Full Memory Dump on Windows](img/66c44fd9733427ea1181ad58-1744118959741.gif)
+![Windows完整内存转储](img/66c44fd9733427ea1181ad58-1744118959741.gif)
 
-Once the process is complete, you need to ensure the integrity of the captured file:
+过程完成后，您需要确保捕获文件的完整性：
 
-- Open a PowerShell window as Administrator
-- Give in the command `Get-FileHash` with the required parameters as shown in the terminal below. Depending on which algorithm you select, it can take a few minutes before the hash is generated. Your memory process outline should also define which hashing algorithm to use
-- Note down the hash value. Where to note it should be described in your memory process outline. `Note: The calculated hash values of this example and yours will be different, which is expected as the memory content continuously changes`
+- 以管理员身份打开PowerShell窗口
+- 输入`Get-FileHash`命令及所需参数，如下方终端所示。 根据您选择的算法，生成哈希可能需要几分钟。 您的内存流程大纲还应定义使用哪种哈希算法
+- 记下哈希值。 应在您的内存流程大纲中描述记录位置。 `注意：此示例与您的计算哈希值将不同，这是预期的，因为内存内容不断变化`
 
 ```shell title="Full Memory Capture - Hash"
 PS C:\Users\Administrator\Documents> Get-FileHash -Path 'C:\Users\Administrator\Documents\Full Memory Capture\FS-ANALYSIS-07April2025.mem' -Algorithm MD5 
@@ -222,13 +222,13 @@ Algorithm Hash Path
 MD5 42CD44244B8ED77CCF89ECAA6C3F957A C:\Users\Administrator\Documents\Full Memory Capture\FS-ANALYSIS-07April2025.mem
 ```
 
-### Process Memory Dump
+### 进程内存转储
 
-Continuing with the VM, open a new PowerShell terminal with administrator privileges and navigate to the path `C:\TMP\SysinternalsSuite\`.
+继续使用虚拟机，以管理员权限打开新的PowerShell终端，并导航到路径`C:\TMP\SysinternalsSuite\`。
 
-The SysInternals suite contains a tool called `procdump64.exe`, which you can use to dump the memory contents of a selected process. You can do this either manually or based on a **trigger** like high CPU usage.
+SysInternals套件包含一个名为`procdump64.exe`的工具，您可以使用它来转储选定进程的内存内容。 您可以手动执行此操作，也可以基于**触发器**（如高CPU使用率）执行。
 
-You will focus on manually dumping the `lsass.exe` process. This process manages authentication, tokens, credentials, and more. Threat actors often target the `lsass.exe` process using **Mimikatz**. Enter the following command to dump the content of the `lsass.exe` process:
+您将专注于手动转储`lsass.exe`进程。 此进程管理身份验证、令牌、凭据等。 威胁行为者通常使用**Mimikatz**针对`lsass.exe`进程。 输入以下命令以转储`lsass.exe`进程的内容：
 
 ```shell title="Process Dump"
 PS C:\TMP\SysinternalsSuite> .\procdump64.exe -ma lsass.exe C:\TMP -accepteula
@@ -248,15 +248,15 @@ Sysinternals - www.sysinternals.com
 [13:45:45] Dump count reached.
 ```
 
-Have a closer look at the options included in the command:
+仔细查看命令中包含的选项：
 
-- `-ma` : This flag sets the type of dump to contain the process’s full memory content. The default option is a minidump (`-mm`), which only contains basic information about the process. The minidump is useful for crashes but not for malware analysis or extracting credentials. There are other flags available as well. Use the `.\procdump.exe -h` command to display them
-- `lsass.exe` : This is the process you will dump the memory of
-- `C:\TMP` : The memory dump is saved in this directory
+- `-ma`：此标志设置转储类型以包含进程的完整内存内容。 默认选项是小型转储(`-mm`)，仅包含进程的基本信息。 小型转储对于崩溃很有用，但不适用于恶意软件分析或提取凭据。 还有其他可用的标志。 使用`.\procdump.exe -h`命令显示它们
+- `lsass.exe`：这是您将转储内存的进程
+- `C:\TMP`：内存转储保存在此目录中
 
-The default name for the file dump is `PROCESSNAME_YYMMDD_HHMMSS.dmp`. You can leave this as is for this exercise. Usually, you would adjust the name to match what is in your memory outline in the IR playbook.
+文件转储的默认名称是`进程名_年月日_时分秒.dmp`。 对于本练习，您可以保留此名称。 通常，您会调整名称以匹配IR手册中内存大纲的内容。
 
-Now that you have created a memory dump of the `lsass.exe` process, you need to ensure its integrity. Enter the following command to calculate an MD5 hash of the memory capture. Adjust the filename to reflect your memory capture.
+现在您已创建`lsass.exe`进程的内存转储，需要确保其完整性。 输入以下命令计算内存采集的MD5哈希值。 调整文件名以反映您的内存采集。
 
 ```shell title="Calculate Hash"
 PS C:\TMP\SysinternalsSuite>  Get-FileHash -Path 'C:\TMP\lsass.exe_250408_082640.dmp' -Algorithm MD5
@@ -264,24 +264,24 @@ Algorithm Hash Path
 MD5 9DF3963A62B01D3151CB6B824C8DE6D1 C:\TMP\lsass.exe_250408_082640.dmp
 ```
 
-### Crash Dump
+### 崩溃转储
 
-Windows includes configuration options for what should happen when it crashes. These options determine whether to take a memory dump, which type to take, where to save it, and whether to overwrite the existing memory dump.
+Windows包含配置选项，用于确定崩溃时应执行的操作。 这些选项决定是否进行内存转储、转储类型、保存位置以及是否覆盖现有内存转储。
 
-From a forensic perspective, a memory dump from a system crash is also usable information. For example, a malicious process could cause your system to crash. Follow the steps below to configure a memory dump after system failure.
+从取证角度来看，系统崩溃的内存转储也是可用的信息。 例如，恶意进程可能导致系统崩溃。 按照以下步骤配置系统故障后的内存转储。
 
-- Right-click the Windows logo in the taskbar and click `run`
-- Enter `sysdm.cpl` to open the `System Properties` control panel item
-- Navigate to the `Advanced` tab and click `Settings...` under the `Startup and Recovery` section
-- Configure the memory dump in the `System failure` - `Write debugging information` section. Which dump to choose will depend on your use case.
+- 右键单击任务栏中的Windows徽标，然后单击`运行`
+- 输入`sysdm.cpl`以打开`系统属性`控制面板项
+- 导航到`高级`选项卡，在`启动和恢复`部分下单击`设置...`
+- 在`系统故障`-`写入调试信息`部分配置内存转储。 选择哪种转储将取决于您的用例。
 
-![Memory Dump Options](img/66c44fd9733427ea1181ad58-1744030888437.gif)
+![内存转储选项](img/66c44fd9733427ea1181ad58-1744030888437.gif)
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Start notepad.exe on the VM and use the procdump64.exe tool to write a 'triage' dump file of the process. Ensure that the dump file's name is formatted like PROCESSNAME_PID_YYMMDD_HHMMSS.dmp. Enter the complete command below. Note: Use PowerShell so to syntax is correct. No need to include the `-accepteula` flag </summary>
+<summary> 在虚拟机上启动notepad.exe，并使用procdump64.exe工具写入进程的'triage'转储文件。 确保转储文件的名称格式为进程名_PID_年月日_时分秒.dmp。 在下方输入完整命令。 注意：使用PowerShell以确保语法正确。 无需包含`-accepteula`标志</summary>
 
 ```plaintext
 .\procdump64.exe -mt notepad.exe PROCESSNAME_PID_YYMMDD_HHMMSS.dmp
@@ -291,7 +291,7 @@ From a forensic perspective, a memory dump from a system crash is also usable in
 
 <details>
 
-<summary> Which two tools can you use to extract or dump memory artifacts of the lsass.exe process? Enter the answers in alphabetic order and separated by a comma. For example: volatility,procmon.exe </summary>
+<summary> 哪两个工具可用于提取或转储lsass.exe进程的内存工件？ 按字母顺序输入答案，并用逗号分隔。 例如：volatility,procmon.exe</summary>
 
 ```plaintext
 mimikatz,procdump64.exe
@@ -301,7 +301,7 @@ mimikatz,procdump64.exe
 
 <details>
 
-<summary> Before moving on to the next task, power off the VM. </summary>
+<summary> 在继续下一个任务之前，关闭虚拟机电源。 </summary>
 
 ```plaintext
 No answer needed
@@ -311,23 +311,23 @@ No answer needed
 
 :::
 
-## Task 4 Memory Acquisition on Linux
+## 任务4 Linux内存采集
 
 ### 简介
 
-Acquiring memory on a Linux host is a straightforward process. You need to decide on the same steps as on a Windows host.
+在Linux主机上采集内存是一个简单的过程。 您需要决定与Windows主机相同的步骤。
 
-During this task, you will focus on the following memory captures during business hours:
+在此任务期间，您将专注于业务时间内的以下内存采集：
 
-- Full memory capture with the `LiME` tool
-- Process memory dump with the `gcore` tool that is part of the `GNU Debugger`
-- Configure Ubuntu to generate a memory dump when the system crashes
+- 使用`LiME`工具进行完整内存采集
+- 使用`GNU调试器`的一部分`gcore`工具进行进程内存转储
+- 配置Ubuntu在系统崩溃时生成内存转储
 
-Like the previous task, you need to ensure compatibility with `volatility`. After each memory capture, you need to generate an MD5 hash of the memory capture to ensure integrity.
+与之前的任务类似，您需要确保与`volatility`的兼容性。 每次内存捕获后，您需要生成内存捕获的MD5哈希值以确保完整性。
 
-### Full Memory Capture
+### 完整内存采集
 
-In this task, you will use the `LiME` tool to take a full memory capture. This tool isn't included by default on most Linux systems. Since the VM has no internet access, **we've pre-installed the tool for you**. If you're trying this on your machine, here's how you would install it manually:
+在此任务中，您将使用`LiME`工具进行完整内存捕获。 大多数Linux系统默认不包含此工具。 由于虚拟机无法访问互联网，**我们已为您预安装了该工具**。 如果您在自己的机器上尝试，以下是手动安装的方法：
 
 ```shell title="Install LiME"
 ubuntu@tryhackme:~$
@@ -341,26 +341,26 @@ cd LiME/src
 make
 ```
 
-Continuing with the VM, open a terminal window and enter the following command to take a full memory capture:
+继续使用虚拟机，打开终端窗口并输入以下命令以进行完整内存捕获：
 
 ```shell title="Take Memory Dump"
 ubuntu@tryhackme:~$ cd LiME/src
 ubuntu@tryhackme:~/LiME/src$ sudo insmod lime-6.8.0-1027-aws.ko "path=/tmp/ubuntu-150000-22042025.lime format=lime"
 ```
 
-Let's take a closer look at the options included in the command:
+让我们仔细查看命令中包含的选项：
 
-- `sudo insmod lime-6.8.0-1027-aws.ko`: The `insmod` command loads the LiME tool (`lime.ko`) in the kernel. This is necessary so LiME can do a full memory capture
-- `path=/tmp/ubuntu-150000-22042025.lime`: This is the directory where the memory dump is saved and the memory dump its name. The naming template used is `HOSTNAME-HHMMSS-DDMMYYYY.lime` . You can alter the name to fit your requirements
-- `format=lime`: This command sets the memory dump's format to `.lime`. Ensure this is compatible with your memory analysis tools
+- `sudo insmod lime-6.8.0-1027-aws.ko`：`insmod`命令在内核中加载LiME工具（`lime.ko`）。 这是必要的，以便LiME可以进行完整内存捕获
+- `path=/tmp/ubuntu-150000-22042025.lime`：这是保存内存转储的目录和内存转储的名称。 使用的命名模板是`HOSTNAME-HHMMSS-DDMMYYYY.lime`。 您可以根据需要更改名称
+- `format=lime`：此命令将内存转储的格式设置为`.lime`。 确保这与您的内存分析工具兼容
 
-If you want to change any of the above parameters or include additional parameters you can reference the help page on [the official GitHub](https://github.com/504ensicsLabs/LiME) of the LiME tool.
+如果您想更改上述任何参数或包含其他参数，可以参考LiME工具的[官方GitHub](https://github.com/504ensicsLabs/LiME)上的帮助页面。
 
-Once the process is complete, you need to ensure the integrity of the captured file and **unload the LiME tool**:
+过程完成后，您需要确保捕获文件的完整性并**卸载LiME工具**：
 
-- Enter the command `md5sum` with the required parameters as shown in the terminal below. Depending on which algorithm you select, it can take a few minutes before the hash is generated. Your memory process outline should also define which hashing algorithm to use
-- Note down the hash value. Where to note it should be described in your memory process outline. **Note: The calculated hash values of this example and yours will differ, which is expected as the memory content continuously changes**
-- Finish by entering the `sudo rmmod lime` command to unload LiME from the kernel. **Note: Each time you want to capture the memory, you must first run this command to unload any previous LiME modules**
+- 输入命令`md5sum`并带上所需的参数，如下方终端所示。 根据您选择的算法，生成哈希可能需要几分钟。 您的内存流程大纲还应定义使用哪种哈希算法
+- 记下哈希值。 应在您的内存流程大纲中描述记录位置。 **注意：此示例与您计算的哈希值会有所不同，这是预期的，因为内存内容不断变化**
+- 最后输入`sudo rmmod lime`命令以从内核中卸载LiME。 **注意：每次您想捕获内存时，必须先运行此命令以卸载任何先前的LiME模块**
 
 ```shell title="MD5 Hash"
 ubuntu@tryhackme:~/LiME/src$ md5sum tmp/ubuntu-150000-22042025.lime
@@ -369,9 +369,9 @@ ubuntu@tryhackme:~/LiME/src$ md5sum tmp/ubuntu-150000-22042025.lime
 ubuntu@tryhackme:~/LiME/src$ sudo rmmod lime
 ```
 
-### Process Memory dump
+### 进程内存转储
 
-Continuing with the VM, open a new terminal and enter the following commands to dump the memory of the `bash` process:
+继续使用虚拟机，打开新终端并输入以下命令以转储`bash`进程的内存：
 
 ```shell title="Process Dump with gcore"
 ubuntu@tryhackme:~$ ps aux |grep bash # Search the PID number of the bash process
@@ -381,20 +381,20 @@ ubuntu     34136  0.0  0.1   3528  1792 pts/0    S+   13:57   0:00 grep --color=
 ubuntu@tryhackme:~$ sudo gcore -o /tmp/BASH-130000-10042025 6506 # Dump the memory of the bash process using gcore
 ```
 
-Now that you have created a memory dump of the `bash` process, you need to ensure its integrity. Enter the following command to calculate an MD5 hash of the memory capture. Adjust the filename to reflect your memory capture.
+现在您已创建了`bash`进程的内存转储，需要确保其完整性。 输入以下命令计算内存采集的MD5哈希值。 调整文件名以反映您的内存采集。
 
 ```shell title="Process Dump with gcore"
 ubuntu@tryhackme:~$ md5sum /tmp/BASH-130000-10042025.6506 
 b1baa84b8f1e725f1a45795465ba710c  /tmp/BASH-130000-10042025.6506
 ```
 
-### Crash dump
+### 崩溃转储
 
-Similar to Windows you can configure Linux to do a memory dump when a process or the kernel crashes. The configuration is however not as straightforward as Windows. It will depend on the host its type of distribution and kernel.
+与Windows类似，您可以配置Linux在进程或内核崩溃时进行内存转储。 然而，配置不像Windows那样直接。 这将取决于主机的发行版类型和内核。
 
-#### Kernel crash dump
+#### 内核崩溃转储
 
-As stated in the **Official documentation** of Ubuntu, the kernel crash dump is enabled by default starting from Ubuntu version 24.10. The VM in this task has Ubuntu version 24.04, so you must enable the kernel crash dump yourself. Due to the limited connectivity of the VM, **we have done the configuration ourselves**. We entered the following commands and added explanatory comments (with # delimiter) to the terminal window below:
+如Ubuntu**官方文档**所述，从Ubuntu版本24.10开始，内核崩溃转储默认启用。 此任务中的虚拟机是Ubuntu版本24.04，因此您必须自己启用内核崩溃转储。 由于虚拟机的连接有限，**我们已自行完成配置**。 我们输入了以下命令并在下方终端窗口中添加了说明性注释（使用#分隔符）：
 
 ```shell title="Enable kdump"
 ubuntu@tryhackme:~$ 
@@ -422,16 +422,16 @@ kexec command:
 /sbin/kexec -p --command-line="BOOT_IMAGE=/boot/vmlinuz-6.8.0-1027-aws root=PARTUUID=da63a61e-01 ro console=tty1 console=ttyS0 nvme_core.io_timeout=4294967295 panic=-1 reset_devices systemd.unit=kdump-tools-dump.service nr_cpus=1 irqpoll usbcore.nousb" --initrd=/var/lib/kdump/initrd.img /var/lib/kdump/vmlinuz
 ```
 
-#### Process crash dump
+#### 进程崩溃转储
 
-On most Linux distributions, process crash dumps are disabled by default. There are different ways to enable automated or partial crash dumps depending on the Linux flavor.
+在大多数Linux发行版上，进程崩溃转储默认禁用。 根据Linux风格，有不同的方法启用自动或部分崩溃转储。
 
-In this task, you will focus on Ubuntu Desktop, that the VM is running. To cover all processes on Ubuntu Desktop, you need to configure 2 options:
+在此任务中，您将专注于虚拟机正在运行的Ubuntu Desktop。 要覆盖Ubuntu Desktop上的所有进程，您需要配置2个选项：
 
-- Crash dump for systemd-managed processes
-- Crash dump for interactive sessions and user processes
+- systemd管理进程的崩溃转储
+- 交互式会话和用户进程的崩溃转储
 
-Start by entering the following commands to configure the crash dump for systemd-managed processes:
+首先输入以下命令以配置systemd管理进程的崩溃转储：
 
 ```shell title="Process crash dump"
 ubuntu@tryhackme:~$ sudo mkdir -p /etc/systemd/system.conf.d
@@ -444,7 +444,7 @@ DefaultLimitCORE=infinity
 ubuntu@tryhackme:~$ sudo systemctl daemon-reexec
 ```
 
-Now, continue configuring the crash dump for the user processes and interactive sessions. The commands below will ensure the configuration persists. Enter the following commands:
+现在，继续配置用户进程和交互式会话的崩溃转储。 以下命令将确保配置持久化。 输入以下命令：
 
 ```shell title="Process crash dump"
 # Enable process dumps
@@ -462,22 +462,22 @@ ubuntu@tryhackme:~$ sudo mkdir -p /var/crash
 ubuntu@tryhackme:~$ sudo chmod 1777 /var/crash
 ```
 
-The above approach works for both Ubuntu Desktop and Server editions.
+上述方法适用于Ubuntu Desktop和Server版本。
 
-Ubuntu Desktop also comes enabled with a crash dump utility named `apport`. This service catches core dumps from crashing processes, decides whether to act on it, and then creates a `.crash file` which includes:
+Ubuntu Desktop还默认启用了一个名为`apport`的崩溃转储实用程序。 此服务捕获崩溃进程的核心转储，决定是否对其采取行动，然后创建一个`.crash文件`，其中包括：
 
-- Stack trace
-- Process info
-- Loaded libraries
-- Partial memory content, not the full core dump
+- 堆栈跟踪
+- 进程信息
+- 加载的库
+- 部分内存内容，非完整核心转储
 
-The crash files are saved in the `/var/crash` directory.
+崩溃文件保存在`/var/crash`目录中。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Modify the following command to ensure the memory dump is in the .raw format and is accessible over TCP port 5555: `sudo insmod lime-6.8.0-1027-aws.ko "path=/tmp/memdump.lime format=lime"` </summary>
+<summary> 修改以下命令以确保内存转储为.raw格式且可通过TCP端口5555访问：`sudo insmod lime-6.8.0-1027-aws.ko "path=/tmp/memdump.lime format=lime"` </summary>
 
 ```plaintext
 sudo insmod lime-6.8.0-1027-aws.ko "path=tcp:5555 format=raw"
@@ -487,7 +487,7 @@ sudo insmod lime-6.8.0-1027-aws.ko "path=tcp:5555 format=raw"
 
 <details>
 
-<summary> LiME includes a parameter to create a hash immediately after capturing the memory. Modify the following command and ensure a MD5 hash is calculated: `sudo insmod lime-6.8.0-1027-aws.ko "path=/tmp/memdump.lime format=lime"` </summary>
+<summary> LiME包含一个参数可在捕获内存后立即创建哈希值。 修改以下命令并确保计算MD5哈希值：`sudo insmod lime-6.8.0-1027-aws.ko "path=/tmp/memdump.lime format=lime"` </summary>
 
 ```plaintext
 sudo insmod lime-6.8.0-1027-aws.ko "path=/tmp/memdump.lime format=lime digest=md5"
@@ -497,40 +497,40 @@ sudo insmod lime-6.8.0-1027-aws.ko "path=/tmp/memdump.lime format=lime digest=md
 
 :::
 
-## Task 5 Memory Acquisition on Virtual Machines and Cloud Environments
+## 任务5 虚拟机和云环境中的内存获取
 
-Similar to the two previous tasks, you must make some decisions regarding the memory acquisition process. For this task, you will focus on getting a memory dump from hypervisors and cloud platforms during regular business hours.
-You will then choose the right tool or method for the right job. There are two ways to acquire memory from hypervisors and cloud platforms:
+与之前的两个任务类似，您必须就内存获取过程做出一些决定。 对于此任务，您将专注于在正常工作时间从Hypervisor和云平台获取内存转储。
+然后您将为正确的工作选择正确的工具或方法。 有两种方法可以从Hypervisor和云平台获取内存：
 
-- Login into the VM and use the techniques seen in the previous tasks
-- Use the built-in tools of the hypervisor or cloud platform to extract memory without interacting directly with the VM. This can be done via the GUI or the command line
+- 登录虚拟机并使用之前任务中看到的技术
+- 使用Hypervisor或云平台的内置工具提取内存，而不直接与虚拟机交互。 这可以通过GUI或命令行完成
 
-In this task, you will focus on number two where possible. You will learn the methods to acquire a memory dump on the most common hypervisors and cloud platforms, including:
+在此任务中，您将尽可能专注于第二种方法。 您将学习在最常见的Hypervisor和云平台上获取内存转储的方法，包括：
 
 - Microsoft Hyper-V
 - VMware vSphere
 - VirtualBox
 - KVM
-- Cloud platforms
+- 云平台
 
-You will focus on providing a memory dump that is compatible with `volatility`.
+您将专注于提供与`volatility`兼容的内存转储。
 
-### Acquiring a Memory Dump on hypervisors
+### 在Hypervisor上获取内存转储
 
-The method for acquiring a memory dump from a hosted VM is similar for each flavor of hypervisor.
+从托管的虚拟机获取内存转储的方法对于每种Hypervisor风格都类似。
 
-**First**, you need to take a snapshot or pause the VM. **Then**, you can take a copy of the memory state file that each hypervisor creates when snapshotting or pausing a VM. Depending on the flavor of hypervisor you will need to convert the memory state file to be compatible with `volatility`.
+**首先**，您需要拍摄快照或暂停虚拟机。 **然后**，您可以复制每个Hypervisor在拍摄快照或暂停虚拟机时创建的内存状态文件。 根据Hypervisor的风格，您可能需要转换内存状态文件以与`volatility`兼容。
 
-**Note: There are alternative methods to acquire memory. This task will focus on using the built-in tools and/or utilities when available.**
+**注意：有其他方法可以获取内存。 此任务将专注于在可用时使用内置工具和/或实用程序。**
 
 #### Microsoft Hyper-V
 
-Acquiring memory on a Hyper-V hosted VM can be done with the native functions of Hyper-V. You can choose to use either the GUI or the PowerShell command line. The terminal below shows the process using PowerShell. The steps for GUI and PowerShell are virtually the same:
+在Hyper-V托管的虚拟机上获取内存可以使用Hyper-V的本机功能完成。 您可以选择使用GUI或PowerShell命令行。 下方终端显示了使用PowerShell的过程。 GUI和PowerShell的步骤基本相同：
 
-- Save the VM or take a checkpoint via the GUI or PowerShell cmdlet ( `Checkpoint-VM` or `Save-VM` )
-- Navigate to where the snapshots are stored and copy the `.vmrs` file, which contains the RAM content
-- Calculate the hash to ensure integrity when analyzing the memory dump later on
-- Use the `volatility windows.hyperv` plugin to process the file
+- 通过GUI或PowerShell cmdlet（`Checkpoint-VM`或`Save-VM`）保存虚拟机或创建检查点
+- 导航到快照存储位置并复制包含RAM内容的`.vmrs`文件
+- 计算哈希值以确保后续分析内存转储时的完整性
+- 使用`volatility windows.hyperv`插件处理文件
 
 ```shell title="Memory dump Hyper-v"
 PS C:\Users\administrator> get-vm | FT VMId, VMName
@@ -547,31 +547,31 @@ MD5           E1BA77075C7C832CC96E43DB8E8F98E8   C:\temp\hostname-17-04-2025.VMR
 
 #### vSphere
 
-In `vSphere`,you can use the built-in tools (vCenter server + vSphere client) to take a snapshot of the VM. You can use either the GUI or the ESXCLI tool. The steps to acquire the memory are similar:
+在`vSphere`中，您可以使用内置工具（vCenter服务器+vSphere客户端）拍摄虚拟机的快照。 您可以使用GUI或ESXCLI工具。 获取内存的步骤类似：
 
-- Take a snapshot of the VM
-- Navigate to the datastore where the VM is located and copy the `.vmsn file`
-- Calculate a hash to ensure integrity
-- `volatility` supports the processing of `.vmsn files`, so you don't need to convert them
+- 拍摄虚拟机的快照
+- 导航到虚拟机所在的数据存储并复制`.vmsn文件`
+- 计算哈希值以确保完整性
+- `volatility`支持处理`.vmsn文件`，因此您无需转换它们
 
-![Memory dump in the vCenter GUI](img/66c44fd9733427ea1181ad58-1745337491450.gif)
+![vCenter GUI中的内存转储](img/66c44fd9733427ea1181ad58-1745337491450.gif)
 
 #### KVM
 
-The easiest way to acquire a memory dump of a VM hosted on KVM is to use the command line utility. The steps are similar to other hypervisors:
+获取托管在KVM上的虚拟机内存转储的最简单方法是使用命令行实用程序。 步骤与其他Hypervisor类似：
 
-- First, find the name of the VM. Use the `virsh list` command to list all VMs
-- Then, dump the memory of the VM by entering `virsh dump vmname /path/to/dupm.raw --memory-only`
-- Lastly, create a hash of the memory dump file `md5sum memdump.raw`
+- 首先，找到虚拟机的名称。 使用`virsh list`命令列出所有虚拟机
+- 然后，通过输入`virsh dump vmname /path/to/dupm.raw --memory-only`来转储虚拟机的内存
+- 最后，创建内存转储文件的哈希`md5sum memdump.raw`
 
 #### VirtualBox
 
-The recommended way to acquire the memory of a VM hosted on VirtualBox is by using the `VBoxManage` tool. On a Windows installation, you can find this command line utility in the installation path of Virtualbox E.g. `C:\Program Files\Oracle\VirtualBox` . Follow the next steps to take a memory dump of the VM:
+获取托管在VirtualBox上的虚拟机内存的推荐方法是使用`VBoxManage`工具。 在Windows安装中，您可以在Virtualbox的安装路径中找到此命令行实用程序，例如 `C:\Program Files\Oracle\VirtualBox`。 按照以下步骤获取虚拟机的内存转储：
 
-- List the VMs running and find the name of the VM
-- Take a dump with the `debugvm` command
-- Calculate a hash to ensure the integrity of the file later down the analysis process
-- `Volatility` supports the processing of `.elf files` , so you don't need to convert them
+- 列出正在运行的虚拟机并找到虚拟机的名称
+- 使用`debugvm`命令进行转储
+- 计算哈希值以确保后续分析过程中文件的完整性
+- `Volatility`支持处理`.elf文件`，因此您无需转换它们
 
 ```shell title="Memory Dump"
 PS C:\Program Files\Oracle\VirtualBox> .\VBoxManage.exe list runningvms
@@ -582,43 +582,43 @@ Algorithm Hash Path
 MD5             1833B5B07C8E43A6E011919934AFB049           C:\temp\kali_memdump.elf
 ```
 
-### Acquiring a Memory Dump on Cloud Platforms
+### 在云平台上获取内存转储
 
-Unlike hypervisors, the process of acquiring a memory dump from a VM hosted on a cloud platform like Azure or AWS is not straightforward. Neither platform comes with a built-in tool to accommodate taking a memory dump. In this case, you won't be able to avoid interacting with the VM directly. One of the main reasons why Cloud providers don't offer this tooling is due to the shared nature of the hardware resources.
+与Hypervisor不同，从托管在Azure或AWS等云平台上的虚拟机获取内存转储的过程并不直接。 这两个平台都没有内置工具来支持获取内存转储。 在这种情况下，您将无法避免直接与虚拟机交互。 云提供商不提供此工具的主要原因之一是硬件资源的共享性质。
 
-The recommended way to acquire memory dumps from a VM hosted on a cloud platform is to follow the steps specific to each OS that we discussed in tasks three and four.
+从托管在云平台上的虚拟机获取内存转储的推荐方法是遵循我们在任务三和四中讨论的特定于每个操作系统的步骤。
 
-There is, however, an alternate method that is used in some scenarios. This method involves the following steps:
+然而，在某些场景中会使用一种替代方法。 此方法涉及以下步骤：
 
-- Configure a full memory crash dump on the host
-- Trigger a manual crash via the cloud platform
-- Detach the disk where the crash dump was saved
-- Connect the disk as a read-only data disk to an analysis VM hosted within the same, or different tenant.
-- Extra step: Export the disk so it can be used in a different tenant
+- 在主机上配置完整内存崩溃转储
+- 通过云平台触发手动崩溃
+- 分离保存崩溃转储的磁盘
+- 将磁盘作为只读数据磁盘连接到同一或不同租户内托管的分析虚拟机。
+- 额外步骤：导出磁盘以便可以在不同租户中使用
 
-#### Special Mention for Azure
+#### 特别提及Azure
 
-Microsoft released a tool named Acquire Volatile Memory for Linux (AVML) to make the process of acquiring volatile memory on VMs hosted on Azure. One of the main advantages of this tool is that it does not require any installation or kernel loading. It can just be run as a stand-alone binary. **Note: The tool is only intended to acquire memory on Linux distributions.**
+Microsoft发布了一个名为Acquire Volatile Memory for Linux（AVML）的工具，以简化在Azure上托管的虚拟机上获取易失性内存的过程。 此工具的主要优势之一是它不需要任何安装或内核加载。 它可以作为独立二进制文件运行。 **注意：该工具仅用于在Linux发行版上获取内存。**
 
-### Conclusion
+### 结论
 
-In this task you learned how to capture memory on a Windows host, a Linux host, a VM hosted on a hypervisor,and a VM hosted on a hypervisor or cloud platform. You noted multiple ways to get a memory dump, either via the GUI or a command-line utility. Last, you observed was that cloud platforms don't offer any built-in tools to take a memory dump without interacting with the VM.
+在本任务中，您学习了如何在Windows主机、Linux主机、托管在Hypervisor上的虚拟机以及托管在Hypervisor或云平台上的虚拟机上捕获内存。 您注意到了多种获取内存转储的方法，无论是通过GUI还是命令行实用程序。 最后，您观察到云平台不提供任何内置工具来在不与虚拟机交互的情况下获取内存转储。
 
-Taking a memory dump isn't exactly rocket science, but there are some things mentioned in the previous tasks to take into account:
+获取内存转储并非高深莫测，但前几个任务中提到了一些需要考虑的事项：
 
-- Timing
-- Make sure you have administrator rights on the target host
-- Use a tool that fits your needs
-- Define a proper naming convention for the memory dumps
-- Ensure integrity by hashing
-- Take note of the filename and its hash so you can refer to it later
-- Ensure all the above are part of your process outline in the IR playbook
+- 时机
+- 确保您在目标主机上拥有管理员权限
+- 使用适合您需求的工具
+- 为内存转储定义适当的命名约定
+- 通过哈希确保完整性
+- 记录文件名及其哈希值，以便后续参考
+- 确保以上所有内容都是您IR手册中流程大纲的一部分
 
 :::info 回答以下问题
 
 <details>
 
-<summary> What is the name of the command line utility you use to take a memory dump on the VirtualBox hypervisor? Use the format filename.extension for answering. </summary>
+<summary> 在VirtualBox Hypervisor上获取内存转储时使用的命令行实用程序名称是什么？ 使用格式filename.extension进行回答。 </summary>
 
 ```plaintext
 vboxmanage.exe
@@ -628,7 +628,7 @@ vboxmanage.exe
 
 <details>
 
-<summary> Which command do you use to create a snapshot in Hyper-V? </summary>
+<summary> 在Hyper-V中创建快照使用哪个命令？ </summary>
 
 ```plaintext
 CheckPoint-VM
@@ -638,28 +638,28 @@ CheckPoint-VM
 
 :::
 
-## Task 6 Challenges with Memory Acquisition
+## 任务6 内存获取的挑战
 
-Memory acquisition does come with some challenges. Take the following difficulties into account before starting the process of memory acquisition:
+内存获取确实带来了一些挑战。 在开始内存获取过程之前，请考虑以下困难：
 
-- **Anti-forensic techniques**: An attacker can employ anti-forensic techniques to impede proper memory acquisition. E.g., encrypting memory content, interfering with acquisition tools, and more
-- **Timing**: It is essential to get the timing right when acquiring memory. As mentioned in task two, memory is volatile, and its content is continuously changing. Keep an eye on the Indicators of Attack and Compromise to choose the right timing
-- **(Physical) Accessibility**: To do a memory capture, you need to have access to the system, locally or remotely. Sometimes, servers are in data centers that are not accessible without proper verification. Ensure that the correct people have the correct access rights
-- **No admin rights**: To do a full memory capture, you must have administrator rights. This can be on the host level, domain level, or resource group in the cloud platform
-- **Lack of an Information Security Management System (ISMS)**: Before even thinking of forensics, you must have a proper ISMS in place. An important part of an ISMS that lists essential information required for memory acquisition is **Asset Management**. It helps you know each asset's:
-  - Details (Hostname, IP, OS, users, physical location)
-  - Criticality
-  - Operating hours
-  - Baseline configuration
-  - Baseline behavior
-  - And more
-- **No transparent incident response process**: Failing to take all of the topics in task two into account will impede you in doing proper memory acquisition. Ensure to include the memory acquisition process in your incident response plan
+- **反取证技术**：攻击者可以采用反取证技术来阻碍正常的内存获取。 例如，加密内存内容、干扰获取工具等
+- **时机**：在获取内存时，把握正确的时机至关重要。 如任务二所述，内存是易失性的，其内容不断变化。 密切关注攻击和入侵指标以选择正确的时机
+- **（物理）可访问性**：要进行内存捕获，您需要本地或远程访问系统。 有时，服务器位于未经适当验证无法访问的数据中心。 确保正确的人员拥有正确的访问权限
+- **无管理员权限**：要进行完整的内存捕获，您必须拥有管理员权限。 这可以是主机级别、域级别或云平台中的资源组级别
+- **缺乏信息安全管理体系（ISMS）**：在考虑取证之前，您必须建立适当的ISMS。 ISMS的一个重要部分是**资产管理**，它列出了内存获取所需的基本信息。 它帮助您了解每个资产的：
+  - 详细信息（主机名、IP、操作系统、用户、物理位置）
+  - 关键性
+  - 运行时间
+  - 基线配置
+  - 基线行为
+  - 以及其他
+- **缺乏透明的应急响应流程**：未能考虑任务二中的所有主题将阻碍您进行正确的内存获取。 确保将内存获取流程纳入您的应急响应计划中
 
 :::info 回答以下问题
 
 <details>
 
-<summary> What process describes keeping track of all hosts and their information? </summary>
+<summary> 哪个流程描述了跟踪所有主机及其信息？ </summary>
 
 ```plaintext
 Asset Management
@@ -669,7 +669,7 @@ Asset Management
 
 <details>
 
-<summary> A threat actor shuts down the target system after successfully exfiltrating data. What term can we use to categorize this action? </summary>
+<summary> 威胁行为者在成功窃取数据后关闭了目标系统。 我们可以使用什么术语来对此行为进行分类？ </summary>
 
 ```plaintext
 anti-forensic techniques
@@ -681,21 +681,21 @@ anti-forensic techniques
 
 ## 任务 7 结论
 
-As you have discovered, completing all the tasks in this room, there is more than meets the eye to acquiring a forensically sound memory dump. You learned that there are multiple things you need to take into account before taking a memory dump:
+正如您所发现的，完成本房间的所有任务后，获取符合取证要求的内存转储远不止表面看起来那么简单。 您了解到在进行内存转储之前需要考虑多个因素：
 
-- What part of the memory to capture
-- When to capture the memory
-- How to capture the memory
+- 捕获内存的哪部分
+- 何时捕获内存
+- 如何捕获内存
 
-You learned how to take various memory dumps from Ubuntu, Windows, hypervisors, and cloud platforms. You ended the room with an overview of the various challenges of memory acquisition.
+您学习了如何从Ubuntu、Windows、Hypervisor和云平台获取各种内存转储。 您以内存获取的各种挑战概述结束了本房间。
 
-Now that you know how to acquire memory, the next step is analyzing it. Continue with the next room in this module to find out how to analyze a memory dump using tools like `volatility`.
+既然您已经知道如何获取内存，下一步就是分析它。 继续学习本模块的下一个房间，了解如何使用`volatility`等工具分析内存转储。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Ready to apply your new skills? </summary>
+<summary> 准备好应用您的新技能了吗？ </summary>
 
 ```plaintext
 No answer needed
