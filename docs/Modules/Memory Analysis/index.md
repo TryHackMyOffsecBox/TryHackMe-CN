@@ -24,7 +24,7 @@ Analyze a memory dump of a Windows host and uncover malicious processes.
 
 Trace user behavior, command execution, file access, and macro-based payload delivery from memory.
 
-## Windows Memory & Network
+## [Windows Memory & Network](windowsmemoryandnetwork.md)
 
 Identify C2 traffic & post-exploit activity in Windows memory.
 
