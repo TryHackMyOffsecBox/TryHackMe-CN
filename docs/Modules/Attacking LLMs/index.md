@@ -12,7 +12,7 @@ Understand the basics of LLM Prompt Injection attacks.
 
 Learn how LLMs handle their output and the privacy risks behind it.
 
-## Data Integrity & Model Poisoning
+## [Data Integrity & Model Poisoning](modelpoisoning.md)
 
 Understand how supply chain and model poisoning attacks can corrupt the underlying LLM.
 
