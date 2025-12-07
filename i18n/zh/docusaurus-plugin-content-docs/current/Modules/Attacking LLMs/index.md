@@ -8,11 +8,11 @@
 
 了解大型语言模型提示注入攻击的基础知识。
 
-## [LLM Output Handling and Privacy Risks](outputhandlingandprivacyrisks.md)
+## [LLM输出处理与隐私风险](outputhandlingandprivacyrisks.md)
 
 了解大型语言模型如何处理其输出及其背后的隐私风险。
 
-## 数据完整性与模型投毒
+## [Data Integrity & Model Poisoning](modelpoisoning.md)
 
 了解供应链和模型投毒攻击如何破坏底层大型语言模型。
 
