@@ -232,7 +232,7 @@ These findings help confirm suspicions of remote control via **C2**, plus latera
 <summary> What is the order in which the potential malicious processes established outbound connections? </summary>
 
 ```plaintext
-No answer needed
+
 ```
 
 </details>
