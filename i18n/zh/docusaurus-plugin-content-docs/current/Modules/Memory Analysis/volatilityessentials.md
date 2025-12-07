@@ -6,26 +6,26 @@ sidebar_position: 2
 
 ## 任务 1 介绍
 
-In the previous room, [Memory Analysis Introduction](https://tryhackme.com/room/memoryanalysisintroduction), we learnt about the vital nature of memory forensics in cyber security. We explored the structure of memory dumps, differentiated between RAM and disk forensics, and saw scenarios where memory analysis is essential.
+在之前的房间[内存分析简介](https://tryhackme.com/room/memoryanalysisintroduction)中，我们了解了内存取证在网络安全中的关键性质。 我们探讨了内存转储的结构，区分了RAM和磁盘取证，并看到了内存分析至关重要的场景。
 
-Here, we shall begin looking at the practical aspects of memory forensics through tools, specifically Volatility.
+在这里，我们将开始通过工具（特别是Volatility）来了解内存取证的实践方面。
 
 ### 学习目标
 
-- Getting familiar with the Volatility Framework
-- Navigate and utilise basic Volatility commands and plugins
-- Conduct forensic analysis to identify key artefacts such as running processes and loaded DLLs using Volatility
+- 熟悉Volatility框架
+- 导航并使用基本的Volatility命令和插件
+- 使用Volatility进行取证分析，以识别关键工件，如运行进程和加载的DLL
 
 ### 先决条件
 
 - [内存分析简介](https://tryhackme.com/room/memoryanalysisintroduction)
-- [Core Windows Processes](https://tryhackme.com/room/btwindowsinternals)
+- [核心Windows进程](https://tryhackme.com/room/btwindowsinternals)
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Ready to learn about Volatility and memory analysis. </summary>
+<summary> 准备好学习Volatility和内存分析。 </summary>
 
 ```plaintext
 No answer needed
@@ -35,23 +35,23 @@ No answer needed
 
 :::
 
-## Task 2 Volatility Overview
+## 任务2 Volatility概述
 
-[Volatility](https://volatilityfoundation.org/the-volatility-framework/) is an open-source memory forensics framework that is cross-platform, modular, and extensible. The framework has undergone various iterations over the years, with the current version being Volatility 3. This version is superior to its predecessors as it abandoned static OS profiling in favour of dynamic symbol resolution, supporting newer operating systems, memory layouts, and complete insight into the runtime state of the system.
+[Volatility](https://volatilityfoundation.org/the-volatility-framework/)是一个开源的、跨平台、模块化且可扩展的内存取证框架。 该框架多年来经历了多次迭代，当前版本为Volatility 3。 此版本优于其前身，因为它放弃了静态操作系统分析，转而采用动态符号解析，支持更新的操作系统、内存布局，并完全洞察系统的运行时状态。
 
-### Architectural Overview
+### 架构概述
 
-Volatility 3 is made up of several key layers:
+Volatility 3由几个关键层组成：
 
-- **Memory layers**: These layers represent the hierarchy of address spaces, from raw memory to virtual address translations.
-- **Symbol tables**: The tables enable kernel and process structures to be interpreted through OS-specific debugging symbols.
-- **Plugins**: These are modular routines that leverage the underlying memory layers and symbol tables to extract artefacts of forensic interest. Later in the room, we shall look at some key plugins used.
+- **内存层**：这些层表示地址空间的层次结构，从原始内存到虚拟地址转换。
+- **符号表**：这些表通过操作系统特定的调试符号来解释内核和进程结构。
+- **插件**：这些是模块化例程，利用底层内存层和符号表来提取取证感兴趣的工件。 稍后在房间中，我们将查看一些关键插件。
 
-### System Requirements and Installation
+### 系统要求和安装
 
-Volatility 3 requires Python 3.6 or later to run. Additionally, it benefits from various libraries such as `pefile`, `capstone`, and `yara-python` that allow us to process portable executables, perform memory disassembly, and use YARA rules in our analysis, respectively. The terminal output below shows how to install Volatility by cloning the [GitHub repository](https://github.com/volatilityfoundation/volatility3.git) and running it directly from the source.
+Volatility 3需要Python 3.6或更高版本才能运行。 此外，它受益于各种库，如`pefile`、`capstone`和`yara-python`，这些库允许我们分别处理可移植可执行文件、执行内存反汇编并在分析中使用YARA规则。 下面的终端输出显示了如何通过克隆[GitHub仓库](https://github.com/volatilityfoundation/volatility3.git)并从源代码直接运行来安装Volatility。
 
-Volatility has already been installed on the machine attached to this room and can be accessed under the `Desktop/volatility3` directory.
+Volatility已安装在此房间连接的机器上，可在`Desktop/volatility3`目录下访问。
 
 ```shell title="Volatility Installation"
 ubuntu@tryhackme:~/Desktop$ git clone https://github.com/volatilityfoundation/volatility3.git
@@ -77,7 +77,7 @@ options:
 
 <details>
 
-<summary> Read the above and navigate to the Volatility directory. </summary>
+<summary> 阅读以上内容并导航到Volatility目录。 </summary>
 
 ```plaintext
 No answer needed
@@ -87,54 +87,54 @@ No answer needed
 
 :::
 
-## Task 3 Memory Acquisition and Analysis
+## 任务3 内存获取和分析
 
-### Memory Acquisition Methodologies
+### 内存获取方法
 
-Memory acquisition is a foundational step in forensics that must be performed in a manner that ensures we maintain the integrity of evidence. The process and the deployment environment used vary from one OS to another.
+内存取证是取证中的一个基础步骤，必须以确保我们保持证据完整性的方式执行。 所使用的流程和部署环境因操作系统而异。
 
-For Windows systems, the following tools can be used to conduct memory acquisition:
+对于Windows系统，可以使用以下工具进行内存获取：
 
-- **DumpIt**: captures a full physical memory image on 32/64‑bit Windows and automatically hashes the output.
-- **WinPmem**: Open‑source driver‑based tool that acquires RAM in RAW/ELF formats and embeds acquisition metadata for chain‑of‑custody.
-- **Magnet RAM Capture**: GUI‑driven collector that snapshots volatile memory on live Windows hosts while minimising footprint.
-- **FTK Imager**: The most common commercial tool that acquires memory and selected logical artefacts alongside disk imaging functions.
+- **DumpIt**：在32/64位Windows上捕获完整的物理内存镜像，并自动对输出进行哈希处理。
+- **WinPmem**：基于驱动的开源工具，以RAW/ELF格式获取RAM，并嵌入获取元数据以用于证据链。
+- **Magnet RAM Capture**：GUI驱动的收集器，在实时Windows主机上快照易失性内存，同时最小化占用空间。
+- **FTK Imager**：最常见的商业工具，在磁盘镜像功能的同时获取内存和选定的逻辑工件。
 
-For Linux and macOS systems, we can employ the services of the following tools:
+对于Linux和macOS系统，我们可以使用以下工具的服务：
 
-- **AVML**: Lightweight Microsoft CLI utility that dumps Linux memory to a compressed ELF file without requiring a kernel module.
-- **LiME**: Loadable Kernel Module for Linux that captures full volatile memory over disk or network and supports ARM/x86 architectures.
-- **OSXPmem**: macOS‑specific fork of Pmem that creates raw memory images on Intel‑based Macs for subsequent Volatility analysis.
+- **AVML**：轻量级Microsoft CLI实用程序，将Linux内存转储到压缩的ELF文件中，无需内核模块。
+- **LiME**：Linux的可加载内核模块，通过磁盘或网络捕获完整的易失性内存，并支持ARM/x86架构。
+- **OSXPmem**：macOS特定的Pmem分支，在基于Intel的Mac上创建原始内存镜像，用于后续的Volatility分析。
 
-Extracting memory from virtual environments can be done by collecting the virtual memory file from the host machine's drive. Depending on the hypervisor in use, the output file will likely differ, and you would likely encounter the following examples:
+从虚拟环境中提取内存可以通过从主机驱动器中收集虚拟内存文件来完成。 根据所使用的虚拟机管理程序，输出文件可能会有所不同，您可能会遇到以下示例：
 
 - VMware - `.vmem`
 - Hyper-V - `.bin`
 - Parallels - `.mem`
-- VirtualBox - `.sav` It is worth noting that this is a partial memory file.
+- VirtualBox - `.sav` 值得注意的是，这是一个部分内存文件。
 
 ### 内存分析
 
-To have a holistic and hands-on understanding of Volatility, we shall investigate a forensic case and use it to learn about the tool's inner workings. The files for the analysis are found under the `Desktop/Investigations` directory.
+为了全面且实践性地理解Volatility，我们将调查一个取证案例，并使用它来了解该工具的内部工作原理。 分析文件位于`Desktop/Investigations`目录下。
 
-#### Case 001
+#### 案例001
 
-Your SOC has informed you that they have gathered a memory dump from a quarantined endpoint thought to have been compromised by a banking trojan masquerading as an Adobe document. Your job is to use your knowledge of threat intelligence and reverse engineering to perform memory forensics on the infected host.
+您的SOC通知您，他们已从一个隔离的端点收集了内存转储，该端点被认为已被伪装成Adobe文档的银行木马感染。 您的任务是利用威胁情报和逆向工程知识，对受感染主机进行内存取证。
 
-You have been informed of a suspicious IP in connection with the file `Investigation-1.vmem` that could be helpful: `41.168.5.140`.
+您已被告知一个与文件`Investigation-1.vmem`相关的可疑IP，可能有用：`41.168.5.140`。
 
-#### Plugins
+#### 插件
 
-Volatility uses plugins to request data to carry out analysis. Some of the most commonly used plugins include:
+Volatility使用插件来请求数据以进行分析。 一些最常用的插件包括：
 
 - `windows.info`
 - `linux.info`
 - `pslist`
 - `pstree`
 
-Let us look at these plugins, extracting information from our memory file. First, we can begin by obtaining operating system details from the image. In previous versions of Volatility, this information was identified as **OS profiles** and was extracted using the plugin `imageinfo`. However, OS profiles have been deprecated in the new version, and now we have the individual information plugins.
+让我们查看这些插件，从我们的内存文件中提取信息。 首先，我们可以从获取镜像中的操作系统详细信息开始。 在Volatility的先前版本中，此信息被识别为**操作系统配置文件**，并使用插件`imageinfo`提取。 然而，操作系统配置文件在新版本中已被弃用，现在我们有了单独的信息插件。
 
-Given that our memory file was obtained from a Windows VM running on VMware, we can extract details about its profile with the command below:
+鉴于我们的内存文件是从运行在VMware上的Windows虚拟机获取的，我们可以使用以下命令提取其配置文件的详细信息：
 
 ```shell title="Volatility Windows Info"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.info
@@ -148,13 +148,13 @@ DTB     0x2fe000
 Symbols file:///home/ubuntu/Desktop/volatility3/volatility3/symbols/windows/ntkrnlpa.pdb/30B5FB31AE7E4ACAABA750AA241FF331-1.json.xz
 ```
 
-We can extract the system version, architecture, symbol tables, and available memory layers from the details.
+我们可以从详细信息中提取系统版本、架构、符号表和可用的内存层。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> What is the build version of the host machine in Case 001? </summary>
+<summary> 案例001中主机机器的构建版本是什么？ </summary>
 
 ```plaintext
 2600.xpsp.080413-2111
@@ -164,7 +164,7 @@ We can extract the system version, architecture, symbol tables, and available me
 
 <details>
 
-<summary> At what time was the memory file acquired in Case 001? </summary>
+<summary> 案例001中内存文件是在什么时间获取的？ </summary>
 
 ```plaintext
 2012-07-22 02:45:08
@@ -174,63 +174,63 @@ We can extract the system version, architecture, symbol tables, and available me
 
 :::
 
-## Task 4 Listing Processes and Connections
+## 任务4 列出进程和连接
 
-When we want to analyse details on processes and network connections from our memory file, Volatility supports different plugins, each with varying techniques used. Not all plugins mentioned here will produce a result from the memory file, as the capture may not have included processes or services that the plugins would enumerate.
+当我们想要分析内存文件中进程和网络连接的详细信息时，Volatility支持不同的插件，每个插件使用不同的技术。 并非此处提到的所有插件都会从内存文件中产生结果，因为捕获可能未包含插件将枚举的进程或服务。
 
-### Active Process Enumeration
+### 活动进程枚举
 
-The most basic way of listing processes is by using `pslist`. This plugin enumerates active processes from the doubly-linked list that keeps track of processes in memory, equivalent to the process list in the task manager. The output from this plugin will include all current and terminated processes and their exit times.
+列出进程的最基本方法是使用`pslist`。 此插件从跟踪内存中进程的双向链表中枚举活动进程，相当于任务管理器中的进程列表。 此插件的输出将包括所有当前和已终止的进程及其退出时间。
 
 ```shell title="Volatility Process Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.pslist
 ```
 
-### Hidden Process Enumeration
+### 隐藏进程枚举
 
-Some malware, typically rootkits, will, in an attempt to hide their processes, unlink themselves from the list. By unlinking themselves from the list, you will no longer see their processes when using `pslist`. To combat this evasion technique, we can use `psscan`. This technique of listing processes will locate processes by finding data structures that match `_EPROCESS`. While this technique can help with evasion countermeasures, it can also result in false positives; therefore, we must be careful.
+一些恶意软件（通常是rootkit）会尝试隐藏其进程，从列表中取消链接自身。 通过从列表中取消链接自身，使用`pslist`时将不再看到它们的进程。 为了对抗这种规避技术，我们可以使用`psscan`。 这种列出进程的技术将通过查找匹配`_EPROCESS`的数据结构来定位进程。 虽然这种技术可以帮助对抗规避措施，但也可能导致误报；因此，我们必须小心。
 
 ```shell title="Volatility Process Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.psscan
 ```
 
-### Process Hierarchy Enumeration
+### 进程层次枚举
 
-The third process plugin, `pstree`, does not offer any other kind of special techniques to help identify evasion like the last two plugins. However, this plugin will list all processes based on their parent process ID, using the same methods as `pslist`. This can be useful for an analyst to get a complete story of the processes and what may have occurred at the extraction time.
+第三个进程插件`pstree`不提供任何其他特殊技术来帮助识别规避，如最后两个插件。 然而，此插件将根据其父进程ID列出所有进程，使用与`pslist`相同的方法。 这对于分析师获取进程的完整情况以及提取时可能发生的情况非常有用。
 
 ```shell title="Volatility Process Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.pstree
 ```
 
-### File, Registry, and Thread Enumeration
+### 文件、注册表和线程枚举
 
-Inspecting files and the registry is also vital during a memory forensic investigation. We can use the plugin `handles` to look into the details and handles of files and threads from a host.
+在内存取证调查期间，检查文件和注册表也至关重要。 我们可以使用 `handles` 插件来查看主机中文件和线程的详细信息及句柄。
 
 ```shell title="Volatility Files Inspecting"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.handles
 ```
 
-### Network Connection Enumeration
+### 网络连接枚举
 
-Now that we know how to identify processes, we also need to have a way to identify the network connections present at the time of extraction on the host machine. The `netstat` will attempt to identify all memory structures with a network connection.
+既然我们知道了如何识别进程，我们也需要一种方法来识别主机提取时存在的网络连接。 `netstat` 将尝试识别所有具有网络连接的内存结构。
 
 ```shell title="Volatility Network  Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.netstat
 ```
 
-It is worth noting that this command in the current state of Volatility 3 can be very unstable, particularly around old Windows builds. To combat this, you can utilise other tools like [bulk_extractor](https://tools.kali.org/forensics/bulk-extractor) to extract a PCAP file from the memory file. Sometimes, this is preferred in network connections that you cannot identify from Volatility alone.
+值得注意的是，在 Volatility 3 的当前状态下，此命令可能非常不稳定，尤其是在旧的 Windows 构建版本中。 为了解决这个问题，你可以使用其他工具，如 [bulk_extractor](https://tools.kali.org/forensics/bulk-extractor)，从内存文件中提取 PCAP 文件。 有时，对于无法仅从 Volatility 识别的网络连接，这更可取。
 
-### TCP/UDP Socket Enumeration
+### TCP/UDP 套接字枚举
 
-We can also identify network sockets and their linked processes from a memory file. To do this, we can use the plugin `netscan`. This will recover active and closed TCP/UDP connections, associated process IDs, local and remote ports, and IPs using memory pool scanning.
+我们还可以从内存文件中识别网络套接字及其关联的进程。 为此，我们可以使用 `netscan` 插件。 这将通过内存池扫描恢复活动和已关闭的 TCP/UDP 连接、关联的进程 ID、本地和远程端口以及 IP。
 
 ```shell title="Volatility TCP/UDP Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.netscan
 ```
 
-### DLL Enumeration
+### DLL 枚举
 
-The last plugin we will cover is `dlllist`. This plugin will list all DLLs associated with processes at extraction time. This can be especially useful once you have analysed further and filtered the output to a specific DLL that might indicate a specific type of malware you believe to be on the system.
+我们将介绍的最后一个插件是 `dlllist`。 此插件将列出提取时与进程关联的所有 DLL。 一旦你进一步分析并将输出过滤到可能指示你认为系统上存在的特定类型恶意软件的特定 DLL 时，这可能特别有用。
 
 ```shell title="Volatility DLL Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.dlllist
@@ -240,7 +240,7 @@ ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigatio
 
 <details>
 
-<summary> What is the absolute path to the active Adobe process? </summary>
+<summary> 活动 Adobe 进程的绝对路径是什么？ </summary>
 
 ```plaintext
 C:\Program Files\Adobe\Reader 9.0\Reader\Reader_sl.exe
@@ -250,7 +250,7 @@ C:\Program Files\Adobe\Reader 9.0\Reader\Reader_sl.exe
 
 <details>
 
-<summary> What is the parent process of this process in Case 001? </summary>
+<summary> 在案例 001 中，此进程的父进程是什么？ </summary>
 
 ```plaintext
 explorer.exe
@@ -260,7 +260,7 @@ explorer.exe
 
 <details>
 
-<summary> What is the PID of the parent process? </summary>
+<summary> 父进程的 PID 是什么？ </summary>
 
 ```plaintext
 1484
@@ -270,7 +270,7 @@ explorer.exe
 
 <details>
 
-<summary> How many DLL files are used by the Adobe process that are outside the `system32` directory? </summary>
+<summary> Adobe 进程使用了多少个位于 `system32` 目录之外的 DLL 文件？ </summary>
 
 ```plaintext
 3
@@ -280,7 +280,7 @@ explorer.exe
 
 <details>
 
-<summary> What is the name of the one KeyedEvent associated with the process's handles? </summary>
+<summary> 与进程句柄关联的一个 KeyedEvent 的名称是什么？ </summary>
 
 ```plaintext
 CritSecOutOfMemoryEvent
@@ -290,25 +290,25 @@ CritSecOutOfMemoryEvent
 
 :::
 
-## Task 5 Volatility Hunting and Detection Capabilities
+## 任务5 Volatility 狩猎与检测能力
 
-Advanced threats can execute solely in memory, avoiding disk artefacts. Volatility offers many plugins that can aid in your hunting and detection capabilities when hunting for injected code and malware, as well as applying custom detection rules via YARA.
+高级威胁可以仅在内存中执行，避免磁盘痕迹。 Volatility 提供了许多插件，可以在狩猎注入代码和恶意软件时，以及通过 YARA 应用自定义检测规则时，帮助提升你的狩猎和检测能力。
 
-Before going through this section, it is recommended that you have a basic understanding of how evasion techniques and various malware techniques are employed by adversaries, as well as how to hunt and detect them.
+在阅读本节之前，建议你对对手如何采用规避技术和各种恶意软件技术，以及如何狩猎和检测它们有基本的了解。
 
-### Malware Analysis
+### 恶意软件分析
 
-The first plugin we will discuss, which is one of the most useful when hunting for code injection, is `malfind`. This plugin will attempt to detect injected processes and their PIDs along with the offset address and the infected area's Hex, Ascii, and Disassembly views. The plugin works by scanning the heap and identifying processes that have the executable bit set **RWE** or **RX** and/or no memory-mapped file on disk (file-less malware).
+我们将讨论的第一个插件是 `malfind`，它是狩猎代码注入时最有用的插件之一。 此插件将尝试检测注入的进程及其 PID，以及偏移地址和感染区域的十六进制、ASCII 和反汇编视图。 该插件通过扫描堆并识别设置了可执行位 **RWE** 或 **RX** 和/或磁盘上没有内存映射文件（无文件恶意软件）的进程来工作。
 
-Based on what `malfind` identifies, the injected area will change. An MZ header is an indicator of a Windows executable file. The injected area could also be directed towards shellcode, which requires further analysis.
+根据 `malfind` 识别的内容，注入的区域会发生变化。 MZ 头是 Windows 可执行文件的指示器。 注入的区域也可能指向需要进一步分析的 shellcode。
 
-![File structure of a Windows executable, showing the MZ header value.](img/image_20251207-210748.png)
+![Windows 可执行文件的文件结构，显示 MZ 头值。](img/image_20251207-210748.png)
 
 ```shell title="Volatility Malware Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.malfind
 ```
 
-Another helpful plugin is `vadinfo`. This displays detailed information about virtual memory descriptors, which is useful when manually investigating suspicious memory regions and heap allocations.
+另一个有用的插件是 `vadinfo`。 这显示了虚拟内存描述符的详细信息，在手动调查可疑内存区域和堆分配时非常有用。
 
 ```shell title="Volatility Malware Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.vadinfo
@@ -318,7 +318,7 @@ ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigatio
 
 <details>
 
-<summary> What processes in the Case 001 memory file contain a header that points to a Windows executable file? (Answer: process1,process2) </summary>
+<summary> 案例 001 内存文件中的哪些进程包含指向 Windows 可执行文件的头？ (答案: process1,process2) </summary>
 
 ```plaintext
 explorer.exe,reader_sl.exe
@@ -328,49 +328,49 @@ explorer.exe,reader_sl.exe
 
 :::
 
-## Task 6 Advanced Memory Forensics
+## 任务6 高级内存取证
 
-Forensic analysts must be equipped to detect manipulation deep within the operating system when dealing with sophisticated threats such as kernel-mode rootkits. Rootkits are designed to conceal processes, files, drivers, and their presence by modifying kernel structures. This section focuses on a structured and practical exploration of these advanced evasion techniques, particularly within the Windows operating system, using Volatility 3.
+取证分析师在处理诸如内核模式 rootkit 等复杂威胁时，必须能够检测操作系统深处的操纵。 Rootkit 旨在通过修改内核结构来隐藏进程、文件、驱动程序及其存在。 本节重点使用 Volatility 3，对这些高级规避技术，特别是在 Windows 操作系统内，进行结构化和实践性的探索。
 
-Advanced adversaries often employ **hooking** — a technique that allows malicious software to intercept and potentially redirect system-level functions for evasion or persistence. Hooks are not inherently malicious; antivirus and debugging tools also use them legitimately. The analyst’s responsibility is to identify whether the presence of a hook aligns with expected system behaviour or represents malicious interference.
+高级对手经常采用 **挂钩** —— 一种允许恶意软件拦截并可能重定向系统级功能以实现规避或持久性的技术。 挂钩本身并非恶意；防病毒和调试工具也合法地使用它们。 分析师的责任是识别挂钩的存在是否符合预期的系统行为，还是代表恶意干扰。
 
-One of the most common hooking strategies is the **System Service Descriptor Table (SSDT)** hooks. These hooks are used to modify kernel system call table entries. They are prevalent in kernel-mode malware, with Volatility providing a corresponding plugin for analysis.
+最常见的挂钩策略之一是 **系统服务描述符表 (SSDT)** 挂钩。 这些挂钩用于修改内核系统调用表条目。 它们在内核模式恶意软件中很普遍，Volatility 提供了相应的插件进行分析。
 
-### SSDT Hook Detection
+### SSDT 挂钩检测
 
-The Windows kernel uses the **System Service Descriptor Table (SSDT)** to resolve addresses for system calls. Rootkits often overwrite SSDT entries to redirect legitimate system calls (e.g., `NtCreateFile`) to their malicious counterparts.
+Windows 内核使用 **系统服务描述符表 (SSDT)** 来解析系统调用的地址。 Rootkit 经常覆盖 SSDT 条目，将合法的系统调用（例如 `NtCreateFile`）重定向到其恶意对应项。
 
-Volatility 3’s `windows.ssdt` plugin enables analysts to inspect this table for any irregularities.
+Volatility 3 的 `windows.ssdt` 插件使分析师能够检查此表是否存在任何异常。
 
 ```shell title="Volatility SSDT Hook Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.ssdt
 ```
 
-**Recommendation**: Perform SSDT inspection **after** discovering suspicious kernel modules or abnormal process behaviour.
+**建议**：在发现可疑内核模块或异常进程行为 **之后** 执行 SSDT 检查。
 
-### Kernel Module Enumeration
+### 内核模块枚举
 
-The `windows.modules` plugin lists drivers and kernel modules currently loaded into memory. Each entry includes metadata such as base address, size, and file path.
+`windows.modules` 插件列出了当前加载到内存中的驱动程序和内核模块。 每个条目包括基地址、大小和文件路径等元数据。
 
 ```shell title="Volatility Kernel Module Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.modules
 ```
 
-### Driver Scanning
+### 驱动程序扫描
 
-While `windows.modules` lists known drivers, it can miss hidden or unlinked ones. The `windows.driverscan` plugin scans raw memory for DRIVER_OBJECT structures that may have been unlinked from standard lists.
+虽然 `windows.modules` 列出了已知的驱动程序，但它可能会遗漏隐藏或未链接的驱动程序。 `windows.driverscan` 插件扫描原始内存中可能已从标准列表中取消链接的 DRIVER_OBJECT 结构。
 
 ```shell title="Volatility Kernel Module Enumeration"
 ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigations/Investigation-1.vmem windows.driverscan
 ```
 
-**Tip**: Use this plugin if you suspect DKOM (Direct Kernel Object Manipulation) or rootkit behaviour.
+**提示**：如果你怀疑 DKOM（直接内核对象操纵）或 rootkit 行为，请使用此插件。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> What is the address for the `NtCreateFile` system call? </summary>
+<summary> `NtCreateFile` 系统调用的地址是什么？ </summary>
 
 ```plaintext
 0x8056e27c
@@ -380,19 +380,19 @@ ubuntu@tryhackme:~/Desktop/volatility3$ python3 vol.py -f ~/Desktop/Investigatio
 
 :::
 
-## Task 7 Practical Investigations
+## 任务7 实践调查
 
-### Case 002
+### 案例 002
 
-You have been informed that your corporation has been hit with a chain of ransomware that has been affecting corporations internationally. Your team has already recovered from the attack through backups. Your job is to perform post-incident analysis and identify which actors were at play and what occurred on your systems. You have received a raw memory dump from your team to begin your analysis.
+你被告知你的公司遭受了一系列影响国际公司的勒索软件攻击。 你的团队已经通过备份从攻击中恢复。 你的工作是进行事后分析，并确定哪些行为者参与其中以及你的系统上发生了什么。 你已收到团队提供的原始内存转储以开始分析。
 
-The memory file is located in `~/Desktop/Investigations/Investigation-2.raw`.
+内存文件位于 `~/Desktop/Investigations/Investigation-2.raw`。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> What suspicious process is running at PID 740? </summary>
+<summary> PID 740 正在运行什么可疑进程？ </summary>
 
 ```plaintext
 @WanaDecryptor@
@@ -402,7 +402,7 @@ The memory file is located in `~/Desktop/Investigations/Investigation-2.raw`.
 
 <details>
 
-<summary> What is the full path of the suspicious binary in PID 740? </summary>
+<summary> PID 740 中可疑二进制文件的完整路径是什么？ </summary>
 
 ```plaintext
 C:\Intel\ivecuqmanpnirkt615\@WanaDecryptor@.exe
@@ -412,7 +412,7 @@ C:\Intel\ivecuqmanpnirkt615\@WanaDecryptor@.exe
 
 <details>
 
-<summary> What is the parent process of PID 740? </summary>
+<summary> PID 740 的父进程是什么？ </summary>
 
 ```plaintext
 tasksche.exe
@@ -422,7 +422,7 @@ tasksche.exe
 
 <details>
 
-<summary> From our current information, what malware is present on the system? </summary>
+<summary> 根据我们当前的信息，系统上存在什么恶意软件？ </summary>
 
 ```plaintext
 Wannacry
@@ -432,7 +432,7 @@ Wannacry
 
 <details>
 
-<summary> What plugin could be used to identify all files loaded from the malware working directory? </summary>
+<summary> 可以使用什么插件来识别从恶意软件工作目录加载的所有文件？ </summary>
 
 ```plaintext
 windows.filescan
@@ -442,26 +442,26 @@ windows.filescan
 
 :::
 
-## Task 8 Conclusion
+## 任务8结论
 
-We have only covered a very thin layer of memory forensics with Volatility, which can go much deeper when analysing the Windows, Mac, and Linux architectures. If you're looking for a deep dive into memory forensics, I suggest reading **The Art of Memory Forensics**.
+我们只涵盖了使用 Volatility 进行内存取证的一个非常浅的层面，在分析 Windows、Mac 和 Linux 架构时，它可以深入得多。 如果你想深入了解内存取证，我建议阅读 **《内存取证的艺术》**。
 
-Additionally, the following is a list of worthy plugin mentions that you can be aware of and read more on:
+此外，以下是一些值得提及的插件列表，你可以了解并进一步阅读：
 
-- `windows.callbacks`: Malware may register malicious callbacks for process creation, image loading, or thread creation. We can use this plugin to inspect callback functions for unknown driver associations or non-standard modules.
-- `windows.driverirp`: This plugin examines IRP (I/O Request Packet) dispatch tables of drivers. Suspicious drivers may register no IRP functions or point to non-driver memory.
-- `windows.modscan`: This plugin scans for loaded kernel modules without relying on linked lists. It can be used to uncover stealth drivers that evade both `modules` and `driverscan`.
-- `windows.moddump`: This plugin allows analysts to extract suspicious drivers or modules from memory for static analysis. Further investigation with tools such as Ghidra or IDA can be done to reverse engineer dumped modules.
-- `windows.memmap`: This plugin can perform deeper analysis of injected code or memory artefacts, to extract memory regions from specific processes.
-- `yarascan`: This plugin will search for strings, patterns, and compound rules against a rule set by using a YARA file as an argument or listing rules within the command line.
+- `windows.callbacks`：恶意软件可能会为进程创建、映像加载或线程创建注册恶意回调。 我们可以使用此插件来检查未知驱动程序关联或非标准模块的回调函数。
+- `windows.driverirp`：此插件检查驱动程序的 IRP（I/O 请求包）调度表。 可疑驱动程序可能不注册任何 IRP 函数或指向非驱动程序内存。
+- `windows.modscan`：此插件扫描已加载的内核模块，而不依赖链表。 它可用于发现逃避`modules`和`driverscan`的隐形驱动程序。
+- `windows.moddump`：此插件允许分析人员从内存中提取可疑驱动程序或模块进行静态分析。 可以使用Ghidra或IDA等工具进一步调查，对转储的模块进行逆向工程。
+- `windows.memmap`：此插件可以对注入代码或内存工件进行更深入的分析，从特定进程中提取内存区域。
+- `yarascan`：此插件将使用YARA文件作为参数或在命令行中列出规则，根据规则集搜索字符串、模式和复合规则。
 
-In the next room, [Memory Acquisition](https://tryhackme.com/room/memoryacquisition), we will cover memory acquisition in detail, covering all the necessary techniques and approaches.
+在下一个房间[内存获取](https://tryhackme.com/room/memoryacquisition)中，我们将详细介绍内存获取，涵盖所有必要的技术和方法。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Read the above and continue learning! </summary>
+<summary> 阅读以上内容并继续学习！ </summary>
 
 ```plaintext
 No answer needed
