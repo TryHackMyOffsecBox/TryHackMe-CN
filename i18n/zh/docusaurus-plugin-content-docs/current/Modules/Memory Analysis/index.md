@@ -24,7 +24,7 @@
 
 从内存中追踪用户行为、命令执行、文件访问和基于宏的有效载荷传递。
 
-## [Windows Memory & Network](windowsmemoryandnetwork.md)
+## [Windows 内存与网络](windowsmemoryandnetwork.md)
 
 在Windows内存中识别C2流量和利用后活动。
 
