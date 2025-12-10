@@ -16,7 +16,7 @@ Learn how LLMs handle their output and the privacy risks behind it.
 
 Understand how supply chain and model poisoning attacks can corrupt the underlying LLM.
 
-## Juicy
+## [Juicy](juicy.md)
 
 A friendly golden retriever who answers your questions.
 
