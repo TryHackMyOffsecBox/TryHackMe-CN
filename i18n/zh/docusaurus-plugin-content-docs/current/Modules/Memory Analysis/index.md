@@ -12,19 +12,19 @@
 
 学习获取数字可靠内存的技术和最佳实践。
 
-## [Volatility Essentials](volatilityessentials.md)
+## [波动性要点](volatilityessentials.md)
 
 学习如何使用Volatility执行内存取证！
 
-## [Windows Memory & Processes](windowsmemoryandprocs.md)
+## [Windows 内存与进程](windowsmemoryandprocs.md)
 
 分析Windows主机的内存转储并发现恶意进程。
 
-## [Windows Memory & User Activity](windowsmemoryanduseractivity.md)
+## [Windows 内存与用户活动](windowsmemoryanduseractivity.md)
 
 从内存中追踪用户行为、命令执行、文件访问和基于宏的有效载荷传递。
 
-## Windows内存与网络
+## [Windows 内存与网络](windowsmemoryandnetwork.md)
 
 在Windows内存中识别C2流量和利用后活动。
 

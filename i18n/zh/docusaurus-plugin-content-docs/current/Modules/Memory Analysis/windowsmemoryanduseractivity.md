@@ -6,28 +6,28 @@ sidebar_position: 4
 
 ## 任务 1 介绍
 
-In this room, we’ll walk through how to investigate user activity from a **Windows memory dump** using **Volatility 3**. As analysts, it's important to know what users were doing on a system at the time something suspicious occurred. That includes knowing who was logged in, what commands were executed, and what files were opened, among other activities.
+在本房间中，我们将逐步介绍如何使用**Volatility 3**从**Windows内存转储**中调查用户活动。 作为分析师，了解在可疑事件发生时用户在系统上正在做什么非常重要。 这包括了解谁已登录、执行了什么命令、打开了哪些文件以及其他活动。
 
-This room is the second in a set of three. We’ll be working with a memory dump from a compromised machine on a small internal network. If the host is indeed compromised, we will need to piece together the scope of the attack and the attack chain.
+本房间是三部分系列中的第二部分。 我们将处理来自小型内部网络上受感染计算机的内存转储。 如果主机确实受到入侵，我们需要拼凑出攻击的范围和攻击链。
 
 ### 学习目标
 
-- Link logins to suspicious activity using session and registry data.
-- Identify commands and file access tied to suspicious access.
-- Reconstruct user actions from memory.
+- 使用会话和注册表数据将登录与可疑活动关联起来。
+- 识别与可疑访问相关的命令和文件访问。
+- 从内存中重建用户操作。
 
 ### 先决条件
 
 - [Volatility](https://tryhackme.com/room/volatility)
-- [Windows Fundamentals Module](https://tryhackme.com/module/windows-fundamentals)
+- [Windows基础模块](https://tryhackme.com/module/windows-fundamentals)
 - [内存分析简介](https://tryhackme.com/room/memoryanalysisintroduction)
-- [Windows Memory & Processes](https://tryhackme.com/room/windowsmemoryandprocs)
+- [Windows内存与进程](https://tryhackme.com/room/windowsmemoryandprocs)
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Click to continue to the room. </summary>
+<summary> 点击继续进入房间。 </summary>
 
 ```plaintext
 No answer needed
@@ -37,32 +37,32 @@ No answer needed
 
 :::
 
-## Task 2 Scenario Information
+## 任务2场景信息
 
-### Scenario
+### 场景
 
-You are part of the incident response team handling an incident at TryHatMe - a company that exclusively sells hats online. You are tasked with analyzing a full memory dump of a potentially compromised Windows host. Before you, another analyst had already taken a full memory dump and gathered all the necessary information from the TryHatMe IT support team. You are a bit nervous since this is your first case, but don't worry; a senior analyst will guide you.
+您是处理TryHatMe公司事件的事件响应团队的一员，该公司专门在线销售帽子。 您的任务是分析一个可能被入侵的Windows主机的完整内存转储。 在您之前，另一位分析师已经获取了完整的内存转储，并从TryHatMe的IT支持团队收集了所有必要信息。 由于这是您的第一个案例，您有点紧张，但别担心；一位资深分析师将指导您。
 
-### Information Incident THM-0001
+### 事件信息THM-0001
 
-- On May 5th, 2025, at 07:30 CET, TryHatMe initiated its incident response plan and escalated the incident to us. After an initial triage, our team found a Windows host that was potentially compromised. The details of the host are as follows:
-  - Hostname: WIN-001
-  - OS: Windows 1022H 10.0.19045
-- At 07:45 CET, our analyst Steve Stevenson took a full memory dump of the Windows host and made a hash to ensure its integrity. The memory dump details are:
-  - Name: `THM-WIN-001_071528_07052025.dmp`
-  - MD5-hash: `78535fc49ab54fed57919255709ae650`
+- 2025年5月5日07:30 CET，TryHatMe启动了其事件响应计划，并将事件上报给我们。 经过初步分类，我们的团队发现了一台可能被入侵的Windows主机。 主机的详细信息如下：
+  - 主机名：WIN-001
+  - 操作系统：Windows 1022H 10.0.19045
+- 07:45 CET，我们的分析师Steve Stevenson获取了Windows主机的完整内存转储，并生成了哈希值以确保其完整性。 内存转储的详细信息如下：
+  - 名称：`THM-WIN-001_071528_07052025.dmp`
+  - MD5哈希：`78535fc49ab54fed57919255709ae650`
 
-### Company Information TryHatMe
+### 公司信息TryHatMe
 
-#### Network Map
+#### 网络拓扑图
 
-![Image showing the current scenario as a network diagram with the DMZ internal, User LAN and Server Lan networks  ](img/image_20251255-215557.png)
+![显示当前场景为网络拓扑图，包含DMZ内部、用户局域网和服务器局域网网络](img/image_20251255-215557.png)
 
 :::info 回答以下问题
 
 <details>
 
-<summary> I went through the case details and am ready to find out more. </summary>
+<summary>我已阅读案例详情，准备好了解更多信息。 </summary>
 
 ```plaintext
 No answer needed
@@ -72,19 +72,19 @@ No answer needed
 
 :::
 
-## Task 3 Environment & Setup
+## 任务3 环境与设置
 
-Before moving forward, **start the VM** by clicking the Start Machine button on the right.
+在继续之前，请点击右侧的启动机器按钮**启动虚拟机**。
 
-It will take around 2 minutes to load properly. The VM will be accessible on the right side of the split screen. If the VM is not visible, use the blue **Show Split View** button at the top of the page.
+大约需要2分钟才能正常加载。 虚拟机将在分屏的右侧可访问。 如果看不到虚拟机，请使用页面顶部的蓝色**显示分屏视图**按钮。
 
-We'll continue analyzing the memory dump **THM-WIN-001_071528_07052025.mem** located in the home directory of the user **ubuntu**.
+我们将继续分析位于用户**ubuntu**主目录中的内存转储**THM-WIN-001_071528_07052025.mem**。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Click here if you were able to start your environment. </summary>
+<summary> 如果您能够启动您的环境，请点击此处。 </summary>
 
 ```plaintext
 No answer needed
@@ -94,17 +94,17 @@ No answer needed
 
 :::
 
-## Task 4 Tracking Sessions
+## 任务4 追踪会话
 
-In this task, we’re going to look at how to find out who was logged in to the system at the time the memory was captured. This is one of the first steps in any investigation, understanding which user accounts were present and possibly involved in the activity we’re interested in.
+在本任务中，我们将研究如何找出在捕获内存时谁登录了系统。 这是任何调查的第一步之一，了解哪些用户账户存在并可能参与了我们感兴趣的活动。
 
-Windows stores details about sessions, interactive logins, and even application usage in memory.
+Windows在内存中存储有关会话、交互式登录甚至应用程序使用情况的详细信息。
 
-### Sessions
+### 会话
 
-When investigating a compromised system, it's essential to understand which user accounts were active at the time and what type of access they had. Tracking sessions allows us to see if a user was physically present, connected remotely, or left a session open. This helps narrow down which actions can be attributed to specific users and whether accounts were misused during the attack. Session data can also help differentiate between regular activity and something out of place, such as a session that appears during odd hours, or one coming from an unexpected source/origin.
+在调查受感染系统时，了解当时哪些用户账户处于活动状态以及他们拥有何种类型的访问权限至关重要。 追踪会话使我们能够查看用户是物理在场、远程连接还是保持会话打开。 这有助于缩小哪些操作可归因于特定用户，以及账户在攻击期间是否被滥用。 会话数据还可以帮助区分常规活动与异常情况，例如在异常时间出现的会话，或来自意外来源/起源的会话。
 
-The voltage plugin inspects memory by locating internal Windows structures (some undocumented) such as **_SESSION_MANAGER_INFORMATION** and the [Session Structure](https://learn.microsoft.com/en-us/windows/win32/devnotes/session). Let's see what the SESSION structure contains:
+Volatility插件通过定位内部Windows结构（其中一些未公开文档），如**_SESSION_MANAGER_INFORMATION**和[会话结构](https://learn.microsoft.com/en-us/windows/win32/devnotes/session)来检查内存。 让我们看看SESSION结构包含什么：
 
 ```c
 struct SESSION{
@@ -146,11 +146,11 @@ struct SESSION{
 }
 ```
 
-The Windows **sessions** plugin (**windows.session**) walks through these kernel and user session management structures to extract details like session IDs, user SIDs, logon types (e.g., console, RDP), and logon timestamps. These values are stored in the memory of the csrss.exe, winlogon.exe, and other system processes tied to interactive sessions.
+Windows**会话**插件（**windows.session**）遍历这些内核和用户会话管理结构，以提取会话ID、用户SID、登录类型（例如控制台、RDP）和登录时间戳等详细信息。 这些值存储在csrss.exe、winlogon.exe以及其他与交互式会话相关的系统进程的内存中。
 
-### Logged Sessions
+### 已登录会话
 
-We can explore the sessions using Volatility. Let's run the command `vol -f THM-WIN-001_071528_07052025.mem windows.sessions > sessions.txt` to save the output to a file `sessions.txt` for further analysis.
+我们可以使用Volatility探索会话。 让我们运行命令`vol -f THM-WIN-001_071528_07052025.mem windows.sessions > sessions.txt`，将输出保存到文件`sessions.txt`以供进一步分析。
 
 ```shell title="Terminal"
 ubuntu@tryhackme$vol -f THM-WIN-001_071528_07052025.mem windows.sessions > sessions.txt
@@ -190,24 +190,24 @@ N/A         -             324         smss.exe            -                     
 N/A         -             1884        MemCompression      -                                 2025-05-07 07:08:49.000000 UTC
 ```
 
-**Note**: When running Volatility for the first time, it will take a few minutes for it to start up
+**注意**：首次运行Volatility时，启动需要几分钟
 
-The operator user session (Session **ID 1**) stands out due to a clear sequence of suspicious actions. Within seconds, a chain of processes was launched under this user, pointing to active engagement rather than background tasks. The timeline and consistent user context suggest the session was compromised and later used by an attacker.
+操作员用户会话（会话**ID 1**）因一系列明显的可疑操作而显得突出。 在几秒钟内，该用户下启动了一系列进程，指向主动参与而非后台任务。 时间线和一致的用户上下文表明会话被入侵，随后被攻击者使用。
 
-- Suspicious session: Activity tied to user operator with Session **ID 1**.
-- Malicious process chain: **WINWORD.EXE** → **pdfupdater.exe** → **windows-update.exe** → **updater.exe**.
-- All processes were executed under the same interactive session.
-- Post-exploitation behavior: cmd.exe (**PID 432**) and powershell.exe (**PID 6984**) appeared after **updater.exe**.
-- The attacker likely gained control and began issuing commands.
-- Evidence points to a hijacked user session leveraged after initial access.
+- 可疑会话：与用户操作员相关的活动，会话**ID 1**。
+- 恶意进程链：**WINWORD.EXE** → **pdfupdater.exe** → **windows-update.exe** → **updater.exe**。
+- 所有进程都在同一交互式会话下执行。
+- 后利用行为：cmd.exe（**PID 432**）和powershell.exe（**PID 6984**）出现在**updater.exe**之后。
+- 攻击者可能获得控制权并开始发出命令。
+- 证据指向在初始访问后被利用的劫持用户会话。
 
-### Find Loaded Registry Hives
+### 查找已加载的注册表配置单元
 
-Another important artefact to check is the [Windows Registry](https://learn.microsoft.com/en-us/windows/win32/sysinfo/structure-of-the-registry), which holds a wide range of user and system configuration data, including details about recently used files, executed programs, wireless connections, and more. When a registry hive (like **NTUSER.DAT** or **SYSTEM**) is loaded into memory, it means the user was active and interacting with the system. By identifying which registry hives were present in memory at the time of acquisition, we can tie specific user behavior to particular accounts.
+另一个需要检查的重要工件是[Windows注册表](https://learn.microsoft.com/en-us/windows/win32/sysinfo/structure-of-the-registry)，它保存了广泛的用户和系统配置数据，包括最近使用的文件、执行的程序、无线连接等详细信息。 当注册表配置单元（如**NTUSER.DAT**或**SYSTEM**）加载到内存中时，意味着用户处于活动状态并与系统交互。 通过识别在获取时内存中存在哪些注册表配置单元，我们可以将特定的用户行为与特定账户关联起来。
 
-Volatility locates loaded registry hives by scanning memory for instances of the **CMHIVE** kernel structure (this structure is undocumented, but we can find some information about it [here](https://www.nirsoft.net/kernel_struct/vista/CMHIVE.html)). These hives are typically loaded into memory by the Windows kernel during boot or user login. The **windows.registry.hivelist** plugin walks through the kernel's HiveList. Each entry contains the virtual memory address of the hive and the path where it was originally stored on disk (e.g., **C:\Users\\\<USERNAME>\\NTUSER.DAT**).
+Volatility通过扫描内存中的**CMHIVE**内核结构实例来定位已加载的注册表配置单元（此结构未公开文档，但我们可以在[此处](https://www.nirsoft.net/kernel_struct/vista/CMHIVE.html)找到一些相关信息）。 这些配置单元通常在启动或用户登录期间由Windows内核加载到内存中。 **windows.registry.hivelist**插件遍历内核的HiveList。 每个条目包含配置单元的虚拟内存地址以及其在磁盘上的原始存储路径（例如，**C:\Users\\\<USERNAME>\\NTUSER.DAT**）。
 
-Let's use the command `vol -f THM-WIN-001_071528_07052025.mem windows.registry.hivelist > hivelist.txt` to inspect and save the output to the file hivelist.txt, and analyze the output:
+让我们使用命令`vol -f THM-WIN-001_071528_07052025.mem windows.registry.hivelist > hivelist.txt`来检查并将输出保存到文件hivelist.txt，并分析输出：
 
 ```shell title="Terminal"
 ubuntu@tryhackme$ vol -f THM-WIN-001_071528_07052025.mem windows.registry.hivelist > hivelist.txt
@@ -227,17 +227,17 @@ Offset              FileFullPath                                                
 [REDACTED]
 ```
 
-As the output above displays, we can confirm that the registry hive for the user operator was fully loaded into memory at the time the memory dump was taken, including both the main **ntuser.dat** file and associated user-specific application settings under **UsrClass.dat**. This strongly indicates that the operator account was not only logged in but also actively interacting with the system, but does not show that any potential interaction occurred.
+如上输出所示，我们可以确认用户操作员的注册表配置单元在获取内存转储时已完全加载到内存中，包括主要的**ntuser.dat**文件以及**UsrClass.dat**下的相关用户特定应用程序设置。 这强烈表明操作员账户不仅已登录，而且正在主动与系统交互，但并未显示任何潜在的交互发生。
 
-Several registry entries from the `AppData\Local\Packages` path show traces of modern Windows UWP applications being accessed or configured, such as **StartMenuExperienceHost**, **Search**, **ShellExperienceHost**, and **LockApp**, all linked to the user **operator**. The presence of these user hives in memory supports the suspicion raised by the active process tree, especially since this user is connected to the suspicious process involving **WINWORD.EXE**, pdfupdater.exe, and the possible post-exploitation phase.
+来自`AppData\Local\Packages`路径的几个注册表条目显示访问或配置了现代Windows UWP应用程序的痕迹，例如**StartMenuExperienceHost**、**Search**、**ShellExperienceHost**和**LockApp**，所有这些都与用户**操作员**相关联。 这些用户配置单元在内存中的存在支持了活动进程树引起的怀疑，特别是因为此用户与涉及**WINWORD.EXE**、pdfupdater.exe以及可能的后期利用阶段的可疑进程相关。
 
-### Graphical Interface Activity
+### 图形界面活动
 
-[**UserAssist**](https://www.magnetforensics.com/blog/artifact-profile-userassist/), an undocumented registry that tracks executables launched by the user through the graphical interface, helps us understand which programs a user interacted with through the graphical interface. It tracks applications launched from the **Start Menu**, **Desktop**, or **Explorer**, including tools like **cmd.exe**, **powershell.exe**, and custom executables. We can use this information to establish what the user actually ran, even if the evidence of execution is gone from the disk or event logs. Seeing something like **powershell.exe** or **regsvr32.exe** in **UserAssist** shortly before a compromise can signal direct user-driven activity, which is critical when trying to determine intent and trace actions to specific accounts. This technique is used in the wild by threat actors like the **Raspberry Robin worm**.
+[**UserAssist**](https://www.magnetforensics.com/blog/artifact-profile-userassist/)，一个未公开文档的注册表，用于追踪用户通过图形界面启动的可执行文件，帮助我们了解用户通过图形界面与哪些程序交互。 它追踪从**开始菜单**、**桌面**或**资源管理器**启动的应用程序，包括**cmd.exe**、**powershell.exe**和自定义可执行文件等工具。 我们可以使用此信息来确定用户实际运行了什么，即使执行的证据已从磁盘或事件日志中消失。 在入侵前不久在**UserAssist**中看到类似**powershell.exe**或**regsvr32.exe**的内容可以表明直接的用户驱动活动，这在尝试确定意图并将操作追踪到特定账户时至关重要。 这种技术被**Raspberry Robin蠕虫**等威胁行为者在实际攻击中使用。
 
-The **windows.registry.userassist** plugin in Volatility reads from the **NTUSER.DAT** hive, a Windows registry hive file that stores a user's settings and preferences, specifically under the **Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist** key. Each entry is **ROT13-encoded** and includes details such as the application path, a run counter, and a timestamp of the last time it was launched.
+Volatility中的**windows.registry.userassist**插件从**NTUSER.DAT**配置单元读取，这是一个Windows注册表配置单元文件，存储用户的设置和偏好，特别是在**Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist**键下。 每个条目都是**ROT13编码的**，并包含应用程序路径、运行计数器和上次启动时间戳等详细信息。
 
-Let's perform the command `vol -f THM-WIN-001_071528_07052025.mem windows.registry.userassist > userassist.txt` and investigate the output by looking at it using `cat userassist.txt`
+让我们执行命令`vol -f THM-WIN-001_071528_07052025.mem windows.registry.userassist > userassist.txt`，并通过`cat userassist.txt`查看输出来进行调查
 
 ```shell TITLE="Terminal"
 ubuntu@tryhackme$ cat userassist.txt
@@ -286,15 +286,15 @@ Hive Offset    Hive Name    Path    Last Write Time    Type    Name    ID    Cou
 0xbe8c6878d000    \??\C:\Users\operator\ntuser.dat    ntuser.dat\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{FA99DFC7-6AC2-453A-A5E2-5E2AFF4507BD}\Count    2025-04-30 05:44:06.000000 UTC    Key    N/A    N/A    N/A    N/A    N/A    N/A    N/A
 ```
 
-As we can observe above, the UserAssist data from the operator user's registry hive reveals execution of key applications that align with our suspected attack chain. Notably, entries referencing **Command Prompt.lnk** show activity around **07:12:43**, which directly corresponds with the launch of **cmd.exe** seen in the session data. This reinforces the idea that the user, or an attacker acting through their session, interacted with the system just before or during the execution of suspicious processes like **WINWORD.EXE**, pdfupdater.exe, and updater.exe. These artifacts help confirm that actions tied to the compromise were launched from an active desktop session, suggesting intentional, user-driven execution.
+如上所示，来自操作员用户注册表配置单元的UserAssist数据揭示了与我们怀疑的攻击链一致的关键应用程序的执行情况。 值得注意的是，引用**Command Prompt.lnk**的条目显示在**07:12:43**左右的活动，这与会话数据中看到的**cmd.exe**启动直接对应。 这进一步证实了用户或通过其会话进行攻击的攻击者在执行可疑进程（如**WINWORD.EXE**、pdfupdater.exe和updater.exe）之前或期间与系统进行了交互。 这些痕迹有助于确认与入侵相关的操作是从一个活跃的桌面会话启动的，表明这是有意的、由用户驱动的执行。
 
-Great, now that we learned how to get information from sessions, let's move on to the next task.
+很好，既然我们已经学习了如何从会话中获取信息，让我们继续下一个任务。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Which plugin should be used to identify user login sessions from memory? </summary>
+<summary> 应该使用哪个插件来从内存中识别用户登录会话？ </summary>
 
 ```plaintext
 windows.sessions
@@ -304,7 +304,7 @@ windows.sessions
 
 <details>
 
-<summary> Which user was logged into a console session when WINWORD.EXE and updater.exe were executed? </summary>
+<summary> 当WINWORD.EXE和updater.exe执行时，哪个用户登录到了控制台会话？ </summary>
 
 ```plaintext
 DESKTOP-3NMNM0H/operator
@@ -314,7 +314,7 @@ DESKTOP-3NMNM0H/operator
 
 <details>
 
-<summary> According to the UserAssist data, which executable related to command-line activity was launched via a shortcut? </summary>
+<summary> 根据UserAssist数据，哪个与命令行活动相关的可执行文件是通过快捷方式启动的？ </summary>
 
 ```plaintext
 cmd.exe
@@ -324,7 +324,7 @@ cmd.exe
 
 <details>
 
-<summary> Which Volatility 3 plugin reveals evidence of programs launched by a user through the graphical interface? </summary>
+<summary> 哪个Volatility 3插件揭示了用户通过图形界面启动程序的证据？ </summary>
 
 ```plaintext
 windows.registry.userassist
@@ -334,15 +334,15 @@ windows.registry.userassist
 
 :::
 
-## Task 5 Command Execution & File Access
+## 任务5 命令执行与文件访问
 
-Now that we’ve seen how the possible malicious activity began, it’s time to examine what happened afterwards. We'll look into command execution and identify which files were accessed by any process involved in the attack sequence.
+既然我们已经看到了可能的恶意活动是如何开始的，现在是时候检查之后发生了什么。 我们将调查命令执行情况，并识别攻击序列中涉及的任何进程访问了哪些文件。
 
-We’ve already established that execution began with **WINWORD.EXE** and led to updater.exe. Our goal now is to determine if any of these components executed commands, interacted with the system through a console, or accessed files that might have been staged or collected.
+我们已经确定执行始于**WINWORD.EXE**并导致了updater.exe。 我们现在的目标是确定这些组件中是否有任何一个执行了命令、通过控制台与系统交互，或者访问了可能已暂存或收集的文件。
 
-### Execution
+### 执行
 
-Let's start by using the **cmdline** plugin from Volatility to inspect the commands or programs executed when the memory dump was taken. The cmdline plugin works by walking through each process in memory and accessing each process environment block ([PEB](https://learn.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb)). Inside the **PEB**, there's a structure called [ProcessParameters](https://learn.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-rtl_user_process_parameters), which contains a pointer to the Unicode string holding the command line used to launch the process.
+让我们首先使用Volatility的**cmdline**插件来检查获取内存转储时执行的命令或程序。 cmdline插件的工作原理是遍历内存中的每个进程并访问每个进程环境块（[PEB](https://learn.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb)）。 在**PEB**内部，有一个名为[ProcessParameters](https://learn.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-rtl_user_process_parameters)的结构，它包含一个指向用于启动进程的命令行Unicode字符串的指针。
 
 ```c
 typedef struct _RTL_USER_PROCESS_PARAMETERS {
@@ -354,11 +354,11 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS {
 }
 ```
 
-The plugin reads this string directly from memory. Let's use the mentioned plugin to investigate processes and file executions with the following command:
+该插件直接从内存中读取此字符串。 让我们使用上述插件通过以下命令调查进程和文件执行情况：
 
 `vol -f THM-WIN-001_071528_07052025.mem windows.cmdline  > cmdline.txt`
 
-The above command will save the command's output to the file **cmdline.txt**. We can analyze it to look for suspicious information.
+上述命令将把命令的输出保存到文件**cmdline.txt**中。 我们可以分析它以寻找可疑信息。
 
 ```shell title="Terminal"
 ubuntu@tryhackme$ cat cmdline.txt 
@@ -385,21 +385,21 @@ PID    Process    Args
 5108    svchost.exe
 ```
 
-We can observe that none of the potential malicious processes were executed with commands, but we can observe and confirm that the process **5252** corresponding to **WINWORD.EXE** was executed to open the a **docm** (in reality, the file could be either clicked or opened by the user), as shown below:
+我们可以观察到，没有一个潜在的恶意进程是使用命令执行的，但我们可以观察并确认进程**5252**对应的**WINWORD.EXE**被执行以打开一个**docm**文件（实际上，该文件可能是用户点击或打开的），如下所示：
 
 `5252    WINWORD.EXE    "C:\Program Files (x86)\Microsoft Office\Root\Office16\WINWORD.EXE" /n "C:\Users\operator\Documents\[REDACTED].docm" /o ""`
 
-This shows that `WINWORD.EXE` was started with the `.docm` file, a macro-enabled document. The use of `/n` indicates a new instance was launched, something often used to avoid reusing existing windows.
+这表明`WINWORD.EXE`是使用`.docm`文件（一个启用宏的文档）启动的。 使用`/n`表示启动了一个新实例，这通常用于避免重用现有窗口。
 
-### File Access
+### 文件访问
 
-We can confirm the above by looking at the handles for this file with the handles plugin, which extracts open handles by parsing the handle table referenced by the `ObjectTable` field in each process’s [EPROCESS](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/eprocess) structure. Each entry maps to a kernel object (files, registry keys, events, etc.), and the plugin walks the table to interpret them. This reveals which resources were open per process at the time of the memory dump.
+我们可以通过使用handles插件查看此文件的句柄来确认上述情况，该插件通过解析每个进程的[EPROCESS](https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/eprocess)结构中的`ObjectTable`字段引用的句柄表来提取打开的句柄。 每个条目映射到一个内核对象（文件、注册表键、事件等），插件遍历该表以解释它们。 这揭示了在内存转储时每个进程打开了哪些资源。
 
-Let's try it with the following command:
+让我们尝试使用以下命令：
 
 `vol -f THM-WIN-001_071528_07052025.mem windows.handles > handles.txt`
 
-Let's now examine the content of **handles.txt**, where our output was saved.
+现在让我们检查保存输出的**handles.txt**的内容。
 
 ```shell title="Terminal"
 ubuntu@tryhackme$ cat handles.txt |grep WINWORD
@@ -421,17 +421,17 @@ ubuntu@tryhackme$ cat handles.txt |grep WINWORD
 [REDACTED]
 ```
 
-**Note**: This command can take a couple of minutes to execute.
+**注意**：此命令可能需要几分钟才能执行。
 
-As we can observe, the process opens or executes the file at `\Device\HarddiskVolume3\Users\operator\Documents\[REDACTED].docm`. This shows the file wasn’t just passed as an argument. It was actively opened by the process. This makes the case for linking this document and the activity that followed.
+正如我们所见，该进程在`\Device\HarddiskVolume3\Users\operator\Documents\[REDACTED].docm`处打开或执行了该文件。 这表明该文件不仅仅是作为参数传递的。 它被进程主动打开了。 这为将此文档与后续活动联系起来提供了依据。
 
-At this point, to get more information about what happened, we need to inspect the process `WINWORD.EXE`, if we want to have any chance to recover more information about this process. We'll do that in the next task.
+此时，为了获取更多关于发生了什么的信息，我们需要检查进程`WINWORD.EXE`，如果我们想有机会恢复关于此进程的更多信息。 我们将在下一个任务中完成此操作。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> What file was passed to WINWORD.EXE? </summary>
+<summary> 哪个文件被传递给了WINWORD.EXE？ </summary>
 
 ```plaintext
 cv-resume-test.docm
@@ -441,7 +441,7 @@ cv-resume-test.docm
 
 <details>
 
-<summary> What is the name of the Volatility3 plugin that extracts open files, registry keys, and kernel objects from process handle tables? </summary>
+<summary> 从进程句柄表中提取打开的文件、注册表键和内核对象的Volatility3插件叫什么名字？ </summary>
 
 ```plaintext
 windows.handles
@@ -451,7 +451,7 @@ windows.handles
 
 <details>
 
-<summary> What is the full device path where the.docm file was found open in WINWORD.EXE’s memory space? </summary>
+<summary> 在WINWORD.EXE的内存空间中，发现.docm文件打开的完整设备路径是什么？ </summary>
 
 ```plaintext
 C:\Users\operator\Documents\cv-resume-test.docm
@@ -461,7 +461,7 @@ C:\Users\operator\Documents\cv-resume-test.docm
 
 <details>
 
-<summary> What Windows command-line switch was used to open WINWORD.EXE in a new instance? </summary>
+<summary> 使用了哪个Windows命令行开关在新实例中打开WINWORD.EXE？ </summary>
 
 ```plaintext
 /n
@@ -471,13 +471,13 @@ C:\Users\operator\Documents\cv-resume-test.docm
 
 :::
 
-## Task 6 Tracing User Execution
+## 任务6 追踪用户执行
 
-In this part of the investigation, we’ll revisit a template file likely used by the same Word process. These templates often hold embedded macros and are loaded automatically with macro-enabled documents. We already extracted this during a previous step, but we’ll confirm its type and analyze it here. The goal is to check whether this file played a role in triggering further activity.
+在调查的这一部分，我们将重新审视可能由同一个Word进程使用的模板文件。 这些模板通常包含嵌入的宏，并随启用宏的文档自动加载。 我们已经在之前的步骤中提取了此文件，但我们将在此处确认其类型并进行分析。 目标是检查此文件是否在触发进一步活动中发挥了作用。
 
-### Locating the Template File
+### 定位模板文件
 
-To dump the files loaded or used by a process, or the process itself, we can use the **dumpfiles** plugin from Volatility which extracts file objects that were present in the system's memory at the time of acquisition. It works by scanning the memory for [FILE_OBJECT](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_file_object) structures, which represent open or recently accessed files. For each valid file object found, the plugin attempts to follow the associated [SectionObjectPointer](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_section_object_pointers) to locate and reconstruct the mapped file data in memory.
+要转储进程加载或使用的文件，或进程本身，我们可以使用Volatility的**dumpfiles**插件，该插件提取在获取时存在于系统内存中的文件对象。 它的工作原理是通过扫描内存中的[FILE_OBJECT](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_file_object)结构，这些结构表示打开或最近访问的文件。 对于找到的每个有效文件对象，插件尝试跟随关联的[SectionObjectPointer](https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_section_object_pointers)来定位并重建内存中映射的文件数据。
 
 ```c
 typedef struct _SECTION_OBJECT_POINTERS {
@@ -488,13 +488,13 @@ typedef struct _SECTION_OBJECT_POINTERS {
 }
 ```
 
-It uses the object's metadata, such as the file name and offset, to name the dumped file appropriately. If the file's data is still resident in memory.
+它使用对象的元数据（如文件名和偏移量）来适当地命名转储的文件。 如果文件的数据仍然驻留在内存中。
 
-We already dumped this file in the previous room, and it should be available in the `5252/` directory, but we can do it again by using the command:
+我们已经在之前的房间中转储了此文件，它应该在`5252/`目录中可用，但我们可以使用以下命令再次执行：
 
 `vol -f THM-WIN-001_071528_07052025.mem -o 5252/ windows.dumpfiles --pid 5252`
 
-Once we have access to that file dump, we can inspect it as we did when we identified a **DOTM** file with potential. Often, Macro-enabled files, such as **DOCM**, will have templates in DOTM files. This is the type of file we already found in the previous task by dumping the process **WINWORD.EXE**. We can search for it again using the grep command:
+一旦我们访问了该文件转储，我们就可以像之前识别具有潜力的**DOTM**文件时那样检查它。 通常，启用宏的文件，如**DOCM**，会在DOTM文件中包含模板。 这就是我们通过转储进程**WINWORD.EXE**在之前的任务中已经找到的文件类型。 我们可以使用grep命令再次搜索它：
 
 ```shell title="Terminal"
 ubuntu@tryhackme$ ls 5252/|grep dotm
@@ -502,16 +502,16 @@ file.0x990b2ae077d0.0x990b2a3f5d70.SharedCacheMap.Normal.dotm.vacb
 file.0x990b2ae077d0.0x990b2b916cd0.DataSectionObject.Normal.dotm.dat
 ```
 
-Great, so let's copy the file to our home directory with the command `cp 5252/file.0x990b2ae077d0.0x990b2b916cd0.DataSectionObject.Normal.dotm.dat .` and let's inspect it again, and confirm it's a Word document file as we previously did using the `file` command and corroborate the file type as **Word**.
+很好，那么让我们使用命令`cp 5252/file.0x990b2ae077d0.0x990b2b916cd0.DataSectionObject.Normal.dotm.dat .`将文件复制到我们的主目录，并再次检查它，确认它是一个Word文档文件，就像我们之前使用`file`命令所做的那样，并确认文件类型为**Word**。
 
 ```shell title="Terminal"
 ubuntu@tryhackme$ file file.0x990b2ae077d0.0x990b2b916cd0.DataSectionObject.Normal.dotm.dat
 file.0x990b2ae077d0.0x990b2b916cd0.DataSectionObject.Normal.dotm.dat: Microsoft Word 2007+
 ```
 
-### Confirm Macro Execution
+### 确认宏执行
 
-Let's unzip the .dat file using the command `unzip`, and inspect the files. Let's examine the word/ directory that was unzipped. We will find a VBA file called **vbaProject.bin**. If there's a macro or potential malicious code, it should be there, so we will extract it using `olevba` (part of the **oletools** suite) with the command `olevba word/vbaProject.bin`
+让我们使用命令`unzip`解压.dat文件，并检查文件。 让我们检查解压后的word/目录。 我们将找到一个名为**vbaProject.bin**的VBA文件。 如果有宏或潜在的恶意代码，它应该在那里，所以我们将使用`olevba`（**oletools**套件的一部分）通过命令`olevba word/vbaProject.bin`提取它
 
 ```shell title="Terminal"
 ubuntu@tryhackme$ olevba word/vbaProject.bin 
@@ -559,13 +559,13 @@ End Sub
 [REDACTED]
 ```
 
-Excellent. We successfully recovered from memory the macro that the user executed, which was likely delivered through a document. This macro initiated the execution of `pdfupdater.exe` and revealed a URL that can help trace the origin of the activity, which we’ll explore further in the following task.
+很好。 我们成功地从内存中恢复了用户执行的宏，该宏很可能是通过文档传递的。 此宏启动了`pdfupdater.exe`的执行，并揭示了一个URL，可以帮助追踪活动的起源，我们将在接下来的任务中进一步探讨。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> What command did we use to confirm that the dumped `.dat` file is a Microsoft Word document? </summary>
+<summary> 我们使用了哪个命令来确认转储的`.dat`文件是Microsoft Word文档？ </summary>
 
 ```plaintext
 file
@@ -575,7 +575,7 @@ file
 
 <details>
 
-<summary> According to the `olevba` output, what is the name of the file downloaded and executed by the macro? </summary>
+<summary> 根据`olevba`输出，宏下载并执行的文件叫什么名字？ </summary>
 
 ```plaintext
 pdfupdater.exe
@@ -585,7 +585,7 @@ pdfupdater.exe
 
 <details>
 
-<summary> What is the full URL hardcoded in the macro for downloading the executable? </summary>
+<summary> 宏中硬编码用于下载可执行文件的完整URL是什么？ </summary>
 
 ```plaintext
 http://attacker.thm/pdfupdater.exe
@@ -597,25 +597,25 @@ http://attacker.thm/pdfupdater.exe
 
 ## 任务 7 结论
 
-In this room, we analyzed user activity through memory alone, tracking logins, sessions, commands, and file access. Each task focused on signs of interaction that helped us understand what actions took place on the system during the incident.
+在这个房间中，我们仅通过内存分析了用户活动，追踪了登录、会话、命令和文件访问。 每个任务都侧重于交互的迹象，帮助我们理解事件期间系统上发生了哪些操作。
 
-We worked entirely from RAM data, without relying on disk logs. Following these traces, we built a clear picture of user behavior and potential malicious activity. We can build a timeline so far that looks like the one below.
+我们完全基于RAM数据工作，没有依赖磁盘日志。 遵循这些痕迹，我们构建了用户行为和潜在恶意活动的清晰图景。 到目前为止，我们可以构建一个如下所示的时间线。
 
-1. The user operator was logged in and active at the time of memory capture: Confirmed via session data and loaded registry hive. Using **windows.sessions** and **windows.registry.hivelist** volatility plugins.
-2. The malicious document **cv-resume-test.docm** was opened through Microsoft Word: Traced to the **WINWORD.EXE** process and file handle. Using **windows.cmdline** and **windows.handles** volatility plugins.
-3. The document triggered a linked template (**.dotm**) that contained embedded macros: Identified by inspecting dumped file objects linked to WINWORD.EXE: Using the **windows.dumpfiles** volatility plugin and the grep command over the process directory.
-4. The macro executed silently, downloading and running pdfupdater.exe from a remote server: Macro content extracted from memory and analyzed. Unzipping the **.dotm** and running **olevba** on **vbaProject.bin**.
-5. The downloaded file spawned **windows-update.exe**, which then launched updater.exe: Confirmed through process relationships and creation order using **pslist**, **cmdline**, and process ancestry.
-6. Post-exploitation activity became evident with the launch of cmd.exe and powershell.exe: Observed through active processes in the same session shortly after payload execution via **sessions** and **pslist**.
-7. UserAssist entries confirmed interactive applications like Command Prompt were launched: Recovered from the operator’s **NTUSER.DAT** hive using the **windows.registry.userassist** volatility plugin for **GUI-driven** execution evidence.
+1. 在内存捕获时，用户操作员已登录并处于活动状态：通过会话数据和加载的注册表配置单元确认。 使用 **windows.sessions** 和 **windows.registry.hivelist** volatility 插件。
+2. 恶意文档 **cv-resume-test.docm** 已通过 Microsoft Word 打开：追踪到 **WINWORD.EXE** 进程和文件句柄。 使用 **windows.cmdline** 和 **windows.handles** volatility 插件。
+3. 该文档触发了一个包含嵌入宏的链接模板（**.dotm**）：通过检查与 WINWORD.EXE 关联的转储文件对象识别：使用 **windows.dumpfiles** volatility 插件并在进程目录上运行 grep 命令。
+4. 宏静默执行，从远程服务器下载并运行 pdfupdater.exe：从内存中提取并分析宏内容。 解压 **.dotm** 并在 **vbaProject.bin** 上运行 **olevba**。
+5. 下载的文件生成了 **windows-update.exe**，随后启动了 updater.exe：通过使用 **pslist**、**cmdline** 和进程祖先关系确认进程关系和创建顺序。
+6. 通过启动 cmd.exe 和 powershell.exe，利用后活动变得明显：在有效载荷执行后不久，通过 **sessions** 和 **pslist** 在同一会话中观察到活动进程。
+7. UserAssist 条目确认启动了如命令提示符等交互式应用程序：使用 **windows.registry.userassist** volatility 插件从操作员的 **NTUSER.DAT** 配置单元中恢复，作为 **GUI驱动** 执行的证据。
 
-In the next room of this module, we'll learn how network connections can be tracked and traced similarly. We will also finish the timeline we are currently building to try to uncover the whole attack chain.
+在本模块的下一房间中，我们将学习如何类似地跟踪和追溯网络连接。 我们还将完成当前正在构建的时间线，以尝试揭示整个攻击链。
 
 :::info 回答以下问题
 
 <details>
 
-<summary> Click to complete the room. </summary>
+<summary> 点击以完成房间。 </summary>
 
 ```plaintext
 No answer needed

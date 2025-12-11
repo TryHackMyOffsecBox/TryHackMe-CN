@@ -386,7 +386,7 @@ THM{m3mory_analyst_g00d_job}
 
 <details>
 
-<summary> Click to complete the room. </summary>
+<summary> 点击以完成房间。 </summary>
 
 ```plaintext
 No answer needed
